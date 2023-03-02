@@ -2,7 +2,7 @@ import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Router from './router/Router';
-import GlobalStyle from './styles/GlobalStyle';
+import GlobalStyle from './styles/globalstyle';
 
 function App() {
   const queryClient = new QueryClient();
