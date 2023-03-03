@@ -1,21 +1,9 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import styled from 'styled-components';
 import landingimage from '../assets/ladingimage.svg';
 import landinglogo from '../assets/landinglogo.svg';
-import useInputs from './../hooks/useInput';
 
-const Lading = () => {
-  const [{ email, password }, onChange, reset] = useInputs({
-    email: '',
-    password: '',
-  });
-  const navigate = useNavigate();
-  console.log('email', email, 'password', password);
-
-  const signHandler = () => {
-    navigate('/signup');
-  };
+const Signup = () => {
   return (
     <Wrap>
       <ImageContainer>
@@ -28,29 +16,21 @@ const Lading = () => {
       <LoginContainer>
         <Logo src={landinglogo} alt=""></Logo>
 
-        <Email
-          type="text"
-          name="email"
-          value={email}
-          onChange={onChange}
-          placeholder="회사 이메일을 입력해주세요"
-        ></Email>
-        <Password
-          type="password"
-          name="password"
-          value={password}
-          onChange={onChange}
-          placeholder="비밀번호"
-        ></Password>
-        <LoginBtn>로그인</LoginBtn>
+        <UzzulText>
+          <span style={{ fontWeight: '700', fontSize: '24px', color: '#5A3092' }}>안녕하세요,관리어쩔입니다.</span>
+          <span style={{ fontWeight: '700', fontSize: '13px', color: '#8F8F8F' }}>
+            이메일로 간단하게 가입하고 관리어쩔로 회사 자산을 관리해보세요.
+          </span>
+        </UzzulText>
+        <Email type="text" name="email" placeholder="회사 이메일을 입력해주세요"></Email>
+        <SignBtn>회원가입</SignBtn>
         <FindPW>비밀번호를 잊으셨나요?</FindPW>
-        <SignBtn onClick={signHandler}>회원가입</SignBtn>
       </LoginContainer>
     </Wrap>
   );
 };
 
-export default Lading;
+export default Signup;
 const Wrap = styled.div`
   width: 100vw;
   height: 100vh;
@@ -98,26 +78,20 @@ const Logo = styled.img`
   position: relative;
   bottom: 12rem;
 `;
-const Email = styled.input`
+const UzzulText = styled.div`
   width: 26rem;
-  height: 2.688rem;
-  background-color: rgba(233, 226, 242, 0.44);
+  height: 3.5rem;
+
   border: none;
   position: relative;
   bottom: 4rem;
   outline: none;
-
-  border-radius: 4px;
-  font-family: Inter;
-  font-weight: 700;
-  font-size: 15px;
-  line-height: 23px;
-  line-height: 150%;
-  text-align: left;
-  vertical-align: top;
+  display: flex;
+  flex-direction: column;
+  line-height: 36px;
   letter-spacing: -1.1%;
 `;
-const Password = styled.input`
+const Email = styled.input`
   width: 26rem;
   height: 2.688rem;
   background-color: rgba(233, 226, 242, 0.44);
@@ -135,13 +109,7 @@ const Password = styled.input`
   vertical-align: top;
   letter-spacing: -1.1%;
 `;
-const LoginBtn = styled.button`
-  width: 416px;
-  height: 43px;
-  background-color: #8e52d9;
-  color: white;
-  border-radius: 10px;
-`;
+
 const FindPW = styled.span`
   font-family: Inter;
   font-style: Regular;
@@ -156,10 +124,9 @@ const FindPW = styled.span`
 const SignBtn = styled.button`
   width: 416px;
   height: 43px;
-  background-color: #ffffff;
-  color: black;
+  background-color: #8e52d9;
+  color: #ffffff;
   border-radius: 10px;
-  border: 1px solid #5a3092;
   font-weight: 700;
   font-family: Inter;
   font-size: 15px;
