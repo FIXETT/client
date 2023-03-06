@@ -2,8 +2,36 @@ import React from 'react';
 import styled from 'styled-components';
 import landingimage from '../assets/ladingimage.svg';
 import landinglogo from '../assets/landinglogo.svg';
+import useInputs from './../hooks/useInput';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useInfoState } from '../recoil/userList';
+import { useRecoilState } from 'recoil';
+import { UserApi } from '../apis/axiosInstance';
 
 const Signup = () => {
+  const [{ email }, onChange, reset] = useInputs({
+    email: '',
+  });
+  const [user, setUser] = useRecoilState(useInfoState);
+
+  const navigate = useNavigate();
+
+  //회원가입 버튼 핸들러
+  const signupHandler = () => {
+    const authMail = async () => {
+      try {
+        const { data } = await UserApi.authmail(email);
+        console.log(data);
+        setUser(email);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    authMail();
+    navigate('/confirm');
+  };
+
   return (
     <Wrap>
       <ImageContainer>
@@ -22,8 +50,14 @@ const Signup = () => {
             이메일로 간단하게 가입하고 관리어쩔로 회사 자산을 관리해보세요.
           </span>
         </UzzulText>
-        <Email type="text" name="email" placeholder="회사 이메일을 입력해주세요"></Email>
-        <SignBtn>회원가입</SignBtn>
+        <Email
+          value={email}
+          onChange={onChange}
+          type="text"
+          name="email"
+          placeholder="회사 이메일을 입력해주세요"
+        ></Email>
+        <SignBtn onClick={signupHandler}>회원가입</SignBtn>
         <FindPW>비밀번호를 잊으셨나요?</FindPW>
       </LoginContainer>
     </Wrap>

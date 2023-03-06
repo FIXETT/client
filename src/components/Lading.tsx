@@ -1,20 +1,37 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { UserApi } from '../apis/axiosInstance';
 import landingimage from '../assets/ladingimage.svg';
 import landinglogo from '../assets/landinglogo.svg';
 import useInputs from './../hooks/useInput';
+import { useRecoilState } from 'recoil';
+import { useInfoState } from '../recoil/userList';
 
 const Lading = () => {
   const [{ email, password }, onChange, reset] = useInputs({
     email: '',
     password: '',
   });
+  const [user, setUser] = useRecoilState(useInfoState);
   const navigate = useNavigate();
   console.log('email', email, 'password', password);
 
   const signHandler = () => {
     navigate('/signup');
+  };
+
+  const loginHandler = () => {
+    const login = async () => {
+      try {
+        const { data } = await UserApi.signin(email, password);
+        console.log(data.token.accessToken);
+        setUser(data.token.accessToken);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    login();
   };
   return (
     <Wrap>
@@ -42,7 +59,7 @@ const Lading = () => {
           onChange={onChange}
           placeholder="비밀번호"
         ></Password>
-        <LoginBtn>로그인</LoginBtn>
+        <LoginBtn onClick={loginHandler}>로그인</LoginBtn>
         <FindPW>비밀번호를 잊으셨나요?</FindPW>
         <SignBtn onClick={signHandler}>회원가입</SignBtn>
       </LoginContainer>
