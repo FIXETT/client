@@ -11,7 +11,7 @@ const localStorageEffect =
       if (isReset) {
         localStorage.removeItem(key);
       } else {
-        localStorage.setItem(key, JSON.stringify(newValue));
+        localStorage.setItem(key, newValue);
       }
     });
   };

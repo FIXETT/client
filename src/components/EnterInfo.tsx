@@ -1,24 +1,28 @@
 import axios from 'axios';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { UserApi } from '../apis/axiosInstance';
 import enter from '../assets/enterinfo.svg';
 import { useInfoState } from '../recoil/userList';
 import useInputs from './../hooks/useInput';
+
 const EnterInfo = () => {
   const [{ name, password }, onChange, Reset] = useInputs({
     name: '',
     password: '',
   });
+  const navigate = useNavigate();
   const [info, setInfo] = useRecoilState(useInfoState);
   const signupHandler = () => {
     const signup = async () => {
       try {
         const { data } = await UserApi.signup(info, password, name);
-        console.log(data);
-      } catch (error) {
-        console.log(error);
+        window.alert('회원가입 성공! 로그인 페이지로 이동합니다');
+        navigate('/');
+      } catch (error: any) {
+        window.alert(error?.response?.data.error);
       }
     };
     signup();

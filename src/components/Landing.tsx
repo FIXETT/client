@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { UserApi } from '../apis/axiosInstance';
 import landingimage from '../assets/ladingimage.svg';
 import landinglogo from '../assets/landinglogo.svg';
-import useInputs from './../hooks/useInput';
+import useInputs from '../hooks/useInput';
 import { useRecoilState } from 'recoil';
 import { useInfoState } from '../recoil/userList';
 
@@ -27,8 +27,23 @@ const Lading = () => {
         const { data } = await UserApi.signin(email, password);
         console.log(data.token.accessToken);
         setUser(data.token.accessToken);
-      } catch (error) {
-        console.log(error);
+        // if (data) {
+        //   const readuser = async () => {
+        //     try {
+        //       const { data } = await UserApi.readuser(email, password);
+        //       console.log(data);
+        //     } catch (error) {
+        //       if (error) {
+        //         return;
+        //       }
+        //     }
+        //   };
+        //   readuser();
+        // }
+      } catch (error: any) {
+        if (error.response) {
+          window.alert(error.response.data.error);
+        }
       }
     };
     login();

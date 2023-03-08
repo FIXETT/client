@@ -1,10 +1,10 @@
 import React from 'react';
-import Lading from '../../components/Lading';
+import Landing from '../../components/Landing';
 
 const LadingPage = () => {
   return (
     <>
-      <Lading />
+      <Landing />
     </>
   );
 };

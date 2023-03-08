@@ -5,7 +5,7 @@ export interface User {
   name: string; // 이름
   password: string; // 비밀번호
   code: string;
-  token: string;
+  token: any;
 }
 
 const USER_KEY = 'token';
