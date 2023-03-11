@@ -1,0 +1,73 @@
+import React from 'react';
+import styled from 'styled-components';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { useMutation } from '@tanstack/react-query';
+
+import { deleteAsset } from '../../apis/asset';
+import { assetNumberState, showDeleteModalState } from '../../recoil/assets';
+
+const DeleteModal = () => {
+  const assetNumber = useRecoilValue(assetNumberState);
+  const setDeleteShowModal = useSetRecoilState(showDeleteModalState);
+
+  const deleteAssetMutation = useMutation(deleteAsset);
+  const hideModal = () => {
+    setDeleteShowModal(false);
+  };
+  const addAsset = (e: any) => {
+    e.preventDefault();
+    deleteAssetMutation.mutate(assetNumber.slice(1));
+    setDeleteShowModal(false);
+  };
+  return (
+    <DeleteModalContainer>
+      <div>
+        <DeleteModalText>삭제하시겠습니까?</DeleteModalText>
+        <Row>
+          <CancelBtn onClick={hideModal}>돌아가기</CancelBtn>
+          <CheckBtn onClick={addAsset}>네</CheckBtn>
+        </Row>
+      </div>
+    </DeleteModalContainer>
+  );
+};
+
+export default DeleteModal;
+
+const DeleteModalContainer = styled.div`
+  text-align: center;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  width: 25%;
+  height: 25%;
+  padding: 50px;
+  z-index: 9999;
+  border: 1px solid var(--gray);
+  box-shadow: var(--box-shadow);
+`;
+const DeleteModalText = styled.p`
+  margin-bottom: 20px;
+`;
+const Row = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+`;
+const CheckBtn = styled.button`
+  background-color: var(--primary);
+  padding: 5px 10px;
+  color: #fff;
+  border-radius: 5px;
+`;
+const CancelBtn = styled.button`
+  border: 1px solid var(--sub);
+  padding: 5px 10px;
+  border-radius: 5px;
+`;
