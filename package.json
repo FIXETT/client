@@ -14,10 +14,7 @@
     "@types/react-dom": "^18.0.0",
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.26",
-<<<<<<< HEAD
-=======
     "@types/yup": "^0.32.0",
->>>>>>> 1947f91c5e11a608feb0dc9e6431835efc978592
     "axios": "^1.3.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

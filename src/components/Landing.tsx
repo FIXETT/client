@@ -10,6 +10,7 @@ import { useInfoState } from '../recoil/userList';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { readuser } from '../apis/readuser';
 
 export interface FormValue {
   name: string;
@@ -64,20 +65,18 @@ const Lading = () => {
       try {
         const { data } = await UserApi.signin(email, password);
         console.log(data.token.accessToken);
-        setUser(data.token.accessToken);
-        // if (data) {
-        //   const readuser = async () => {
-        //     try {
-        //       const { data } = await UserApi.readuser(email, password);
-        //       console.log(data);
-        //     } catch (error) {
-        //       if (error) {
-        //         return;
-        //       }
-        //     }
-        //   };
-        //   readuser();
-        // }
+
+        const token = data.token.accessToken;
+        async function read() {
+          const { data } = await readuser({ token, email, password });
+          console.log(data);
+          if (data) {
+            navigate('/dashboard');
+          }
+        }
+        read();
+
+        localStorage.setItem('token', token);
       } catch (error: any) {
         if (error.response) {
           window.alert(error.response.data.error);

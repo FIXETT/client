@@ -12,7 +12,7 @@ const AssetInputList = () => {
   const [assetlist, setassetlist] = useRecoilState(assetlistState);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const _id = window.localStorage.getItem('_id');
+    const identifier = window.localStorage.getItem('identifier');
     const type = e.target.name;
     const value = e.target.value;
     const index = Number(e.target.id);
@@ -20,7 +20,7 @@ const AssetInputList = () => {
     newList[index] = {
       ...newList[index],
       [type]: value,
-      _id: String(_id),
+      identifier: String(identifier),
     };
     setassetlist(newList);
   };

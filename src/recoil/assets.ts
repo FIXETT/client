@@ -52,13 +52,13 @@ export const assetlistState = atom({
       manufacturer: '',
       acquisitionDate: '',
       note: '',
-      _id: '',
+      identifier: '',
     },
   ],
 });
 export const assetNumberState = atom({
   key: 'assetNumber',
-  default: [{ assetNumber: 0, _id: '' }],
+  default: [{ assetNumber: 0, identifier: '' }],
 });
 export const showAddModalState = atom({
   key: 'showAddModal',
@@ -116,7 +116,7 @@ export const modifyAssetlistState = atom({
       manufacturer: '',
       acquisitionDate: '',
       note: '',
-      _id: '',
+      identifier: '',
     },
   ],
 });

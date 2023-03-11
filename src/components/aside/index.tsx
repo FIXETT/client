@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
 import NavList from './NavList';
@@ -10,7 +10,7 @@ const Aside = () => {
     <>
       <AsideContainer>
         <WelcomTitle>
-          <LogoIcon>{name.slice(0, 1)}</LogoIcon>
+          <LogoIcon>{name?.slice(0, 1)}</LogoIcon>
           {name}(관리자)님
         </WelcomTitle>
         <NavListContainer>

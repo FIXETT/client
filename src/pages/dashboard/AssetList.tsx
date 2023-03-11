@@ -14,27 +14,30 @@ import { getAsset } from '../../apis/asset';
 import { getAssetListType } from '../../types/asset';
 
 import SearchList from './SearchList';
-
+import { showModifyModalState } from './../../recoil/assets';
 const AssetList = () => {
   const [assetNumber, setAssetNumber] = useRecoilState(assetNumberState);
   const searchText = useRecoilValue(searchTextState);
   const addShowModal = useRecoilValue(showAddModalState);
   const deleteShowModal = useRecoilValue(showDeleteModalState);
+  const showModifyModal = useRecoilValue(showModifyModalState);
+
   const setModify = useSetRecoilState(modifyState);
-  const { data, isLoading } = useQuery({
+
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['getAsset', { addShowModal, deleteShowModal }],
-    queryFn: async () => {
-      const response = await getAsset();
-      return response.data;
+    queryFn: () => {
+      const response = getAsset();
+      return response;
     },
   });
-  const assetList = data?.asset;
+  const assetList = data?.data?.asset;
 
   const checkedInput = (e: any) => {
     const checked = e.target.checked;
     if (checked) {
-      const _id = window.localStorage.getItem('_id');
-      setAssetNumber([...assetNumber, { assetNumber: Number(e.target.id), _id: _id as string }]);
+      const identifier = window.localStorage.getItem('identifier');
+      setAssetNumber([...assetNumber, { assetNumber: Number(e.target.id), identifier: identifier as string }]);
       if (assetNumber.length < 3) {
         const filteredData = assetList.filter((item: any) => item.assetNumber === Number(e.target.id));
         setModify(filteredData);
@@ -46,9 +49,11 @@ const AssetList = () => {
   };
 
   useEffect(() => {
-    setAssetNumber([{ assetNumber: 0, _id: '' }]);
+    setAssetNumber([{ assetNumber: 0, identifier: '' }]);
   }, []);
-
+  useEffect(() => {
+    refetch();
+  }, [addShowModal, deleteShowModal, showModifyModal]);
   return (
     <div>
       <AssetListContainer>

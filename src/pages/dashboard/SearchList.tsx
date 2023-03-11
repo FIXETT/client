@@ -32,14 +32,14 @@ const SearchList = ({ assetList }: any) => {
   };
 
   useEffect(() => {
-    setAssetNumber([{ assetNumber: 0, _id: '' }]);
+    setAssetNumber([{ assetNumber: 0, identifier: '' }]);
   }, []);
 
   const checkedsearch = (e: any) => {
     const checked = e.target.checked;
     if (checked) {
-      const _id = window.localStorage.getItem('_id');
-      setAssetNumber([...assetNumber, { assetNumber: Number(e.target.id), _id: _id as string }]);
+      const identifier = window.localStorage.getItem('identifier');
+      setAssetNumber([...assetNumber, { assetNumber: Number(e.target.id), identifier: identifier as string }]);
     } else {
       let filtered = assetNumber.filter((element) => element.assetNumber !== Number(e.target.id));
       setAssetNumber(filtered);

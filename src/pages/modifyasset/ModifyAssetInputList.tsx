@@ -13,13 +13,13 @@ const ModifyAssetInputList = () => {
   const modifyAssetType = useRecoilValue(modifyAssetTypeState);
   const modify: any = useRecoilValue(modifyState);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const _id = window.localStorage.getItem('_id');
+    const identifier = window.localStorage.getItem('identifier');
     const type = e.target.name;
     const value = e.target.value;
 
     let newList: any = [Object.assign({}, modifyassetlist[0])];
     newList[0][type] = value;
-    newList[0]['_id'] = _id;
+    newList[0]['identifier'] = identifier;
 
     setModifyassetlist(newList);
   };
