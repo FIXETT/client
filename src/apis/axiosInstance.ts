@@ -29,6 +29,9 @@ AxiosInstance.interceptors.response.use(
     return response;
   },
   function (error) {
-    console.log('error', error);
+    if (error.response.status === 400) {
+      const newToken = error.response.data.newToken;
+      localStorage.setItem('token', newToken);
+    }
   },
 );

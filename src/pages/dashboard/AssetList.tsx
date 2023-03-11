@@ -21,18 +21,20 @@ const AssetList = () => {
   const addShowModal = useRecoilValue(showAddModalState);
   const deleteShowModal = useRecoilValue(showDeleteModalState);
   const setModify = useSetRecoilState(modifyState);
-
   const { data, isLoading } = useQuery({
     queryKey: ['getAsset', { addShowModal, deleteShowModal }],
-    queryFn: () => getAsset(),
+    queryFn: async () => {
+      const response = await getAsset();
+      return response.data;
+    },
   });
-  const assetList = data?.data?.asset;
+  const assetList = data?.asset;
 
   const checkedInput = (e: any) => {
     const checked = e.target.checked;
     if (checked) {
-      const identifier = window.localStorage.getItem('identifier');
-      setAssetNumber([...assetNumber, { assetNumber: Number(e.target.id), identifier: identifier as string }]);
+      const _id = window.localStorage.getItem('_id');
+      setAssetNumber([...assetNumber, { assetNumber: Number(e.target.id), _id: _id as string }]);
       if (assetNumber.length < 3) {
         const filteredData = assetList.filter((item: any) => item.assetNumber === Number(e.target.id));
         setModify(filteredData);
@@ -44,7 +46,7 @@ const AssetList = () => {
   };
 
   useEffect(() => {
-    setAssetNumber([{ assetNumber: 0, identifier: '' }]);
+    setAssetNumber([{ assetNumber: 0, _id: '' }]);
   }, []);
 
   return (

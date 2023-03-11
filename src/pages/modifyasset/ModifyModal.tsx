@@ -4,16 +4,14 @@ import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { useMutation } from '@tanstack/react-query';
 
 import { patchAsset } from '../../apis/asset';
-import { modifyassetlistState, showModifyModalState } from '../../recoil/assets';
+import { modifyAssetlistState, showModifyModalState } from '../../recoil/assets';
 import { useNavigate } from 'react-router-dom';
 
 const ModifyModal = () => {
   const navigate = useNavigate();
-  const modifyassetlist = useRecoilValue(modifyassetlistState);
+  const modifyassetlist = useRecoilValue(modifyAssetlistState);
   const setModifyShowModal = useSetRecoilState(showModifyModalState);
-  console.log(modifyassetlist, '엥');
   const ModifyAssetMutation = useMutation(() => patchAsset(modifyassetlist));
-
   return (
     <ModifyModalContainer>
       <div>

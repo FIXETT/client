@@ -52,13 +52,13 @@ export const assetlistState = atom({
       manufacturer: '',
       acquisitionDate: '',
       note: '',
-      identifier: '',
+      _id: '',
     },
   ],
 });
 export const assetNumberState = atom({
   key: 'assetNumber',
-  default: [{ assetNumber: 0, identifier: '' }],
+  default: [{ assetNumber: 0, _id: '' }],
 });
 export const showAddModalState = atom({
   key: 'showAddModal',
@@ -103,23 +103,6 @@ export const modifyselectAssetTypeState = atom({
     { title: '비고', type: 'note', inputType: 'text', img: note },
   ],
 });
-export const modifyassetlistState = atom({
-  key: 'modifyassetlist',
-  default: [
-    {
-      name: '',
-      department: '',
-      product: '',
-      category: '',
-      quantity: 0,
-      status: '',
-      manufacturer: '',
-      acquisitionDate: '',
-      note: '',
-      identifier: '',
-    },
-  ],
-});
 export const modifyAssetlistState = atom({
   key: 'modifyAssetlist',
   default: [
@@ -133,7 +116,7 @@ export const modifyAssetlistState = atom({
       manufacturer: '',
       acquisitionDate: '',
       note: '',
-      identifier: '',
+      _id: '',
     },
   ],
 });

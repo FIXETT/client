@@ -1,4 +1,4 @@
-import { patchAssetDataType } from '../types/asset';
+import { patchAssetDataType, postAssetDataType } from '../types/asset';
 import { AxiosInstance } from './axiosInstance';
 
 export const postAsset = async (assetlist: any) => {
@@ -33,13 +33,13 @@ export const deleteAsset = async (assetNumber: object[]) => {
 
 export const getAsset = async () => {
   const token = window.localStorage.getItem('token');
-  const identifier = window.localStorage.getItem('identifier');
+  const _id = window.localStorage.getItem('_id');
 
   const headers = {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   };
 
-  const response = await AxiosInstance.get(`/asset?identifier=${identifier}`, { headers });
+  const response = await AxiosInstance.get(`/asset?_id=${_id}`, { headers });
   return response;
 };

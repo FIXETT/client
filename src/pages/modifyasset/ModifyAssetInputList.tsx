@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { modifyassetlistState, modifyAssetTypeState } from '../../recoil/assets';
+import { modifyAssetlistState, modifyAssetTypeState } from '../../recoil/assets';
 
 import SelectCategory from './SelectCategory';
 import SelectDepartment from './SelectDepartment';
@@ -9,26 +9,25 @@ import SelectStatus from './SelectStatus';
 import { modifyState } from '../../recoil/assets';
 
 const ModifyAssetInputList = () => {
-  const [modifyassetlist, setModifyassetlist] = useRecoilState(modifyassetlistState);
+  const [modifyassetlist, setModifyassetlist] = useRecoilState(modifyAssetlistState);
   const modifyAssetType = useRecoilValue(modifyAssetTypeState);
   const modify: any = useRecoilValue(modifyState);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const identifier = window.localStorage.getItem('identifier');
+    const _id = window.localStorage.getItem('_id');
     const type = e.target.name;
     const value = e.target.value;
 
     let newList: any = [Object.assign({}, modifyassetlist[0])];
     newList[0][type] = value;
-    newList[0]['identifier'] = identifier;
-
-    console.log(newList, 'newList');
+    newList[0]['_id'] = _id;
 
     setModifyassetlist(newList);
   };
-  console.log(modifyassetlist);
+
   useEffect(() => {
     setModifyassetlist(modify);
   }, []);
+
   const assetInput = (modifyAssetType: any, index: number) => {
     switch (modifyAssetType.title) {
       case '수량':

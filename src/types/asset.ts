@@ -8,7 +8,7 @@ export type postAssetDataType = {
   manufacturer?: string;
   acquisitionDate?: string;
   note?: string;
-  identifier?: string;
+  _id?: string;
 };
 
 export type patchAssetDataType = {
@@ -22,7 +22,7 @@ export type patchAssetDataType = {
   manufacturer?: string;
   acquisitionDate?: string;
   note?: string;
-  identifier: string;
+  _id: string;
 };
 export type subNavListType = {
   id: string;
@@ -41,7 +41,6 @@ export type getAssetListType = {
   acquisitionDate?: string;
   note?: string;
   createdAt: string;
-  identifier: string;
   updatedAt: string;
   __v: number;
   _id: string;

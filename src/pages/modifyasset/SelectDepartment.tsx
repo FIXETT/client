@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
-import { modifyassetlistState } from '../../recoil/assets';
+import { modifyAssetlistState } from '../../recoil/assets';
 import { modifyState } from './../../recoil/assets';
 
 const SelectDepartment = ({ modifyAssetType, index, onChange }: any) => {
   const [showDepartment, setShowDepartment] = useState(false);
-  const modifyassetlist = useRecoilValue(modifyassetlistState);
+  const modifyassetlist = useRecoilValue(modifyAssetlistState);
   const modify: any = useRecoilValue(modifyState);
 
   return (
