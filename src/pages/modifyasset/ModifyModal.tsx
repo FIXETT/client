@@ -2,26 +2,26 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { useMutation } from '@tanstack/react-query';
+
+import { patchAsset } from '../../apis/asset';
+import { modifyassetlistState, showModifyModalState } from '../../recoil/assets';
 import { useNavigate } from 'react-router-dom';
 
-import { postAsset } from '../../apis/asset';
-import { assetlistState, showModalState } from '../../recoil/assets';
-
-const AddModal = () => {
+const ModifyModal = () => {
   const navigate = useNavigate();
-  const assetlist = useRecoilValue(assetlistState);
-  const setShowModal = useSetRecoilState(showModalState);
-
-  const assetMutation = useMutation(() => postAsset(assetlist));
+  const modifyassetlist = useRecoilValue(modifyassetlistState);
+  const setModifyShowModal = useSetRecoilState(showModifyModalState);
+  console.log(modifyassetlist, '엥');
+  const ModifyAssetMutation = useMutation(() => patchAsset(modifyassetlist));
 
   return (
-    <AddModalContainer>
+    <ModifyModalContainer>
       <div>
-        <AddModalText>등록하시겠습니까?</AddModalText>
+        <ModifyModalText>등록하시겠습니까?</ModifyModalText>
         <Row>
           <CancelBtn
             onClick={() => {
-              setShowModal(false);
+              setModifyShowModal(false);
             }}
           >
             돌아가기
@@ -29,7 +29,8 @@ const AddModal = () => {
           <CheckBtn
             onClick={(e) => {
               e.preventDefault();
-              assetMutation.mutate();
+              ModifyAssetMutation.mutate();
+              setModifyShowModal(false);
               navigate('/dashboard');
             }}
           >
@@ -37,13 +38,13 @@ const AddModal = () => {
           </CheckBtn>
         </Row>
       </div>
-    </AddModalContainer>
+    </ModifyModalContainer>
   );
 };
 
-export default AddModal;
+export default ModifyModal;
 
-const AddModalContainer = styled.div`
+const ModifyModalContainer = styled.div`
   text-align: center;
   position: absolute;
   display: flex;
@@ -60,7 +61,7 @@ const AddModalContainer = styled.div`
   border: 1px solid var(--gray);
   box-shadow: var(--box-shadow);
 `;
-const AddModalText = styled.p`
+const ModifyModalText = styled.p`
   margin-bottom: 20px;
 `;
 const Row = styled.div`

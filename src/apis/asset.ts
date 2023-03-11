@@ -3,7 +3,6 @@ import { AxiosInstance } from './axiosInstance';
 
 export const postAsset = async (assetlist: any) => {
   const token = window.localStorage.getItem('token');
-
   const headers = {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
@@ -12,39 +11,23 @@ export const postAsset = async (assetlist: any) => {
   return response;
 };
 
-export const patchAsset = async ({
-  assetNumber,
-  name,
-  department,
-  product,
-  category,
-  quantity,
-  status,
-  manufacturer,
-  acquisitionDate,
-  note,
-}: patchAssetDataType) => {
-  const identifier = window.localStorage.getItem('identifier');
-  const response = await AxiosInstance.patch('/asset', {
-    assetNumber,
-    name,
-    department,
-    product,
-    category,
-    quantity,
-    status,
-    manufacturer,
-    acquisitionDate,
-    note,
-    identifier,
-  });
+export const patchAsset = async (modifyassetlist: any) => {
+  const token = window.localStorage.getItem('token');
+  const headers = {
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  };
+  const response = await AxiosInstance.patch('/asset', modifyassetlist, { headers });
   return response;
 };
 
-export const deleteAsset = async (assetNumber: number[]) => {
-  const identifier = window.localStorage.getItem('identifier');
-  const data: any = { assetNumber, identifier };
-  const response = await AxiosInstance.delete('/asset', data);
+export const deleteAsset = async (assetNumber: object[]) => {
+  const token = window.localStorage.getItem('token');
+  const data = [...assetNumber];
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  const response = await AxiosInstance.delete('/asset', { data, headers });
   return response;
 };
 

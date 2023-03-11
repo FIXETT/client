@@ -1,32 +1,35 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
-import { assetlistState } from '../../recoil/assets';
+import { modifyAssetlistState } from '../../recoil/assets';
+import { modifyState } from './../../recoil/assets';
 
-const SelectCategory = ({ postAssetType, index, onChange }: any) => {
-  const [showCategory, setShowCategory] = useState(false);
-  const assetlist = useRecoilValue(assetlistState);
-
+const SelectCategory = ({ modifyAssetType, index, onChange }: any) => {
+  const [showModifyCategory, setShowModifyCategory] = useState(false);
+  const modifyAssetlist = useRecoilValue(modifyAssetlistState);
+  const modify: any = useRecoilValue(modifyState);
   return (
     <SelectContainer>
       <SelectBtn
-        onClick={() => {
-          setShowCategory(!showCategory);
+        onClick={(e) => {
+          e.preventDefault();
+          setShowModifyCategory(!showModifyCategory);
         }}
       >
-        {assetlist[index].category ? assetlist[index].category : '🖥️ 모니터'}
+        {modifyAssetlist[index].category ? modifyAssetlist[index].category : modify[0].category}
       </SelectBtn>
-      {showCategory && (
+      {showModifyCategory && (
         <SlectList>
           <AssetLabel>
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
+              name={modifyAssetType.type}
               value="🖥️ 모니터"
               onChange={onChange}
+              checked={modify[0].category && modify[0].category === '🖥️ 모니터'}
               onClick={() => {
-                setShowCategory(false);
+                setShowModifyCategory(false);
               }}
             />
             🖥️ 모니터
@@ -35,11 +38,12 @@ const SelectCategory = ({ postAssetType, index, onChange }: any) => {
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
+              name={modifyAssetType.type}
               value="💻 노트북"
               onChange={onChange}
+              checked={modify[0].category === '💻 노트북'}
               onClick={() => {
-                setShowCategory(false);
+                setShowModifyCategory(false);
               }}
             />
             💻 노트북
@@ -48,11 +52,12 @@ const SelectCategory = ({ postAssetType, index, onChange }: any) => {
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
+              name={modifyAssetType.type}
               value="👨‍💻 데스크탑"
               onChange={onChange}
+              checked={modify[0].category === '👨‍💻 데스크탑'}
               onClick={() => {
-                setShowCategory(false);
+                setShowModifyCategory(false);
               }}
             />
             👨‍💻 데스크탑

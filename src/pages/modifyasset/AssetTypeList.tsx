@@ -1,22 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
-import { postAssetTypeState } from '../../recoil/assets';
+import { modifyAssetTypeState } from '../../recoil/assets';
 
 const AssetTypeList = () => {
-  const postAssetType = useRecoilValue(postAssetTypeState);
-
+  const modifyAssetType = useRecoilValue(modifyAssetTypeState);
   return (
-    <AddTableWrap>
-      {postAssetType.map((value, index) => (
+    <ModifyTableWrap>
+      {modifyAssetType.map((value, index) => (
         <AssetType key={index}>{value.title}</AssetType>
       ))}
-    </AddTableWrap>
+    </ModifyTableWrap>
   );
 };
 
 export default AssetTypeList;
-const AddTableWrap = styled.div`
+const ModifyTableWrap = styled.div`
   width: 100%;
   display: flex;
 `;

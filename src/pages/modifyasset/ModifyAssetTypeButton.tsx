@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { postAssetTypeState, selectAssetTypeState } from '../../recoil/assets';
+import { modifyAssetTypeState, modifyselectAssetTypeState } from '../../recoil/assets';
 
-const AddAssetTypeButton = () => {
+const ModifyAssetTypeButton = () => {
   const [showSelectAssetType, setshowSelectAssetType] = useState(false);
-  const [postAssetType, setPostAssetType] = useRecoilState(postAssetTypeState);
-  const [selectAssetType, setSelectAssetType] = useRecoilState(selectAssetTypeState);
-
-  const showAddAssetType = () => {
+  const [postAssetType, setPostAssetType] = useRecoilState(modifyAssetTypeState);
+  const [selectAssetType, setSelectAssetType] = useRecoilState(modifyselectAssetTypeState);
+  const showModifyAssetType = () => {
     setshowSelectAssetType(true);
   };
 
@@ -16,16 +15,16 @@ const AddAssetTypeButton = () => {
     <>
       {selectAssetType.length !== 0 && (
         <ButtonContainer>
-          <AddAssetTypeShowBtn onClick={showAddAssetType}>+</AddAssetTypeShowBtn>
+          <ModifyAssetTypeShowBtn onClick={showModifyAssetType}>+</ModifyAssetTypeShowBtn>
           {showSelectAssetType && (
-            <AddAssetTypeList>
-              <AddAssetTypeTitle>
+            <ModifyAssetTypeList>
+              <ModifyAssetTypeTitle>
                 <h4>새 속성</h4>
                 <h5>유형</h5>
-              </AddAssetTypeTitle>
+              </ModifyAssetTypeTitle>
               {selectAssetType.map((value) => (
-                <AddAssetType key={value.title}>
-                  <AddAssetTypeBtn
+                <ModifyAssetType key={value.title}>
+                  <ModifyAssetTypeBtn
                     onClick={(e) => {
                       e.preventDefault();
                       setPostAssetType([...postAssetType, value]);
@@ -34,10 +33,10 @@ const AddAssetTypeButton = () => {
                   >
                     <img src={value.img} alt="아이콘" />
                     {value.title}
-                  </AddAssetTypeBtn>
-                </AddAssetType>
+                  </ModifyAssetTypeBtn>
+                </ModifyAssetType>
               ))}
-            </AddAssetTypeList>
+            </ModifyAssetTypeList>
           )}
         </ButtonContainer>
       )}
@@ -45,12 +44,12 @@ const AddAssetTypeButton = () => {
   );
 };
 
-export default AddAssetTypeButton;
+export default ModifyAssetTypeButton;
 
 const ButtonContainer = styled.div`
   position: relative;
 `;
-const AddAssetTypeList = styled.ul`
+const ModifyAssetTypeList = styled.ul`
   z-index: 999;
   position: absolute;
   left: calc(100% + 10px);
@@ -62,20 +61,20 @@ const AddAssetTypeList = styled.ul`
   padding: 10px;
 `;
 
-const AddAssetTypeTitle = styled.div`
+const ModifyAssetTypeTitle = styled.div`
   padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 `;
-const AddAssetType = styled.li`
+const ModifyAssetType = styled.li`
   width: 180px;
   border-radius: 5px;
   :hover {
     background-color: var(--gray);
   }
 `;
-const AddAssetTypeShowBtn = styled.button`
+const ModifyAssetTypeShowBtn = styled.button`
   width: 15px;
   height: 100%;
   background-color: var(--primary);
@@ -86,7 +85,7 @@ const AddAssetTypeShowBtn = styled.button`
     opacity: 1;
   }
 `;
-const AddAssetTypeBtn = styled.button`
+const ModifyAssetTypeBtn = styled.button`
   width: 100%;
   height: 100%;
   padding: 10px 20px;

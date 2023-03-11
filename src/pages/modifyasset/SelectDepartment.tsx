@@ -1,74 +1,81 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
-import { assetlistState } from '../../recoil/assets';
+import { modifyassetlistState } from '../../recoil/assets';
+import { modifyState } from './../../recoil/assets';
 
-const SelectStatus = ({ postAssetType, index, onChange }: any) => {
-  const [showStatus, setShowStatus] = useState(false);
-  const assetlist = useRecoilValue(assetlistState);
+const SelectDepartment = ({ modifyAssetType, index, onChange }: any) => {
+  const [showDepartment, setShowDepartment] = useState(false);
+  const modifyassetlist = useRecoilValue(modifyassetlistState);
+  const modify: any = useRecoilValue(modifyState);
 
   return (
     <SelectContainer>
       <SelectBtn
-        onClick={() => {
-          setShowStatus(!showStatus);
+        onClick={(e) => {
+          e.preventDefault();
+          setShowDepartment(!showDepartment);
         }}
       >
-        {assetlist[index].status ? assetlist[index].status : '🟢 정상'}
+        {modifyassetlist[index].department ? modifyassetlist[index].department : modify[0].department}
       </SelectBtn>
-      {showStatus && (
+      {showDepartment && (
         <SlectList>
           <AssetLabel>
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
-              value="🟢 정상"
+              name={modifyAssetType.type}
+              value="개발"
+              checked={modify[0].department === '개발'}
               onChange={onChange}
               onClick={() => {
-                setShowStatus(false);
+                setShowDepartment(false);
               }}
             />
-            🟢 정상
+            개발
           </AssetLabel>
           <AssetLabel>
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
-              value="🔴 분실"
+              name={modifyAssetType.type}
+              value="경영지원"
+              checked={modify[0].department === '경영지원'}
               onChange={onChange}
               onClick={() => {
-                setShowStatus(false);
+                setShowDepartment(false);
               }}
             />
-            🔴 분실
+            경영지원
           </AssetLabel>
           <AssetLabel>
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
-              value="🟡 수리중"
+              name={modifyAssetType.type}
+              value="세일즈"
+              checked={modify[0].department === '세일즈'}
               onChange={onChange}
               onClick={() => {
-                setShowStatus(false);
+                setShowDepartment(false);
               }}
             />
-            🟡 수리중
+            세일즈
           </AssetLabel>
           <AssetLabel>
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
-              value="🔵 수리완료"
+              name={modifyAssetType.type}
+              value="마케팅"
+              checked={modify[0].department === '마케팅'}
               onChange={onChange}
               onClick={() => {
-                setShowStatus(false);
+                setShowDepartment(false);
               }}
             />
-            🔵 수리완료
+            마케팅
           </AssetLabel>
         </SlectList>
       )}
@@ -76,7 +83,7 @@ const SelectStatus = ({ postAssetType, index, onChange }: any) => {
   );
 };
 
-export default SelectStatus;
+export default SelectDepartment;
 
 const AssetLabel = styled.label`
   display: block;
