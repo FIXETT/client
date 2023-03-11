@@ -4,7 +4,7 @@ import confirm from '../assets/confirm.svg';
 import useInputs from './../hooks/useInput';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
-import { useInfoState } from '../recoil/userList';
+import { useInfoState, useUserState } from '../recoil/userList';
 import { User } from './../recoil/userList';
 import { useNavigate } from 'react-router-dom';
 import { UserApi } from '../apis/axiosInstance';
@@ -15,7 +15,7 @@ const Comfirm = () => {
     code: '',
   });
   const navigate = useNavigate();
-  const [info, setInfo] = useRecoilState(useInfoState);
+  const [info, setInfo] = useRecoilState(useUserState);
   //본인 이메일 인증하기 핸들러
   console.log('info', info);
   const confirmHandler = () => {

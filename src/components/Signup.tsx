@@ -5,7 +5,7 @@ import landinglogo from '../assets/landinglogo.svg';
 import useInputs from './../hooks/useInput';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useInfoState } from '../recoil/userList';
+import { useInfoState, useUserState } from '../recoil/userList';
 import { useRecoilState } from 'recoil';
 import { UserApi } from '../apis/axiosInstance';
 
@@ -13,7 +13,7 @@ const Signup = () => {
   const [{ email }, onChange, reset] = useInputs({
     email: '',
   });
-  const [user, setUser] = useRecoilState(useInfoState);
+  const [user, setUser] = useRecoilState(useUserState);
 
   const navigate = useNavigate();
 
@@ -22,15 +22,15 @@ const Signup = () => {
     const authMail = async () => {
       try {
         const { data } = await UserApi.authmail(email);
-        console.log(data);
+        navigate('/confirm');
         setUser(email);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        window.alert(error?.response?.data?.error);
       }
     };
     authMail();
-    navigate('/confirm');
   };
+  console.log(email);
 
   return (
     <Wrap>
