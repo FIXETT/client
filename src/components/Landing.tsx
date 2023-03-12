@@ -140,7 +140,7 @@ const Lading = () => {
             <ComputerText>내 컴퓨터/모니터가 고장났다구요?!</ComputerText>
             <FixText>관리어쩔이 엄선한 최고의 수리기사에게</FixText>
             <FixText>수리를 맡겨보세요 😉</FixText>
-            <Apply onClick={() => window.location.replace('https://walla.my/survey/alQkguKVGeJ5VywdDQMx')}>
+            <Apply href="https://walla.my/survey/alQkguKVGeJ5VywdDQMx" target="_blank">
               수리견적 요청하기
             </Apply>
           </ModalDiv>
@@ -354,7 +354,7 @@ const FixText = styled.span`
   position: relative;
   top: -20%;
 `;
-const Apply = styled.div`
+const Apply = styled.a`
   border-radius: 10px;
   background-color: #5a3092;
   color: #ffffff;
