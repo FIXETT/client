@@ -1,58 +1,31 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
 
-import {
-  assetNumberState,
-  showAddModalState,
-  showDeleteModalState,
-  showModifyModalState,
-  searchTextState,
-  modifyState,
-} from '../../recoil/assets';
+import { showAddModalState, showDeleteModalState, showModifyModalState, searchTextState } from '../../recoil/assets';
 import { getAsset } from '../../apis/asset';
 import { getAssetListType } from '../../types/asset';
 
 import SearchList from './SearchList';
+import AssetRadioButton from './AssetRadioButton';
 
 const AssetList = () => {
-  const [assetNumber, setAssetNumber] = useRecoilState(assetNumberState);
   const searchText = useRecoilValue(searchTextState);
   const addShowModal = useRecoilValue(showAddModalState);
   const deleteShowModal = useRecoilValue(showDeleteModalState);
   const showModifyModal = useRecoilValue(showModifyModalState);
 
-  const setModify = useSetRecoilState(modifyState);
-
-  const { data, isLoading, refetch } = useQuery(
-    ['getAsset', { addShowModal, deleteShowModal, showModifyModal }],
-    async () => {
-      const response = await getAsset();
-      return response.data;
-    },
-  );
+  const { data, isLoading, refetch } = useQuery(['getAsset'], async () => {
+    const response = await getAsset();
+    return response.data;
+  });
 
   useEffect(() => {
     refetch();
   }, [addShowModal, deleteShowModal, showModifyModal]);
 
   const assetList = data?.asset;
-
-  const checkedInput = (e: any) => {
-    const checked = e.target.checked;
-    if (checked) {
-      const identifier = window.localStorage.getItem('identifier');
-      setAssetNumber([...assetNumber, { assetNumber: Number(e.target.id), identifier: identifier as string }]);
-      if (assetNumber.length < 3) {
-        const filteredData = assetList.filter((item: any) => item.assetNumber === Number(e.target.id));
-        setModify(filteredData);
-      }
-    } else {
-      let filtered = assetNumber.filter((element) => element.assetNumber !== Number(e.target.id));
-      setAssetNumber(filtered);
-    }
-  };
 
   return (
     <div>
@@ -69,7 +42,7 @@ const AssetList = () => {
                     <li key={value?.assetNumber}>
                       <AssetLabel htmlFor={String(value?.assetNumber)}>
                         <AssetItem>
-                          <input type="checkbox" id={String(value.assetNumber)} onChange={checkedInput} />
+                          <AssetRadioButton assetList={assetList} value={value} />
                         </AssetItem>
                         <AssetItem>{value?.assetNumber}</AssetItem>
                         <AssetItem>{value?.name}</AssetItem>

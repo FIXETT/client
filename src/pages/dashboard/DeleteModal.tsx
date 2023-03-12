@@ -15,7 +15,7 @@ const DeleteModal = () => {
     setDeleteShowModal(false);
   };
   const addAsset = (e: any) => {
-    e.preventDefault();
+    e.stopPropagation();
     deleteAssetMutation.mutate(assetNumber.slice(1));
     setAssetNumber([{ assetNumber: 0, identifier: '' }]);
     setDeleteShowModal(false);
