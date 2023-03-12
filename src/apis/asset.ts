@@ -34,7 +34,6 @@ export const deleteAsset = async (assetNumber: object[]) => {
 export const getAsset = async () => {
   const token = window.localStorage.getItem('token');
   const identifier = window.localStorage.getItem('identifier');
-  console.log(identifier);
 
   const headers = {
     Accept: 'application/json',

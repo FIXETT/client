@@ -27,7 +27,7 @@ const globalStyle = createGlobalStyle`
     cursor: pointer;
   }
   input {
-    border: 0;
+    
     outline: none;
   }
   :root{

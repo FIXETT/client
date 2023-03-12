@@ -58,7 +58,10 @@ const Signup = () => {
           placeholder="회사 이메일을 입력해주세요"
         ></Email>
         <SignBtn onClick={signupHandler}>회원가입</SignBtn>
-        <FindPW>비밀번호를 잊으셨나요?</FindPW>
+        <FindPW>
+          이미 계정이 있으신가요?
+          <Nav onClick={() => navigate('/')}>로그인하기</Nav>
+        </FindPW>
       </LoginContainer>
     </Wrap>
   );
@@ -144,7 +147,8 @@ const Email = styled.input`
   letter-spacing: -1.1%;
 `;
 
-const FindPW = styled.span`
+const FindPW = styled.div`
+  width: 418px;
   font-family: Inter;
   font-style: Regular;
   font-size: 12px;
@@ -154,6 +158,9 @@ const FindPW = styled.span`
   vertical-align: Top;
   letter-spacing: -1.1%;
   color: #8f8f8f;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
 `;
 const SignBtn = styled.button`
   width: 416px;
@@ -167,4 +174,12 @@ const SignBtn = styled.button`
   line-height: 22.5px;
   letter-spacing: -1.1%;
   text-align: center;
+`;
+const Nav = styled.div`
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 18px;
+  color: black;
+  cursor: pointer;
 `;
