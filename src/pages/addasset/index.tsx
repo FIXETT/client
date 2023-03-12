@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import { useRecoilValue, useRecoilState } from 'recoil';
-
-import { postAssetTypeState, showAddModalState } from '../../recoil/assets';
+import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
+import { assetlistState, postAssetTypeState, selectAssetTypeState, showAddModalState } from '../../recoil/assets';
 
 import AssetTypeList from './AssetTypeList';
 import AssetInputList from './AssetInputList';
@@ -10,9 +9,49 @@ import AddTableButton from './AddTableButton';
 import AddAssetTypeButton from './AddAssetTypeButton';
 import AddModal from './AddModal';
 
+import department from '../../assets/icon/team.svg';
+import manufacturer from '../../assets/icon/manufacturer.svg';
+import acquisitionDate from '../../assets/icon/date.svg';
+import status from '../../assets/icon/status.svg';
+import note from '../../assets/icon/text.svg';
+
 const AddAsset = () => {
-  const [showModal, setShowModal] = useRecoilState(showAddModalState);
-  const postAssetType = useRecoilValue(postAssetTypeState);
+  const showModal = useRecoilValue(showAddModalState);
+  const [postAssetType, setPostAssetType] = useRecoilState(postAssetTypeState);
+  const setSelectAssetType = useSetRecoilState(selectAssetTypeState);
+  const setassetlist = useSetRecoilState(assetlistState);
+  const setShowModal = useSetRecoilState(showAddModalState);
+  const assetlist = useRecoilValue(assetlistState);
+
+  useEffect(() => {
+    setPostAssetType([
+      { title: '실사용자', type: 'name', inputType: 'text' },
+      { title: '제품명', type: 'product', inputType: 'text' },
+      { title: '품목', type: 'category', inputType: 'select' },
+      { title: '수량', type: 'quantity', inputType: 'number' },
+    ]);
+    setSelectAssetType([
+      { title: '팀', type: 'department', inputType: 'select', img: department },
+      { title: '제조사', type: 'manufacturer', inputType: 'text', img: manufacturer },
+      { title: '취득일자', type: 'acquisitionDate', inputType: 'date', img: acquisitionDate },
+      { title: '상태', type: 'status', inputType: 'select', img: status },
+      { title: '비고', type: 'note', inputType: 'text', img: note },
+    ]);
+    setassetlist([
+      {
+        name: '',
+        department: '',
+        product: '',
+        category: '',
+        quantity: 0,
+        status: '',
+        manufacturer: '',
+        acquisitionDate: '',
+        note: '',
+        identifier: '',
+      },
+    ]);
+  }, []);
 
   return (
     <AddAssetContainer>
@@ -21,7 +60,13 @@ const AddAsset = () => {
         <Title>제품 등록하기</Title>
         <AddAssetBtn
           onClick={() => {
-            setShowModal(true);
+            assetlist.map((value) => {
+              if (value.name === '' || value.quantity === 0 || value.product === '' || value.category === '') {
+                alert('빈칸을 입력해주세요');
+              } else {
+                setShowModal(true);
+              }
+            });
           }}
         >
           등록하기
@@ -49,6 +94,15 @@ const AddAssetWrap = styled.div`
   display: flex;
   padding: 20px;
 `;
+const Column = styled.div<{ postAssetType: number }>`
+  display: flex;
+  flex-direction: column;
+  ${(props) =>
+    props.postAssetType === 9 &&
+    css`
+      width: 100%;
+    `}
+`;
 const Header = styled.div`
   width: 80vw;
   display: flex;
@@ -61,16 +115,6 @@ const Title = styled.h1`
   margin: 10px 0;
   font-weight: bold;
 `;
-const Column = styled.div<{ postAssetType: number }>`
-  display: flex;
-  flex-direction: column;
-  ${(props) =>
-    props.postAssetType === 9 &&
-    css`
-      width: 100%;
-    `}
-`;
-
 const AddAssetBtn = styled.button`
   background-color: var(--primary);
   padding: 5px 25px;

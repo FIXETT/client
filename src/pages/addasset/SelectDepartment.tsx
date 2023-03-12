@@ -14,7 +14,7 @@ const SelectDepartment = ({ postAssetType, index, onChange }: any) => {
           setShowDepartment(!showDepartment);
         }}
       >
-        {assetlist[index].department ? assetlist[index].department : '개발'}
+        {assetlist[index].department ? assetlist[index].department : '선택하기 🔽'}
       </SelectBtn>
       {showDepartment && (
         <SlectList>
@@ -25,7 +25,6 @@ const SelectDepartment = ({ postAssetType, index, onChange }: any) => {
               name={postAssetType.type}
               value="개발"
               onChange={onChange}
-              checked
               onClick={() => {
                 setShowDepartment(false);
               }}

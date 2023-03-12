@@ -13,7 +13,8 @@ const AssetButton = () => {
   const assetNumber = useRecoilValue(assetNumberState);
   const setDeleteShowModal = useSetRecoilState(showDeleteModalState);
 
-  const modifyAsset = () => {
+  const modifyAsset = (e: any) => {
+    e.preventDefault();
     const defaultList = selectAssetType!.filter((value) => modify[0][value.type] !== '');
     const newList = defaultList.filter((value) => !modifyAssetType.some((item) => item.type === value.type));
     setModifyAssetType([...modifyAssetType, ...newList]);
@@ -22,7 +23,8 @@ const AssetButton = () => {
     navigate('/modifyasset');
   };
 
-  const deleteAsset = () => {
+  const deleteAsset = (e: any) => {
+    e.preventDefault();
     setDeleteShowModal(true);
   };
   return (

@@ -24,17 +24,19 @@ const EnterInfo = () => {
   const schema = yup.object().shape({
     name: yup
       .string()
-      .matches(/^[가-힣]{2,20}$/, '2~20자로 입력해주세요.')
-      .required('이름을 입력해주세요.'),
+
+      .required('이름을 입력해주세요.')
+      .matches(/^[가-힣]{2,20}$/, '2~20자로 입력해주세요.'),
     password: yup
       .string()
-      .min(8, '비밀번호는 최소 8글자 이상입니다.')
-      .max(30, '비밀번호는 최대 30글자 이상입니다.')
+
+      .required('비밀번호를 입력해주세요')
       .matches(
         /(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,30}$/,
         '비밀번호를 8~30자로 영문 대소문자, 숫자, 특수문자를 조합해서 사용하세요.',
       )
-      .required('비밀번호를 입력해주세요'),
+      .min(8, '비밀번호는 최소 8글자 이상입니다.')
+      .max(30, '비밀번호는 최대 30글자 이상입니다.'),
   });
   //react-hook-form
   const {
@@ -50,7 +52,7 @@ const EnterInfo = () => {
   const signupHandler: SubmitHandler<FormValue> = () => {
     const signup = async () => {
       try {
-        const { data } = await UserApi.signup(info, password, name, agreePi);
+        await UserApi.signup(info, password, name, agreePi);
         navigate('/');
       } catch (error: any) {
         window.alert(error?.response?.data.error);
@@ -69,6 +71,7 @@ const EnterInfo = () => {
       <InfoBox onSubmit={handleSubmit(signupHandler)}>
         <Text>마지막으로,이름과 비밀번호를 입력해주세요.</Text>
         <Name
+          className={errors.name?.message && 'error'}
           {...register('name', { required: true })}
           id="name"
           name="name"
@@ -78,6 +81,7 @@ const EnterInfo = () => {
         />
         <Errormessage>{errors.name?.message}</Errormessage>
         <Password
+          className={errors.password?.message && 'error'}
           {...register('password', { required: true })}
           id="password"
           name="password"
@@ -136,21 +140,32 @@ const Img = styled.img`
 const Name = styled.input`
   width: 401px;
   height: 46px;
+  border: 1px solid #e4ccff;
+  border-radius: 5px;
+  &.error {
+    border: 1px solid red;
+  }
 `;
 const Password = styled.input`
   width: 401px;
   height: 46px;
+  border: 1px solid #e4ccff;
+  border-radius: 5px;
+  &.error {
+    border: 1px solid red;
+  }
 `;
 
 const Errormessage = styled.div`
   color: #da1919;
-
+  width: 170px;
   font-weight: 400;
   font-size: 10px;
   line-height: 15px;
   margin-left: -45%;
   text-align: left;
   display: flex;
+  border: 1px soild black;
 `;
 
 const Service = styled.span`
@@ -171,6 +186,8 @@ const Info = styled.div`
 `;
 const Normal = styled.span`
   color: #696969;
+  margin-right: 5px;
+  margin-left: 5px;
 `;
 const CheckBox = styled.input`
   width: 24px;

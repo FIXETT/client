@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { useMutation } from '@tanstack/react-query';
 
 import { deleteAsset } from '../../apis/asset';
 import { assetNumberState, showDeleteModalState } from '../../recoil/assets';
 
 const DeleteModal = () => {
-  const assetNumber = useRecoilValue(assetNumberState);
-  const setDeleteShowModal = useSetRecoilState(showDeleteModalState);
+  const [deleteShowModal, setDeleteShowModal] = useRecoilState(showDeleteModalState);
+  const [assetNumber, setAssetNumber] = useRecoilState(assetNumberState);
 
   const deleteAssetMutation = useMutation(deleteAsset);
   const hideModal = () => {
@@ -17,18 +17,23 @@ const DeleteModal = () => {
   const addAsset = (e: any) => {
     e.preventDefault();
     deleteAssetMutation.mutate(assetNumber.slice(1));
+    setAssetNumber([{ assetNumber: 0, identifier: '' }]);
     setDeleteShowModal(false);
   };
   return (
-    <DeleteModalContainer>
-      <div>
-        <DeleteModalText>삭제하시겠습니까?</DeleteModalText>
-        <Row>
-          <CancelBtn onClick={hideModal}>돌아가기</CancelBtn>
-          <CheckBtn onClick={addAsset}>네</CheckBtn>
-        </Row>
-      </div>
-    </DeleteModalContainer>
+    <>
+      {deleteShowModal && (
+        <DeleteModalContainer>
+          <div>
+            <DeleteModalText>삭제하시겠습니까?</DeleteModalText>
+            <Row>
+              <CancelBtn onClick={hideModal}>돌아가기</CancelBtn>
+              <CheckBtn onClick={addAsset}>네</CheckBtn>
+            </Row>
+          </div>
+        </DeleteModalContainer>
+      )}
+    </>
   );
 };
 

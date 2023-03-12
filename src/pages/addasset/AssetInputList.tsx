@@ -32,10 +32,9 @@ const AssetInputList = () => {
           <AssetInput
             type={postAssetType.inputType}
             min={0}
-            placeholder={String(index)}
+            id={String(index)}
             onChange={onChange}
             name={postAssetType.type}
-            required
             defaultValue={0}
           />
         );
@@ -47,22 +46,11 @@ const AssetInputList = () => {
         return <SelectStatus postAssetType={postAssetType} index={index} onChange={onChange} />;
       case '실사용자':
         return (
-          <AssetInput
-            type={postAssetType.inputType}
-            placeholder={String(index)}
-            onChange={onChange}
-            required
-            name={postAssetType.type}
-          />
+          <AssetInput type={postAssetType.inputType} id={String(index)} onChange={onChange} name={postAssetType.type} />
         );
       default:
         return (
-          <AssetInput
-            type={postAssetType.inputType}
-            placeholder={String(index)}
-            onChange={onChange}
-            name={postAssetType.type}
-          />
+          <AssetInput type={postAssetType.inputType} id={String(index)} onChange={onChange} name={postAssetType.type} />
         );
     }
   };
@@ -103,7 +91,7 @@ const AssetInput = styled.input`
   ::-webkit-outer-spin-button {
     opacity: 1;
   }
-  ::placeholder {
+  ::id {
     opacity: 0;
   }
 `;

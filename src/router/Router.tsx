@@ -19,8 +19,7 @@ function Router() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/confirm" element={<ConfirmPage />} />
         <Route path="/enter" element={<EnterInfoPage />} />
-      </Routes>
-      <Routes>
+
         <Route element={<Layout />}>
           <Route element={<Aside />}>
             <Route path="/dashboard" element={<Dashboard />} />

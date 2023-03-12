@@ -7,6 +7,7 @@ import {
   assetNumberState,
   showAddModalState,
   showDeleteModalState,
+  showModifyModalState,
   searchTextState,
   modifyState,
 } from '../../recoil/assets';
@@ -14,7 +15,7 @@ import { getAsset } from '../../apis/asset';
 import { getAssetListType } from '../../types/asset';
 
 import SearchList from './SearchList';
-import { showModifyModalState } from './../../recoil/assets';
+
 const AssetList = () => {
   const [assetNumber, setAssetNumber] = useRecoilState(assetNumberState);
   const searchText = useRecoilValue(searchTextState);
@@ -24,14 +25,19 @@ const AssetList = () => {
 
   const setModify = useSetRecoilState(modifyState);
 
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ['getAsset', { addShowModal, deleteShowModal }],
-    queryFn: () => {
-      const response = getAsset();
-      return response;
+  const { data, isLoading, refetch } = useQuery(
+    ['getAsset', { addShowModal, deleteShowModal, showModifyModal }],
+    async () => {
+      const response = await getAsset();
+      return response.data;
     },
-  });
-  const assetList = data?.data?.asset;
+  );
+
+  useEffect(() => {
+    refetch();
+  }, [addShowModal, deleteShowModal, showModifyModal]);
+
+  const assetList = data?.asset;
 
   const checkedInput = (e: any) => {
     const checked = e.target.checked;
@@ -48,12 +54,6 @@ const AssetList = () => {
     }
   };
 
-  useEffect(() => {
-    setAssetNumber([{ assetNumber: 0, identifier: '' }]);
-  }, []);
-  useEffect(() => {
-    refetch();
-  }, [addShowModal, deleteShowModal, showModifyModal]);
   return (
     <div>
       <AssetListContainer>
