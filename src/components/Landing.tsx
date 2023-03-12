@@ -154,12 +154,18 @@ const Wrap = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: row;
+  margin: 0 auto;
 `;
 
 //이미지 컨테이너
 const ImageContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  /* margin-left: 5%; */
 `;
 const LandingImage = styled.img`
   width: 52rem;
@@ -251,8 +257,11 @@ const FindPW = styled.span`
   letter-spacing: -1.1%;
   color: #8f8f8f;
   display: flex;
+  margin-top: 9px;
 
-  margin-left: 65%;
+  border-bottom: 1px solid gray;
+  width: 416px;
+  justify-content: flex-end;
 `;
 const SignBtn = styled.button`
   width: 416px;
@@ -267,6 +276,7 @@ const SignBtn = styled.button`
   line-height: 22.5px;
   letter-spacing: -1.1%;
   text-align: center;
+  margin-top: 30px;
 `;
 const Errormessage = styled.div`
   color: #da1919;
