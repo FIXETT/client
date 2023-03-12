@@ -50,7 +50,7 @@ const EnterInfo = () => {
   const signupHandler: SubmitHandler<FormValue> = () => {
     const signup = async () => {
       try {
-        const { data } = await UserApi.signup(info, password, name, agreePi);
+        await UserApi.signup(info, password, name, agreePi);
         navigate('/');
       } catch (error: any) {
         window.alert(error?.response?.data.error);
@@ -171,6 +171,8 @@ const Info = styled.div`
 `;
 const Normal = styled.span`
   color: #696969;
+  margin-right: 5px;
+  margin-left: 5px;
 `;
 const CheckBox = styled.input`
   width: 24px;
