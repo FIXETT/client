@@ -14,7 +14,7 @@ const SelectStatus = ({ postAssetType, index, onChange }: any) => {
           setShowStatus(!showStatus);
         }}
       >
-        {assetlist[index].status ? assetlist[index].status : '🟢 정상'}
+        {assetlist[index].status ? assetlist[index].status : '선택하기 🔽'}
       </SelectBtn>
       {showStatus && (
         <SlectList>
@@ -25,7 +25,6 @@ const SelectStatus = ({ postAssetType, index, onChange }: any) => {
               name={postAssetType.type}
               value="🟢 정상"
               onChange={onChange}
-              checked
               onClick={() => {
                 setShowStatus(false);
               }}

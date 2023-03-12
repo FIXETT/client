@@ -1,23 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useRecoilValue, useRecoilState } from 'recoil';
-
-import { showDeleteModalState } from '../../recoil/assets';
 
 import AssetList from './AssetTypeList';
 import Header from './Header';
 import DeleteModal from './DeleteModal';
-import { UserApi } from '../../apis/axiosInstance';
-import { useAccountState, useUserState } from '../../recoil/userList';
 
 const Dashboard = () => {
-  const deleteShowModal = useRecoilValue(showDeleteModalState);
-
   return (
     <AssetContainer>
       <Header />
       <AssetList />
-      {deleteShowModal && <DeleteModal />}
+      <DeleteModal />
     </AssetContainer>
   );
 };

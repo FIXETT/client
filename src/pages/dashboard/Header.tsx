@@ -36,7 +36,6 @@ const Header = () => {
             id="search"
             type="text"
             placeholder="등록된 업무용 자산 / 팀명 / 제품명 / 모델명 등을 조회해 보세요"
-            required
             onChange={searchOnchange}
           />
           <button onClick={showModal}>

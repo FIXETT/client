@@ -6,12 +6,15 @@ import { useMutation } from '@tanstack/react-query';
 import { patchAsset } from '../../apis/asset';
 import { modifyAssetlistState, showModifyModalState } from '../../recoil/assets';
 import { useNavigate } from 'react-router-dom';
+import { assetNumberState } from './../../recoil/assets';
 
 const ModifyModal = () => {
   const navigate = useNavigate();
   const modifyassetlist = useRecoilValue(modifyAssetlistState);
   const setModifyShowModal = useSetRecoilState(showModifyModalState);
   const ModifyAssetMutation = useMutation(() => patchAsset(modifyassetlist));
+  const setAssetNumber = useSetRecoilState(assetNumberState);
+
   return (
     <ModifyModalContainer>
       <div>
@@ -26,8 +29,8 @@ const ModifyModal = () => {
           </CancelBtn>
           <CheckBtn
             onClick={(e) => {
-              e.preventDefault();
               ModifyAssetMutation.mutate();
+              setAssetNumber([{ assetNumber: 0, identifier: '' }]);
               setModifyShowModal(false);
               navigate('/dashboard');
             }}
