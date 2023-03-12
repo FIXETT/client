@@ -30,17 +30,17 @@ const Lading = () => {
   const schema = yup.object().shape({
     email: yup
       .string()
-      .matches(/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, '올바른 이메일 형식이 아닙니다.')
-      .required('이메일을 입력해주세요.'),
+
+      .required('이메일을 입력해주세요.')
+      .matches(/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, '올바른 이메일 형식이 아닙니다.'),
     password: yup
       .string()
-      .min(8, '비밀번호는 최소 8글자 이상입니다.')
-      .max(30, '비밀번호는 최대 30글자 이상입니다.')
+
+      .required('비밀번호를 입력해주세요')
       .matches(
         /(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,30}$/,
         '비밀번호를 8~30자로 영문 대소문자, 숫자, 특수문자를 조합해서 사용하세요.',
-      )
-      .required('비밀번호를 입력해주세요'),
+      ),
   });
   //react-hook-form
   const {
@@ -104,6 +104,7 @@ const Lading = () => {
         </Errormessage>
 
         <Email
+          className={errors.email?.message && 'error'}
           {...register('email', { required: true, maxLength: 20 })}
           type="text"
           name="email"
@@ -112,6 +113,7 @@ const Lading = () => {
           placeholder="회사 이메일을 입력해주세요"
         />
         <Password
+          className={errors.password?.message && 'error'}
           {...register('password', {
             required: true,
             pattern: {
@@ -154,12 +156,18 @@ const Wrap = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: row;
+  margin: 0 auto;
 `;
 
 //이미지 컨테이너
 const ImageContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  /* margin-left: 5%; */
 `;
 const LandingImage = styled.img`
   width: 52rem;
@@ -214,6 +222,11 @@ const Email = styled.input`
   text-align: left;
   vertical-align: top;
   letter-spacing: -1.1%;
+  &.error {
+    border: 1px solid red;
+    ::after {
+    }
+  }
 `;
 const Password = styled.input`
   width: 26rem;
@@ -232,6 +245,11 @@ const Password = styled.input`
   text-align: left;
   vertical-align: top;
   letter-spacing: -1.1%;
+  &.error {
+    border: 1px solid red;
+    ::after {
+    }
+  }
 `;
 const LoginBtn = styled.button`
   width: 416px;
@@ -240,7 +258,7 @@ const LoginBtn = styled.button`
   color: white;
   border-radius: 10px;
 `;
-const FindPW = styled.span`
+const FindPW = styled.div`
   font-family: Inter;
   font-style: Regular;
   font-size: 12px;
@@ -251,9 +269,15 @@ const FindPW = styled.span`
   letter-spacing: -1.1%;
   color: #8f8f8f;
   display: flex;
+  margin-top: 10px;
+  border-bottom: 0.5px solid gray;
+  gap: 10px;
+  width: 416px;
 
-  margin-left: 65%;
+  justify-content: flex-end;
+  align-items: center;
 `;
+
 const SignBtn = styled.button`
   width: 416px;
   height: 43px;
@@ -267,15 +291,18 @@ const SignBtn = styled.button`
   line-height: 22.5px;
   letter-spacing: -1.1%;
   text-align: center;
+  margin-top: 30px;
 `;
 const Errormessage = styled.div`
   color: #da1919;
   position: relative;
   bottom: 4.3rem;
-  left: -7.5rem;
+  left: -3.5rem;
   font-weight: 400;
   font-size: 10px;
   line-height: 15px;
+
+  width: 305px;
 `;
 const Modal = styled.div`
   width: 600px;

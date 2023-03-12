@@ -71,7 +71,7 @@ const Comfirm = () => {
 export default Comfirm;
 const Wrap = styled.div`
   width: 100vw;
-  height: 100vh;
+
   /* margin: 0 auto; */
   display: flex;
   flex-direction: column;
@@ -98,7 +98,7 @@ const ConfirmBtn = styled.button`
   background-color: #5a3092;
   color: #ffffff;
   border-radius: 10px;
-  margin-top: 42px;
+  margin-top: 40px;
 `;
 const Reply = styled.div`
   width: 522px;
