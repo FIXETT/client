@@ -114,6 +114,7 @@ const Wrap = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  /* margin-left: 20%; */
 `;
 const Text = styled.span`
   width: 500px;
