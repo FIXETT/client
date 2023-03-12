@@ -35,10 +35,9 @@ const ModifyAssetInputList = () => {
           <AssetInput
             type={modifyAssetType.inputType}
             min={0}
-            placeholder={String(index)}
+            id={String(index)}
             onChange={onChange}
             name={modifyAssetType.type}
-            required
             defaultValue={modify[0].quantity}
           />
         );
@@ -52,9 +51,8 @@ const ModifyAssetInputList = () => {
         return (
           <AssetInput
             type={modifyAssetType.inputType}
-            placeholder={String(index)}
+            id={String(index)}
             onChange={onChange}
-            required
             name={modifyAssetType.type}
             defaultValue={modify[0].name}
           />
@@ -63,9 +61,8 @@ const ModifyAssetInputList = () => {
         return (
           <AssetInput
             type={modifyAssetType.inputType}
-            placeholder={String(index)}
+            id={String(index)}
             onChange={onChange}
-            required
             name={modifyAssetType.type}
             defaultValue={modify[0].product}
           />
@@ -74,9 +71,8 @@ const ModifyAssetInputList = () => {
         return (
           <AssetInput
             type={modifyAssetType.inputType}
-            placeholder={String(index)}
+            id={String(index)}
             onChange={onChange}
-            required
             name={modifyAssetType.type}
             defaultValue={modify[0].manufacturer}
           />
@@ -85,9 +81,8 @@ const ModifyAssetInputList = () => {
         return (
           <AssetInput
             type={modifyAssetType.inputType}
-            placeholder={String(index)}
+            id={String(index)}
             onChange={onChange}
-            required
             name={modifyAssetType.type}
             defaultValue={modify[0].note}
           />
@@ -96,9 +91,8 @@ const ModifyAssetInputList = () => {
         return (
           <AssetInput
             type={modifyAssetType.inputType}
-            placeholder={String(index)}
+            id={String(index)}
             onChange={onChange}
-            required
             name={modifyAssetType.type}
             defaultValue={modify[0].acquisitionDate}
           />
@@ -107,7 +101,7 @@ const ModifyAssetInputList = () => {
         return (
           <AssetInput
             type={modifyAssetType.inputType}
-            placeholder={String(index)}
+            id={String(index)}
             onChange={onChange}
             name={modifyAssetType.type}
           />
@@ -150,8 +144,5 @@ const AssetInput = styled.input`
   ::-webkit-inner-spin-button,
   ::-webkit-outer-spin-button {
     opacity: 1;
-  }
-  ::placeholder {
-    opacity: 0;
   }
 `;

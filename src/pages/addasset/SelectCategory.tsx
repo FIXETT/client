@@ -14,7 +14,7 @@ const SelectCategory = ({ postAssetType, index, onChange }: any) => {
           setShowCategory(!showCategory);
         }}
       >
-        {assetlist[index].category ? assetlist[index].category : '🖥️ 모니터'}
+        {assetlist[index].category ? assetlist[index].category : '선택하기 🔽'}
       </SelectBtn>
       {showCategory && (
         <SlectList>
@@ -25,8 +25,6 @@ const SelectCategory = ({ postAssetType, index, onChange }: any) => {
               name={postAssetType.type}
               value="🖥️ 모니터"
               onChange={onChange}
-              checked
-              required
               onClick={() => {
                 setShowCategory(false);
               }}
