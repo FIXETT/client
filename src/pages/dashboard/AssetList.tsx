@@ -16,16 +16,18 @@ const AssetList = () => {
   const deleteShowModal = useRecoilValue(showDeleteModalState);
   const showModifyModal = useRecoilValue(showModifyModalState);
 
-  const { data, isLoading, refetch } = useQuery(['getAsset'], async () => {
-    const response = await getAsset();
-    return response.data;
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['getAsset', { addShowModal, deleteShowModal, showModifyModal }],
+    queryFn: async () => await getAsset(),
+    keepPreviousData: true,
+    staleTime: 1000,
   });
 
   useEffect(() => {
     refetch();
   }, [addShowModal, deleteShowModal, showModifyModal]);
 
-  const assetList = data?.asset;
+  const assetList = data?.data?.asset;
 
   return (
     <div>

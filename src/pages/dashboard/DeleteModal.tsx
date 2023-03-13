@@ -10,13 +10,13 @@ const DeleteModal = () => {
   const [deleteShowModal, setDeleteShowModal] = useRecoilState(showDeleteModalState);
   const [assetNumber, setAssetNumber] = useRecoilState(assetNumberState);
 
-  const deleteAssetMutation = useMutation(deleteAsset);
+  const deleteAssetMutation = useMutation(() => deleteAsset(assetNumber.slice(1)));
   const hideModal = () => {
     setDeleteShowModal(false);
   };
   const addAsset = (e: any) => {
     e.stopPropagation();
-    deleteAssetMutation.mutate(assetNumber.slice(1));
+    deleteAssetMutation.mutate();
     setAssetNumber([{ assetNumber: 0, identifier: '' }]);
     setDeleteShowModal(false);
   };
