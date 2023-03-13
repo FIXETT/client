@@ -29,6 +29,7 @@ const ModifyModal = () => {
           </CancelBtn>
           <CheckBtn
             onClick={(e) => {
+              e.stopPropagation();
               ModifyAssetMutation.mutate();
               setAssetNumber([{ assetNumber: 0, identifier: '' }]);
               setModifyShowModal(false);

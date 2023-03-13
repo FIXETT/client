@@ -14,7 +14,7 @@ AxiosInstance.interceptors.response.use(
     return response;
   },
   function (error) {
-    if (error.response.status === 400 || error.response.status === 401) {
+    if (error.config && error.response && error.response.status === 401) {
       const newToken = error.response.data.newToken;
       if (newToken !== undefined) {
         localStorage.setItem('token', newToken);
@@ -25,6 +25,8 @@ AxiosInstance.interceptors.response.use(
       localStorage.clear();
       window.location.href = '/';
     }
+
+    return Promise.reject(error);
   },
 );
 
