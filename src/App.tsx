@@ -4,11 +4,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Router from './router/Router';
 import GlobalStyle from './styles/globalstyle';
 import { hotjar } from 'react-hotjar';
+import TagManager from 'react-gtm-module';
 function App() {
-  if (1 === 1) {
-    console.log = function no_console() {};
-    console.warn = function no_console() {};
-  }
   const queryClient = new QueryClient();
 
   useEffect(() => {
@@ -16,6 +13,12 @@ function App() {
       hotjar.initialize(3403053, 6);
     }
   }, []);
+
+  const tagManagerArgs = {
+    gtmId: 'UA-260316176-6',
+  };
+
+  TagManager.initialize(tagManagerArgs);
 
   return (
     <RecoilRoot>
