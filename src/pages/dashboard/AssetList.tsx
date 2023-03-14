@@ -28,8 +28,8 @@ const AssetList = () => {
   const { data, isLoading, refetch } = useQuery(
     ['getAsset', { addShowModal, deleteShowModal, showModifyModal }],
     async () => {
-      const response = await getAsset();
-      return response.data;
+      const { data } = await getAsset();
+      return data;
     },
   );
 
