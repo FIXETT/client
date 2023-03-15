@@ -1,3 +1,12 @@
+import React from 'react';
+export type assetObjType = { title: string; type: string; inputType: string; img?: string };
+export type handleChangeType = (e: React.ChangeEvent<HTMLInputElement>) => void;
+export type inputParameterType = {
+  assetType: assetObjType;
+  index: number;
+  handleChange?: handleChangeType;
+};
+
 export type postAssetDataType = {
   name: string;
   department?: string;

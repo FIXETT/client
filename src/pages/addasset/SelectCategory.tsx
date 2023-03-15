@@ -2,19 +2,29 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { assetlistState } from '../../recoil/assets';
+import { inputParameterType } from '../../types/asset';
+import ContextMenu from './ContextMenu';
 
-const SelectCategory = ({ postAssetType, index, onChange }: any) => {
+const SelectCategory = ({ assetType, index, handleChange }: inputParameterType) => {
+  const [showContextMenu, setShowContextMenu] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
   const assetlist = useRecoilValue(assetlistState);
 
   return (
     <SelectContainer>
+      {showContextMenu && <ContextMenu assetType={assetType} index={index} />}
       <SelectBtn
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault();
+          setShowContextMenu(false);
           setShowCategory(!showCategory);
         }}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setShowContextMenu(true);
+        }}
       >
-        {assetlist[index].category ? assetlist[index].category : '선택하기 🔽'}
+        {assetlist[index]?.category ? assetlist[index]?.category : '선택하기 🔽'}
       </SelectBtn>
       {showCategory && (
         <SlectList>
@@ -22,9 +32,9 @@ const SelectCategory = ({ postAssetType, index, onChange }: any) => {
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
+              name={assetType.type}
               value="🖥️ 모니터"
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowCategory(false);
               }}
@@ -35,9 +45,9 @@ const SelectCategory = ({ postAssetType, index, onChange }: any) => {
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
+              name={assetType.type}
               value="💻 노트북"
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowCategory(false);
               }}
@@ -48,9 +58,9 @@ const SelectCategory = ({ postAssetType, index, onChange }: any) => {
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
+              name={assetType.type}
               value="👨‍💻 데스크탑"
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowCategory(false);
               }}
@@ -78,9 +88,6 @@ const AssetLabel = styled.label`
   }
   input {
     display: none;
-    ::placeholder {
-      opacity: 0;
-    }
   }
 `;
 

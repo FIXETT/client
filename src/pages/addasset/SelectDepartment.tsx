@@ -2,13 +2,27 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { assetlistState } from '../../recoil/assets';
+import { inputParameterType } from '../../types/asset';
+import ContextMenu from './ContextMenu';
 
-const SelectDepartment = ({ postAssetType, index, onChange }: any) => {
+const SelectDepartment = ({ assetType, index, handleChange }: inputParameterType) => {
+  const [showContextMenu, setShowContextMenu] = useState(false);
   const [showDepartment, setShowDepartment] = useState(false);
   const assetlist = useRecoilValue(assetlistState);
 
   return (
-    <SelectContainer>
+    <SelectContainer
+      onClick={(e) => {
+        e.preventDefault();
+        setShowContextMenu(false);
+      }}
+      onContextMenu={(e) => {
+        e.preventDefault();
+        setShowContextMenu(true);
+      }}
+    >
+      {showContextMenu && <ContextMenu assetType={assetType} index={index} />}
+
       <SelectBtn
         onClick={() => {
           setShowDepartment(!showDepartment);
@@ -22,9 +36,9 @@ const SelectDepartment = ({ postAssetType, index, onChange }: any) => {
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
+              name={assetType.type}
               value="개발"
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowDepartment(false);
               }}
@@ -35,9 +49,9 @@ const SelectDepartment = ({ postAssetType, index, onChange }: any) => {
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
+              name={assetType.type}
               value="경영지원"
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowDepartment(false);
               }}
@@ -48,9 +62,9 @@ const SelectDepartment = ({ postAssetType, index, onChange }: any) => {
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
+              name={assetType.type}
               value="세일즈"
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowDepartment(false);
               }}
@@ -61,9 +75,9 @@ const SelectDepartment = ({ postAssetType, index, onChange }: any) => {
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
+              name={assetType.type}
               value="마케팅"
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowDepartment(false);
               }}
@@ -91,9 +105,6 @@ const AssetLabel = styled.label`
   }
   input {
     display: none;
-    ::placeholder {
-      opacity: 0;
-    }
   }
 `;
 

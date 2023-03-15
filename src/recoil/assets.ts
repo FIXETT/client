@@ -60,6 +60,10 @@ export const assetNumberState = atom({
   key: 'assetNumber',
   default: [{ assetNumber: 0, identifier: '' }],
 });
+export const showContextMenuState = atom({
+  key: 'showContextMenu',
+  default: false,
+});
 export const showAddModalState = atom({
   key: 'showAddModal',
   default: false,
