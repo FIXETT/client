@@ -21,7 +21,7 @@ const NavList = () => {
   const navList = [
     { id: '1', link: 'dashboard', title: '자산 현황 리스트', img: dashboard },
     { id: '2', link: 'addasset', title: '제품 등록하기', img: addsupply },
-    // { id: '3', link: 'search', title: '수리업체 찾기', img: search },
+    { id: '3', link: 'https://walla.my/survey/alQkguKVGeJ5VywdDQMx', title: '수리업체 찾기', img: search },
     // {
     //   id: '4',
     //   title: '마이페이지',
