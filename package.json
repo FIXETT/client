@@ -31,19 +31,14 @@
     "yup": "^1.0.2"
   },
   "scripts": {
-    "lint:fix": "eslint src --ext .ts --parser-options=project:'tsconfig.json' --fix",
-    "lint-staged": "lint-staged",
-    "prepare": "husky install",
+    "postinstall": "husky install",
+    "lint": "eslint --cache \"src/**/*.{ts,tsx}\"",
+    "lint:fix": "eslint --fix --cache \"src/**/*.{ts,tsx}\"",
+    "format": "prettier --write --cache \"src/**/*.{ts,tsx}\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "yarn lint:fix",
-      "prettier --write"
-    ]
   },
   "eslintConfig": {
     "extends": [
@@ -65,6 +60,7 @@
   },
   "devDependencies": {
     "husky": "^8.0.3",
-    "lint-staged": "^13.2.0"
+    "lint-staged": "^13.2.0",
+    "prettier": "^2.8.4"
   }
 }

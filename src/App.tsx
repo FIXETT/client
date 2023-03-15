@@ -9,10 +9,6 @@ import ReactGA from 'react-ga';
 function App() {
   const queryClient = new QueryClient();
 
-  if (true) {
-    console.log = function no_console() {};
-    console.warn = function no_console() {};
-  }
   const pathName = window.location.pathname;
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') {
