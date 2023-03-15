@@ -23,18 +23,18 @@ const Fix = () => {
         <Sub>·센터 검색을 위해 접속한 브라우저 설정에서 위치 기능 서비스를 사용으로 변경해주세요.</Sub>
       </TitleBox>
       <FixBox>
-        <span>수리 제품 선택</span>
-        <div>
-          <div onClick={clickHandler} id="컴퓨터 수리">
+        <Select>수리 제품 선택</Select>
+        <KeywordBox>
+          <PC onClick={clickHandler} id="컴퓨터 수리">
             PC
-          </div>
-          <div onClick={clickHandler} id="모니터 수리">
+          </PC>
+          <Monitor onClick={clickHandler} id="모니터 수리">
             모니터
-          </div>
-          <div onClick={clickHandler} id="노트북 수리">
+          </Monitor>
+          <Notebook onClick={clickHandler} id="노트북 수리">
             노트북
-          </div>
-        </div>
+          </Notebook>
+        </KeywordBox>
       </FixBox>
       <MapBox>
         <KaKao searchKeyword={keyword} />
@@ -46,7 +46,6 @@ const Fix = () => {
 export default Fix;
 const Wrap = styled.div`
   /* width: 1210px; */
-
   display: flex;
   flex-direction: column;
 `;
@@ -82,6 +81,52 @@ const MapBox = styled.div`
   width: 400px;
   height: 500px;
   position: relative;
-  left: 688px;
-  top: 25%;
+
+  top: 20%;
+`;
+const KeywordBox = styled.div`
+  /* width: 1032px; */
+  height: 69px;
+  background-color: rgba(228, 204, 255, 0.2);
+  display: flex;
+  flex-direction: row;
+  align-content: space-around;
+  align-items: center;
+  margin-top: 55px;
+  gap: 63px;
+`;
+const Select = styled.span`
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 22.5px;
+`;
+const PC = styled.div`
+  width: 79px;
+  height: 27px;
+  background-color: #5a3092;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 87px;
+`;
+const Monitor = styled.div`
+  width: 79px;
+  height: 27px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 87px;
+  border: 1px solid #5a3092;
+`;
+const Notebook = styled.div`
+  width: 79px;
+  height: 27px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 87px;
+  border: 1px solid #5a3092;
 `;
