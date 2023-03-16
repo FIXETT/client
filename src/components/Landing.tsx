@@ -69,14 +69,13 @@ const Lading = () => {
         console.log(data.token.accessToken);
 
         const token = data.token.accessToken;
-        async function read() {
+        (async () => {
           const { data } = await readuser({ token, email, password });
           console.log(data);
           if (data) {
             navigate('/dashboard');
           }
-        }
-        read();
+        })();
 
         localStorage.setItem('token', token);
       } catch (error: any) {
