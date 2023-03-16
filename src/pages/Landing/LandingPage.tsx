@@ -2,11 +2,7 @@ import React from 'react';
 import Landing from '../../components/Landing';
 
 const LadingPage = () => {
-  return (
-    <>
-      <Landing />
-    </>
-  );
+  return <Landing />;
 };
 
 export default LadingPage;

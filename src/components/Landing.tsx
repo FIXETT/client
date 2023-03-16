@@ -5,8 +5,6 @@ import { UserApi } from '../apis/axiosInstance';
 import landingimage from '../assets/ladingimage.svg';
 import landinglogo from '../assets/landinglogo.svg';
 import useInputs from '../hooks/useInput';
-import { useRecoilState } from 'recoil';
-import { useInfoState } from '../recoil/userList';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -22,7 +20,7 @@ export interface FormValue {
   agreePi: boolean;
 }
 const Lading = () => {
-  const [{ email, password }, onChange, reset] = useInputs({
+  const [{ email, password }, onChange] = useInputs({
     email: '',
     password: '',
   });
@@ -46,14 +44,12 @@ const Lading = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<FormValue>({
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
   const [ismodal, setIsModal] = useState(true);
-  const [user, setUser] = useRecoilState(useInfoState);
   const navigate = useNavigate();
 
   const signHandler = () => {
@@ -66,13 +62,12 @@ const Lading = () => {
         const { data } = await UserApi.signin(email, password);
 
         const token = data.token.accessToken;
-        async function read() {
+        (async () => {
           const { data } = await readuser({ token, email, password });
           if (data) {
             navigate('/dashboard');
           }
-        }
-        read();
+        })();
 
         localStorage.setItem('token', token);
       } catch (error: any) {
@@ -86,14 +81,14 @@ const Lading = () => {
   return (
     <Wrap>
       <ImageContainer>
-        <LandingImage src={landingimage}></LandingImage>
+        <LandingImage src={landingimage} />
         <SpanBox>
           <Text>우당탕탕💥</Text>
           <Text>또 회사 자산정리로 야근 중이시라면?</Text>
         </SpanBox>
       </ImageContainer>
       <LoginContainer onSubmit={handleSubmit(loginHandler)}>
-        <Logo src={landinglogo} alt=""></Logo>
+        <Logo src={landinglogo} alt="" />
         <Errormessage>
           {errors.email?.message}
           {errors.password?.message}
@@ -130,7 +125,7 @@ const Lading = () => {
       {/* {ismodal && (
         <Modal>
           <Close onClick={() => setIsModal(!ismodal)} src={CloseModal} alt={' '} />
-          <ModalImg src={ModalIcon} alt={''}></ModalImg>
+          <ModalImg src={ModalIcon} alt="" />
           <ModalDiv>
             <ModalText>앗!</ModalText>
             <ComputerText>내 컴퓨터/모니터가 고장났다구요?!</ComputerText>
