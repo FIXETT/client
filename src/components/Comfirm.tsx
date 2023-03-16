@@ -39,7 +39,7 @@ const Comfirm = () => {
           window.alert('이메일 형식이 맞지 않습니다. 다시 한번 확인해주세요.');
         }
       } catch (error) {
-        console.error(error);
+        window.alert(error);
       }
     };
     authMail();
@@ -75,6 +75,7 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 `;
 const ConfirmText = styled.span`
   font-weight: 700;

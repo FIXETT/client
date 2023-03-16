@@ -14,7 +14,7 @@ AxiosInstance.interceptors.response.use(
     return response;
   },
   function (error) {
-    if (error.config && error.response && error.response.status === 401) {
+    if (error.response.status === 400) {
       const newToken = error.response.data.newToken;
       if (newToken !== undefined) {
         localStorage.setItem('token', newToken);
