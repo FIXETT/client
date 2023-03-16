@@ -32,10 +32,23 @@
     "yup": "^1.0.2"
   },
   "scripts": {
+    "postinstall": "husky install",
+    "lint": "lint-staged",
+    "lint:fix": "eslint --fix --cache \"src/**/*.{ts,tsx}\"",
+    "format": "prettier --write --cache \"src/**/*.{ts,tsx}\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "yarn lint:fix",
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "pre-commit": "yarn lint"
   },
   "eslintConfig": {
     "extends": [
@@ -54,5 +67,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.0",
+    "prettier": "^2.8.4"
   }
 }

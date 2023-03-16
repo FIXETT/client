@@ -1,17 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
+
 import { assetlistState, postAssetTypeState } from '../../recoil/assets';
+import { handleChangeType } from '../../types/asset';
 
 import SelectCategory from './SelectCategory';
 import SelectDepartment from './SelectDepartment';
 import SelectStatus from './SelectStatus';
+import InputNumber from './InputNumber';
+import AssetInput from './InputAsset';
 
 const AssetInputList = () => {
   const postAssetType = useRecoilValue(postAssetTypeState);
   const [assetlist, setassetlist] = useRecoilState(assetlistState);
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange: handleChangeType = (e) => {
     const identifier = window.localStorage.getItem('identifier');
     const type = e.target.name;
     const value = e.target.value;
@@ -25,43 +29,27 @@ const AssetInputList = () => {
     setassetlist(newList);
   };
 
-  const assetInput = (postAssetType: any, index: number) => {
-    switch (postAssetType.title) {
+  const assetInput = (assetType: { title: string; type: string; inputType: string; img?: string }, index: number) => {
+    switch (assetType.title) {
       case '수량':
-        return (
-          <AssetInput
-            type={postAssetType.inputType}
-            min={0}
-            id={String(index)}
-            onChange={onChange}
-            name={postAssetType.type}
-            defaultValue={0}
-          />
-        );
+        return <InputNumber assetType={assetType} index={index} handleChange={handleChange} />;
       case '품목':
-        return <SelectCategory postAssetType={postAssetType} index={index} onChange={onChange} />;
+        return <SelectCategory assetType={assetType} index={index} handleChange={handleChange} />;
       case '팀':
-        return <SelectDepartment postAssetType={postAssetType} index={index} onChange={onChange} />;
+        return <SelectDepartment assetType={assetType} index={index} handleChange={handleChange} />;
       case '상태':
-        return <SelectStatus postAssetType={postAssetType} index={index} onChange={onChange} />;
-      case '실사용자':
-        return (
-          <AssetInput type={postAssetType.inputType} id={String(index)} onChange={onChange} name={postAssetType.type} />
-        );
+        return <SelectStatus assetType={assetType} index={index} handleChange={handleChange} />;
       default:
-        return (
-          <AssetInput type={postAssetType.inputType} id={String(index)} onChange={onChange} name={postAssetType.type} />
-        );
+        return <AssetInput assetType={assetType} index={index} handleChange={handleChange} />;
     }
   };
-
   return (
     <div>
       {assetlist.map((v, index) => {
         return (
           <AssetTypeContainer key={index}>
-            {postAssetType.map((postAssetType) => (
-              <AssetInputWrap key={postAssetType.title}>{assetInput(postAssetType, index)}</AssetInputWrap>
+            {postAssetType.map((assetType) => (
+              <AssetInputWrap key={assetType.title}>{assetInput(assetType, index)}</AssetInputWrap>
             ))}
           </AssetTypeContainer>
         );
@@ -81,17 +69,5 @@ const AssetInputWrap = styled.li`
   flex-direction: column;
   border: 1px solid var(--sub);
   flex: 1;
-`;
-const AssetInput = styled.input`
-  width: 100%;
-  height: 100%;
-  padding: 0 10px;
-  text-align: center;
-  ::-webkit-inner-spin-button,
-  ::-webkit-outer-spin-button {
-    opacity: 1;
-  }
-  ::id {
-    opacity: 0;
-  }
+  position: relative;
 `;

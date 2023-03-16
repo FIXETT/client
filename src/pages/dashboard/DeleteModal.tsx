@@ -4,11 +4,11 @@ import { useRecoilState } from 'recoil';
 import { useMutation } from '@tanstack/react-query';
 
 import { deleteAsset } from '../../apis/asset';
-import { assetNumberState, showDeleteModalState } from '../../recoil/assets';
+import { assetNumberListState, showDeleteModalState } from '../../recoil/assets';
 
 const DeleteModal = () => {
   const [deleteShowModal, setDeleteShowModal] = useRecoilState(showDeleteModalState);
-  const [assetNumber, setAssetNumber] = useRecoilState(assetNumberState);
+  const [assetNumber, setAssetNumber] = useRecoilState(assetNumberListState);
 
   const deleteAssetMutation = useMutation(() => deleteAsset(assetNumber.slice(1)));
   const hideModal = () => {
@@ -21,7 +21,7 @@ const DeleteModal = () => {
     setDeleteShowModal(false);
   };
   return (
-    <>
+    <div>
       {deleteShowModal && (
         <DeleteModalContainer>
           <div>
@@ -33,7 +33,7 @@ const DeleteModal = () => {
           </div>
         </DeleteModalContainer>
       )}
-    </>
+    </div>
   );
 };
 

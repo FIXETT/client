@@ -46,23 +46,23 @@ const NavList = () => {
               </ListItemLink>
             </ListItemContainer>
             {/* ) : (
-              <ListItemContainer onClick={TogglesubMeru}>
-                <ListItem>
-                  <img src={arrow} alt="화살표" />
-                  <ListItemImg src={value.img} alt="아이콘" />
-                  <p>{value.title}</p>
-                </ListItem>
-                <SubList subToggleMeru={subToggleMeru}>
-                  {value?.subNavList.map((subValue: subNavListType) => (
-                    <ListItemContainer key={subValue.id}>
-                      <ListItemLink match={String(match === `/${subValue.link}`)} to={subValue.link}>
-                        <p>{subValue.title}</p>
-                      </ListItemLink>
-                    </ListItemContainer>
-                  ))}
-                </SubList>
-              </ListItemContainer>
-            )} */}
+          <ListItemContainer onClick={TogglesubMeru}>
+            <ListItem>
+              <img src={arrow} alt="화살표" />
+              <ListItemImg src={value.img} alt="아이콘" />
+              <p>{value.title}</p>
+            </ListItem>
+            <SubList subToggleMeru={subToggleMeru}>
+              {value?.subNavList.map((subValue: subNavListType) => (
+                <ListItemContainer key={subValue.id}>
+                  <ListItemLink match={String(match === `/${subValue.link}`)} to={subValue.link}>
+                    <p>{subValue.title}</p>
+                  </ListItemLink>
+                </ListItemContainer>
+              ))}
+            </SubList>
+          </ListItemContainer>
+        )} */}
           </React.Fragment>
         );
       })}
@@ -79,7 +79,7 @@ const ListItemContainer = styled.li`
 const ListItemImg = styled.img`
   height: 16px;
 `;
-const ListItemLink = styled(Link)<{ match: string }>`
+const ListItemLink = styled(Link)<{ match?: string }>`
   border-left: 8px solid transparent;
   ${(props) =>
     props.match === 'true' &&

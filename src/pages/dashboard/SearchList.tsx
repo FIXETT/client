@@ -2,23 +2,26 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { searchTextState } from '../../recoil/assets';
-import { getAssetListType } from '../../types/asset';
-import { assetNumberState } from './../../recoil/assets';
-
-const SearchList = ({ assetList }: any) => {
+import { assetListType, getAssetListType, handleChangeType } from '../../types/asset';
+import { assetNumberListState } from './../../recoil/assets';
+type Props = {
+  assetList: assetListType;
+};
+const SearchList = ({ assetList }: Props) => {
   const searchText = useRecoilValue(searchTextState);
-  const [assetNumber, setAssetNumber] = useRecoilState(assetNumberState);
+  const [assetNumber, setAssetNumber] = useRecoilState(assetNumberListState);
+
   const searchResultList = () => {
     if (searchText !== '') {
-      const searchName = assetList?.filter((value: any) => value.name.includes(searchText));
-      const searchProduct = assetList?.filter((value: any) => value.product.includes(searchText));
-      const searchCategory = assetList?.filter((value: any) => value.category.includes(searchText));
-      const searchDepartment = assetList?.filter((value: any) => value.department.includes(searchText));
-      const searchManufacturer = assetList?.filter((value: any) => value.manufacturer.includes(searchText));
-      const searchacAuisitionDate = assetList?.filter((value: any) => value.acquisitionDate.includes(searchText));
-      const searchStatus = assetList?.filter((value: any) => value.status.includes(searchText));
-      const searchNote = assetList?.filter((value: any) => value.note.includes(searchText));
-      return [
+      const searchName = assetList?.filter((value) => String(value.name).includes(searchText));
+      const searchProduct = assetList?.filter((value) => String(value.product).includes(searchText));
+      const searchCategory = assetList?.filter((value) => value.category.includes(searchText));
+      const searchDepartment = assetList?.filter((value) => value.department.includes(searchText));
+      const searchManufacturer = assetList?.filter((value) => value.manufacturer.includes(searchText));
+      const searchacAuisitionDate = assetList?.filter((value) => value.acquisitionDate.includes(searchText));
+      const searchStatus = assetList?.filter((value) => value.status.includes(searchText));
+      const searchNote = assetList?.filter((value) => value.note.includes(searchText));
+      const result = [
         ...searchName,
         ...searchProduct,
         ...searchCategory,
@@ -28,29 +31,27 @@ const SearchList = ({ assetList }: any) => {
         ...searchStatus,
         ...searchNote,
       ];
+      // 중복제거
+      return [...new Set(result)];
     }
   };
 
-  useEffect(() => {
-    setAssetNumber([{ assetNumber: 0, identifier: '' }]);
-  }, []);
-
-  const checkedsearch = (e: any) => {
+  const checkedsearch: handleChangeType = (e) => {
     const checked = e.target.checked;
     if (checked) {
       const identifier = window.localStorage.getItem('identifier');
       setAssetNumber([...assetNumber, { assetNumber: Number(e.target.id), identifier: identifier as string }]);
     } else {
-      let filtered = assetNumber.filter((element) => element.assetNumber !== Number(e.target.id));
+      const filtered = assetNumber.filter((element) => element.assetNumber !== Number(e.target.id));
       setAssetNumber(filtered);
     }
   };
   return (
     <div>
       <AssetListContainer>
-        {!!searchResultList() ? (
-          <>
-            {searchResultList()?.map((value: getAssetListType) => {
+        {searchResultList() ? (
+          <div>
+            {searchResultList()?.map((value) => {
               return (
                 <li key={value?.assetNumber}>
                   <AssetLabel htmlFor={String(value?.assetNumber)}>
@@ -71,7 +72,7 @@ const SearchList = ({ assetList }: any) => {
                 </li>
               );
             })}
-          </>
+          </div>
         ) : (
           <li>검색결과가 없습니다.</li>
         )}

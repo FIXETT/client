@@ -20,10 +20,10 @@ const getCurrentLocation = async () => {
     if (navigator.geolocation) {
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
       navigator.geolocation.getCurrentPosition((position) => {
-        let lat = position.coords.latitude, // 위도
+        const lat = position.coords.latitude, // 위도
           lon = position.coords.longitude; // 경도
 
-        let locPosition = new kakao.maps.LatLng(lat, lon);
+        const locPosition = new kakao.maps.LatLng(lat, lon);
         res(locPosition);
       });
       // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
@@ -72,16 +72,16 @@ const KaKao = (props: propsType) => {
     //지도에 마커와 인포윈도우를 표시하는 함수
     function displayMarker(locPosition: any, message: any) {
       // 마커를 생성합니다
-      var marker = new kakao.maps.Marker({
+      const marker = new kakao.maps.Marker({
         map: map,
         position: locPosition,
       });
 
-      var iwContent = message, // 인포윈도우에 표시할 내용
+      const iwContent = message, // 인포윈도우에 표시할 내용
         iwRemoveable = true;
 
       // 인포윈도우를 생성합니다
-      var infowindow = new kakao.maps.InfoWindow({
+      const infowindow = new kakao.maps.InfoWindow({
         content: iwContent,
         removable: iwRemoveable,
       });
@@ -98,13 +98,13 @@ const KaKao = (props: propsType) => {
     //장소 검색 객체를 통해 키워드로 장소 검색을 요청
     const searchPlaces = async () => {
       const currentLocation = await getCurrentLocation();
-      let options = {
+      const options = {
         location: currentLocation,
         radius: 10000,
         size: 6,
         sort: kakao.maps.services.SortBy.DISTANCE,
       };
-      let keyword = props.searchKeyword;
+      const keyword = props.searchKeyword;
       ps.keywordSearch(keyword, placesSearchCB, options);
     };
 
@@ -137,9 +137,9 @@ const KaKao = (props: propsType) => {
       //지도에 표시되고 있는 마커를 제거
       removeMarker();
 
-      for (var i = 0; i < places.length; i++) {
+      for (let i = 0; i < places.length; i++) {
         // 마커를 생성하고 지도에 표시
-        let placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
+        const placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
           marker = addMarker(placePosition, i, undefined),
           itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성
 
@@ -182,7 +182,7 @@ const KaKao = (props: propsType) => {
     // 검색결과 항목을 Element로 반환하는 함수
     function getListItem(index: number, places: placeType) {
       const el = document.createElement('li');
-      let itemStr = `
+      const itemStr = `
       
           <div style="padding:5px;z-index:1;border: 1px solid #E4CCFF;
           box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -216,7 +216,7 @@ const KaKao = (props: propsType) => {
 
     // 마커를 생성하고 지도 위에 마커를 표시하는 함수
     function addMarker(position: any, idx: number, title: undefined) {
-      var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지
+      const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지
         imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
         imgOptions = {
           spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
@@ -237,7 +237,7 @@ const KaKao = (props: propsType) => {
 
     // 지도 위에 표시되고 있는 마커를 모두 제거합니다
     function removeMarker() {
-      for (var i = 0; i < markers.length; i++) {
+      for (let i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
       }
       markers = [];
@@ -251,7 +251,7 @@ const KaKao = (props: propsType) => {
       gotoPage: (arg0: number) => void;
     }) {
       const paginationEl = document.getElementById('pagination') as HTMLElement;
-      let fragment = document.createDocumentFragment();
+      const fragment = document.createDocumentFragment();
       let i;
 
       // 기존에 추가된 페이지번호를 삭제

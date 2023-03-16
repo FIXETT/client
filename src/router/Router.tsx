@@ -14,13 +14,12 @@ import FixPage from '../pages/Fix/FixPage';
 
 function Router() {
   return (
-    <>
+    <div>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/confirm" element={<ConfirmPage />} />
         <Route path="/enter" element={<EnterInfoPage />} />
-
         <Route element={<Layout />}>
           <Route element={<Aside />}>
             <Route path="/dashboard" element={<Dashboard />} />
@@ -30,7 +29,7 @@ function Router() {
           </Route>
         </Route>
       </Routes>
-    </>
+    </div>
   );
 }
 export default Router;

@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
-import { showAddModalState, assetlistState } from './../../recoil/assets';
+import { useSetRecoilState } from 'recoil';
+import { showAddModalState } from './../../recoil/assets';
 
 const Header = () => {
   const setShowModal = useSetRecoilState(showAddModalState);
-  const assetlist = useRecoilValue(assetlistState);
 
   return (
     <HeaderContainer>

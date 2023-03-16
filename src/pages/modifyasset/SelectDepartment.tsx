@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { modifyAssetlistState } from '../../recoil/assets';
 import { modifyState } from './../../recoil/assets';
 
-const SelectDepartment = ({ modifyAssetType, index, onChange }: any) => {
+const SelectDepartment = ({ modifyAssetType, onChange }: any) => {
   const [showDepartment, setShowDepartment] = useState(false);
   const modifyassetlist = useRecoilValue(modifyAssetlistState);
   const modify: any = useRecoilValue(modifyState);
@@ -17,14 +17,18 @@ const SelectDepartment = ({ modifyAssetType, index, onChange }: any) => {
           setShowDepartment(!showDepartment);
         }}
       >
-        {modifyassetlist[index].department ? modifyassetlist[index].department : modify[0].department}
+        {modifyassetlist[0].department
+          ? modifyassetlist[0].department
+          : modify[0].department
+          ? modify[0].department
+          : '선택하기 🔽'}
       </SelectBtn>
       {showDepartment && (
         <SlectList>
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
+              id={String(0)}
               name={modifyAssetType.type}
               value="개발"
               checked={modify[0].department === '개발'}
@@ -38,7 +42,7 @@ const SelectDepartment = ({ modifyAssetType, index, onChange }: any) => {
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
+              id={String(0)}
               name={modifyAssetType.type}
               value="경영지원"
               checked={modify[0].department === '경영지원'}
@@ -52,7 +56,7 @@ const SelectDepartment = ({ modifyAssetType, index, onChange }: any) => {
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
+              id={String(0)}
               name={modifyAssetType.type}
               value="세일즈"
               checked={modify[0].department === '세일즈'}
@@ -66,7 +70,7 @@ const SelectDepartment = ({ modifyAssetType, index, onChange }: any) => {
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
+              id={String(0)}
               name={modifyAssetType.type}
               value="마케팅"
               checked={modify[0].department === '마케팅'}
