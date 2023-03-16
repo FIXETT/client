@@ -32,13 +32,22 @@
   },
   "scripts": {
     "postinstall": "husky install",
-    "lint": "eslint --cache \"src/**/*.{ts,tsx}\"",
+    "lint": "lint-staged",
     "lint:fix": "eslint --fix --cache \"src/**/*.{ts,tsx}\"",
     "format": "prettier --write --cache \"src/**/*.{ts,tsx}\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "yarn lint:fix",
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "pre-commit": "yarn lint"
   },
   "eslintConfig": {
     "extends": [
