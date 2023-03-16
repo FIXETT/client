@@ -55,23 +55,19 @@ const Lading = () => {
   const [ismodal, setIsModal] = useState(true);
   const [user, setUser] = useRecoilState(useInfoState);
   const navigate = useNavigate();
-  console.log('email', email, 'password', password);
 
   const signHandler = () => {
     navigate('/signup');
   };
 
   const loginHandler: SubmitHandler<FormValue> = (data) => {
-    console.log(data);
     const login = async () => {
       try {
         const { data } = await UserApi.signin(email, password);
-        console.log(data.token.accessToken);
 
         const token = data.token.accessToken;
         async function read() {
           const { data } = await readuser({ token, email, password });
-          console.log(data);
           if (data) {
             navigate('/dashboard');
           }
@@ -131,7 +127,7 @@ const Lading = () => {
         <FindPW>비밀번호를 잊으셨나요?</FindPW>
         <SignBtn onClick={signHandler}>회원가입</SignBtn>
       </LoginContainer>
-      {ismodal && (
+      {/* {ismodal && (
         <Modal>
           <Close onClick={() => setIsModal(!ismodal)} src={CloseModal} alt={' '} />
           <ModalImg src={ModalIcon} alt={''}></ModalImg>
@@ -140,12 +136,12 @@ const Lading = () => {
             <ComputerText>내 컴퓨터/모니터가 고장났다구요?!</ComputerText>
             <FixText>관리어쩔이 엄선한 최고의 수리기사에게</FixText>
             <FixText>수리를 맡겨보세요 😉</FixText>
-            <Apply onClick={() => window.location.replace('https://walla.my/survey/alQkguKVGeJ5VywdDQMx')}>
+            <Apply href="https://walla.my/survey/alQkguKVGeJ5VywdDQMx" target="_blank">
               수리견적 요청하기
             </Apply>
           </ModalDiv>
         </Modal>
-      )}
+      )} */}
     </Wrap>
   );
 };
@@ -354,7 +350,7 @@ const FixText = styled.span`
   position: relative;
   top: -20%;
 `;
-const Apply = styled.div`
+const Apply = styled.a`
   border-radius: 10px;
   background-color: #5a3092;
   color: #ffffff;

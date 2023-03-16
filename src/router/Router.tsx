@@ -10,6 +10,7 @@ import ModifyAsset from '../pages/modifyasset';
 import ConfirmPage from '../pages/Signup/ConfirmPage';
 import SignupPage from '../pages/Signup/SignupPage';
 import EnterInfoPage from './../pages/Signup/EnterInfoPage';
+import FixPage from '../pages/Fix/FixPage';
 
 function Router() {
   return (
@@ -25,6 +26,7 @@ function Router() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/addasset" element={<AddAsset />} />
             <Route path="/modifyasset" element={<ModifyAsset />} />
+            <Route path="/fix" element={<FixPage />} />
           </Route>
         </Route>
       </Routes>

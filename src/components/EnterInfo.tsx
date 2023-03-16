@@ -61,10 +61,6 @@ const EnterInfo = () => {
     signup();
   };
 
-  console.log(info);
-  console.log(name);
-  console.log(password);
-  console.log(agreePi);
   return (
     <Wrap>
       <Img src={enter} alt={''}></Img>
