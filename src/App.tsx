@@ -8,10 +8,10 @@ import { hotjar } from 'react-hotjar';
 function App() {
   const queryClient = new QueryClient();
 
-  if (true) {
-    console.log = function no_console() {};
-    console.warn = function no_console() {};
-  }
+  // if (true) {
+  //   console.log = function no_console() {};
+  //   console.warn = function no_console() {};
+  // }
 
   useEffect(() => {
     if (process.env.NODE_ENV !== 'development') {

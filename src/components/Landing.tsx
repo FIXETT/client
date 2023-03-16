@@ -55,23 +55,19 @@ const Lading = () => {
   const [ismodal, setIsModal] = useState(true);
   const [user, setUser] = useRecoilState(useInfoState);
   const navigate = useNavigate();
-  console.log('email', email, 'password', password);
 
   const signHandler = () => {
     navigate('/signup');
   };
 
   const loginHandler: SubmitHandler<FormValue> = (data) => {
-    console.log(data);
     const login = async () => {
       try {
         const { data } = await UserApi.signin(email, password);
-        console.log(data.token.accessToken);
 
         const token = data.token.accessToken;
         async function read() {
           const { data } = await readuser({ token, email, password });
-          console.log(data);
           if (data) {
             navigate('/dashboard');
           }
@@ -131,7 +127,7 @@ const Lading = () => {
         <FindPW>비밀번호를 잊으셨나요?</FindPW>
         <SignBtn onClick={signHandler}>회원가입</SignBtn>
       </LoginContainer>
-      {ismodal && (
+      {/* {ismodal && (
         <Modal>
           <Close onClick={() => setIsModal(!ismodal)} src={CloseModal} alt={' '} />
           <ModalImg src={ModalIcon} alt={''}></ModalImg>
@@ -145,7 +141,7 @@ const Lading = () => {
             </Apply>
           </ModalDiv>
         </Modal>
-      )}
+      )} */}
     </Wrap>
   );
 };
