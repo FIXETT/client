@@ -30,7 +30,6 @@ const Signup = () => {
     };
     authMail();
   };
-  console.log(email);
 
   return (
     <Wrap>

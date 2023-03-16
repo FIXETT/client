@@ -2,19 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import KaKao from './map/KaKao';
+import { useRecoilState } from 'recoil';
+import { useFixState } from '../recoil/fix';
 
 export interface propsType {
   searchKeyword: string;
 }
 const Fix = () => {
-  const [val, setVal] = useState('');
+  const [val, setVal] = useRecoilState(useFixState);
   const [keyword, setKeyword] = useState('');
   const clickHandler = (e: any) => {
     e.preventDefault();
 
     setKeyword(e.target.id);
   };
-  console.log(keyword);
+  const totalCnt = val.toString();
+  console.log(val);
+
   return (
     <Wrap>
       <TitleBox>
@@ -36,7 +40,9 @@ const Fix = () => {
           </Notebook>
         </KeywordBox>
       </FixBox>
+
       <MapBox>
+        <TotalCt>총{totalCnt}개</TotalCt>
         <KaKao searchKeyword={keyword} />
       </MapBox>
     </Wrap>
@@ -78,11 +84,16 @@ const FixBox = styled.div`
   border-top: 1px solid #e4ccff;
 `;
 const MapBox = styled.div`
-  width: 400px;
-  height: 500px;
+  width: 1032px;
+  border-top: 1px solid #e4ccff;
   position: relative;
+  left: 59px;
 
   top: 20%;
+`;
+const TotalCt = styled.span`
+  position: relative;
+  top: -4%;
 `;
 const KeywordBox = styled.div`
   /* width: 1032px; */
@@ -92,7 +103,7 @@ const KeywordBox = styled.div`
   flex-direction: row;
   align-content: space-around;
   align-items: center;
-  margin-top: 55px;
+  margin-top: 1%;
   gap: 63px;
 `;
 const Select = styled.span`

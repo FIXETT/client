@@ -11,6 +11,7 @@ interface placeType {
   address_name: string;
   phone: string;
   place_url: string;
+  totalCount: number;
 }
 
 //------------------자기 위치 찾기 ----------------
@@ -37,6 +38,8 @@ const getCurrentLocation = async () => {
 //KaKao API 불러오기
 const { kakao } = window as any;
 const KaKao = (props: propsType) => {
+  const [count, setCount] = useRecoilState(useFixState);
+
   // 지도를 표시할 div
   let markers: any[] = [];
   useEffect(() => {
@@ -49,6 +52,8 @@ const KaKao = (props: propsType) => {
     };
     //지도 생성
     const map = new kakao.maps.Map(container, option);
+    const zoomControl = new kakao.maps.ZoomControl();
+    map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
     const markerPosition = new kakao.maps.LatLng(37.566826, 126.9786567);
 
     const marker = new kakao.maps.Marker({
@@ -108,6 +113,7 @@ const KaKao = (props: propsType) => {
         // 정상적으로 검색이 완료됐으면
         // 검색 목록과 마커를 표출
         displayPlaces(data);
+        setCount(pagination?.totalCount);
         //페이지 번호를 표출
         displayPagination(pagination);
       } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
@@ -177,24 +183,25 @@ const KaKao = (props: propsType) => {
     function getListItem(index: number, places: placeType) {
       const el = document.createElement('li');
       let itemStr = `
+      
           <div style="padding:5px;z-index:1;border: 1px solid #E4CCFF;
           box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-          border-radius: 3px; margin-top:20px;" class="info">
+          border-radius: 3px; margin-top:2%;margin-left:-10%;width:610px;height:70px;" class="info">
            
             <a href="${places.place_url}" target="_blank">
-              <h5 class="info-item place-name">${places.place_name}</h5>
+              <h5 style="font-size:11px" class="info-item place-name">${places.place_name}</h5>
               ${
                 places.road_address_name
-                  ? `<span class="info-item road-address-name">
+                  ? `<span style="font-size:9px;font-weight:400;" class="info-item road-address-name">
                     ${places.road_address_name}
                    </span>
                   `
-                  : `<span class="info-item address-name">
+                  : `<span style="font-size:9px;" class="info-item address-name">
              	     ${places.address_name}
                   </span>`
               }
               <br>
-              <span class="info-item tel">
+              <span style="font-size:9px;" class="info-item tel">
                 ${places.phone}
               </span>
             </a>
@@ -237,7 +244,12 @@ const KaKao = (props: propsType) => {
     }
 
     //검색 결과 목록 하단에 페이지 번호 표시 함수
-    function displayPagination(pagination: { last: number; current: number; gotoPage: (arg0: number) => void }) {
+    function displayPagination(pagination: {
+      last: number;
+      totalCount: number;
+      current: number;
+      gotoPage: (arg0: number) => void;
+    }) {
       const paginationEl = document.getElementById('pagination') as HTMLElement;
       let fragment = document.createDocumentFragment();
       let i;
@@ -282,20 +294,19 @@ const KaKao = (props: propsType) => {
     }
     searchPlaces();
   }, [props.searchKeyword]);
-  console.log(markers);
-  console.log(props.searchKeyword);
   return (
-    <Mapcontainer className="mapgfvjjg-container">
+    <Mapcontainer className="map-container">
       <ResultList>
         {/* <span>컴퓨터수리노트북수리</span>
         <span>서울 강남구 테헤란로 20길 18 6층</span>
         <span>02-6953-8153</span> */}
+
         <div id="search-result">
           <p className="result-text">{/* <span className="result-keyword">{props.searchKeyword}</span> */}</p>
           <div className="scroll-wrapper">
             <PlaceList id="places-list"></PlaceList>
           </div>
-          <div id="pagination"></div>
+          <Pagenation id="pagination"></Pagenation>
         </div>
       </ResultList>
       <MapDiv>
@@ -319,6 +330,7 @@ const Mapcontainer = styled.div`
   margin-left: 59px;
   width: 1029px;
   height: 514px;
+  margin-top: 10px;
 `;
 const ResultList = styled.div``;
 
@@ -330,15 +342,14 @@ const PlaceList = styled.ul`
 `;
 
 //Item Box
-const ItemBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 610px;
-  height: 70px;
 
-  border-radius: 3px;
-  border: #e4ccff;
-`;
 const MapDiv = styled.div`
-  margin-left: 20px;
+  margin-left: -3%;
+  margin-top: 1%;
+`;
+const Pagenation = styled.div`
+  position: relative;
+
+  top: 410px;
+  left: 200px;
 `;
