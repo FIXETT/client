@@ -131,7 +131,7 @@ const Lading = () => {
         <FindPW>비밀번호를 잊으셨나요?</FindPW>
         <SignBtn onClick={signHandler}>회원가입</SignBtn>
       </LoginContainer>
-      {ismodal && (
+      {/* {ismodal && (
         <Modal>
           <Close onClick={() => setIsModal(!ismodal)} src={CloseModal} alt={' '} />
           <ModalImg src={ModalIcon} alt={''}></ModalImg>
@@ -145,7 +145,7 @@ const Lading = () => {
             </Apply>
           </ModalDiv>
         </Modal>
-      )}
+      )} */}
     </Wrap>
   );
 };
