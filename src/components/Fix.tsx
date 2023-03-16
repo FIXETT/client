@@ -10,7 +10,7 @@ export interface propsType {
 }
 const Fix = () => {
   const [val, setVal] = useRecoilState(useFixState);
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState('컴퓨터 수리');
   const clickHandler = (e: any) => {
     e.preventDefault();
 
