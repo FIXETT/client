@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { modifyAssetlistState } from '../../recoil/assets';
 import { modifyState } from './../../recoil/assets';
 
-const SelectStatus = ({ modifyAssetType, index, onChange }: any) => {
+const SelectStatus = ({ modifyAssetType, onChange }: any) => {
   const [showStatus, setShowStatus] = useState(false);
   const modifyassetlist = useRecoilValue(modifyAssetlistState);
   const modify: any = useRecoilValue(modifyState);
@@ -17,14 +17,14 @@ const SelectStatus = ({ modifyAssetType, index, onChange }: any) => {
           setShowStatus(!showStatus);
         }}
       >
-        {modifyassetlist[index].status ? modifyassetlist[index].status : modify[0].status}
+        {modifyassetlist[0].status ? modifyassetlist[0].status : modify[0].status ? modify[0].status : '선택하기 🔽'}
       </SelectBtn>
       {showStatus && (
         <SlectList>
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
+              id={String(0)}
               name={modifyAssetType.type}
               value="🟢 정상"
               checked={modify[0].status === '🟢 정상'}
@@ -38,7 +38,7 @@ const SelectStatus = ({ modifyAssetType, index, onChange }: any) => {
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
+              id={String(0)}
               name={modifyAssetType.type}
               value="🔴 분실"
               checked={modify[0].status === '🔴 분실'}
@@ -52,7 +52,7 @@ const SelectStatus = ({ modifyAssetType, index, onChange }: any) => {
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
+              id={String(0)}
               name={modifyAssetType.type}
               value="🟡 수리중"
               checked={modify[0].status === '🟡 수리중'}
@@ -66,7 +66,7 @@ const SelectStatus = ({ modifyAssetType, index, onChange }: any) => {
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
+              id={String(0)}
               name={modifyAssetType.type}
               value="🔵 수리완료"
               checked={modify[0].status === '🔵 수리완료'}

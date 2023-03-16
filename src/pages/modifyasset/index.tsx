@@ -4,12 +4,14 @@ import { useRecoilValue, useRecoilState } from 'recoil';
 
 import { modifyAssetTypeState, showModifyModalState } from '../../recoil/assets';
 
-import AssetTypeList from './AssetTypeList';
-import AssetInputList from './ModifyAssetInputList';
+import ModifyAssetInput from './ModifyAssetTypeList';
+import ModifyAssetInputList from './ModifyAssetInputList';
 import ModifyAssetTypeButton from './ModifyAssetTypeButton';
 import ModifyModal from './ModifyModal';
+import { modifyAssetlistState } from './../../recoil/assets';
 
 const ModifyAsset = () => {
+  const modifyassetlist = useRecoilValue(modifyAssetlistState);
   const [showModal, setShowModal] = useRecoilState(showModifyModalState);
   const modifyAssetType = useRecoilValue(modifyAssetTypeState);
 
@@ -20,7 +22,13 @@ const ModifyAsset = () => {
         <Title>제품 등록하기</Title>
         <ModifyAssetBtn
           onClick={() => {
-            setShowModal(true);
+            modifyassetlist.map((value) => {
+              if (value.name === '' || value.quantity === 0 || value.product === '' || value.category === '') {
+                alert('빈칸을 입력해주세요');
+              } else {
+                setShowModal(true);
+              }
+            });
           }}
         >
           등록하기
@@ -28,8 +36,8 @@ const ModifyAsset = () => {
       </Header>
       <ModifySupplyWrap>
         <Column modifyAssetType={modifyAssetType.length}>
-          <AssetTypeList />
-          <AssetInputList />
+          <ModifyAssetInput />
+          <ModifyAssetInputList />
         </Column>
         {modifyAssetType.length !== 9 && <ModifyAssetTypeButton />}
       </ModifySupplyWrap>

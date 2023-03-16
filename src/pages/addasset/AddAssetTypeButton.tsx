@@ -13,9 +13,9 @@ const AddAssetTypeButton = () => {
   };
 
   return (
-    <>
+    <ButtonContainer>
       {selectAssetType.length !== 0 && (
-        <ButtonContainer>
+        <>
           <AddAssetTypeShowBtn onClick={showAddAssetType}>+</AddAssetTypeShowBtn>
           {showSelectAssetType && (
             <AddAssetTypeList>
@@ -39,9 +39,9 @@ const AddAssetTypeButton = () => {
               ))}
             </AddAssetTypeList>
           )}
-        </ButtonContainer>
+        </>
       )}
-    </>
+    </ButtonContainer>
   );
 };
 

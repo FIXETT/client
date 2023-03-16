@@ -23,6 +23,7 @@ const AddAsset = () => {
   const setShowModal = useSetRecoilState(showAddModalState);
   const assetlist = useRecoilValue(assetlistState);
 
+  // 초기화
   useEffect(() => {
     setPostAssetType([
       { title: '실사용자', type: 'name', inputType: 'text' },

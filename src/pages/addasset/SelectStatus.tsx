@@ -2,19 +2,29 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { assetlistState } from '../../recoil/assets';
+import { inputParameterType } from '../../types/asset';
+import ContextMenu from './ContextMenu';
 
-const SelectStatus = ({ postAssetType, index, onChange }: any) => {
+const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) => {
+  const [showContextMenu, setShowContextMenu] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
   const assetlist = useRecoilValue(assetlistState);
 
   return (
     <SelectContainer>
+      {showContextMenu && <ContextMenu assetType={assetType} index={index} />}
       <SelectBtn
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault();
+          setShowContextMenu(false);
           setShowStatus(!showStatus);
         }}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setShowContextMenu(true);
+        }}
       >
-        {assetlist[index].status ? assetlist[index].status : '선택하기 🔽'}
+        {assetlist[index]?.status ? assetlist[index]?.status : '선택하기 🔽'}
       </SelectBtn>
       {showStatus && (
         <SlectList>
@@ -22,9 +32,9 @@ const SelectStatus = ({ postAssetType, index, onChange }: any) => {
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
+              name={assetType.type}
               value="🟢 정상"
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
               }}
@@ -35,9 +45,9 @@ const SelectStatus = ({ postAssetType, index, onChange }: any) => {
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
+              name={assetType.type}
               value="🔴 분실"
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
               }}
@@ -48,9 +58,9 @@ const SelectStatus = ({ postAssetType, index, onChange }: any) => {
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
+              name={assetType.type}
               value="🟡 수리중"
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
               }}
@@ -61,9 +71,9 @@ const SelectStatus = ({ postAssetType, index, onChange }: any) => {
             <input
               type="radio"
               id={String(index)}
-              name={postAssetType.type}
+              name={assetType.type}
               value="🔵 수리완료"
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
               }}
@@ -91,9 +101,6 @@ const AssetLabel = styled.label`
   }
   input {
     display: none;
-    ::placeholder {
-      opacity: 0;
-    }
   }
 `;
 

@@ -3,27 +3,33 @@ import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { modifyAssetTypeState, showDeleteModalState } from '../../recoil/assets';
-import { modifyselectAssetTypeState, assetNumberState, modifyState } from './../../recoil/assets';
+import { modifyselectAssetTypeState, assetNumberListState, modifyState } from './../../recoil/assets';
 
 const AssetButton = () => {
   const navigate = useNavigate();
   const [modifyAssetType, setModifyAssetType] = useRecoilState(modifyAssetTypeState);
   const [selectAssetType, setSelectAssetType] = useRecoilState(modifyselectAssetTypeState);
-  const modify: any = useRecoilValue(modifyState);
-  const assetNumber = useRecoilValue(assetNumberState);
+  const modify = useRecoilValue(modifyState);
+  const assetNumber = useRecoilValue(assetNumberListState);
   const setDeleteShowModal = useSetRecoilState(showDeleteModalState);
 
-  const modifyAsset = (e: any) => {
+  const modifyAsset = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const defaultList = selectAssetType!.filter((value) => modify[0][value.type] !== '');
+
+    const defaultList = selectAssetType.filter((value) => modify[0][value.type] !== '');
+
     const newList = defaultList.filter((value) => !modifyAssetType.some((item) => item.type === value.type));
+
     setModifyAssetType([...modifyAssetType, ...newList]);
+
     const selectList = selectAssetType.filter((value) => !newList.some((item) => item.type === value.type));
+
     setSelectAssetType(selectList);
+
     navigate('/modifyasset');
   };
 
-  const deleteAsset = (e: any) => {
+  const deleteAsset = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setDeleteShowModal(true);
   };
