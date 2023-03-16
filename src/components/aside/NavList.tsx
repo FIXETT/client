@@ -21,7 +21,7 @@ const NavList = () => {
   const navList = [
     { id: '1', link: 'dashboard', title: '자산 현황 리스트', img: dashboard },
     { id: '2', link: 'addasset', title: '제품 등록하기', img: addsupply },
-    { id: '3', link: 'https://walla.my/survey/alQkguKVGeJ5VywdDQMx', title: '수리업체 찾기', img: search },
+    { id: '3', link: 'search', title: '수리업체 찾기', img: search },
     // {
     //   id: '4',
     //   title: '마이페이지',
@@ -40,17 +40,10 @@ const NavList = () => {
           <React.Fragment key={value.id}>
             {/* {!value?.subNavList ? ( */}
             <ListItemContainer>
-              {value.id === '3' ? (
-                <ListItemLink to={value.link} target="_blank">
-                  <ListItemImg src={value.img} alt="아이콘" />
-                  <p>{value.title}</p>
-                </ListItemLink>
-              ) : (
-                <ListItemLink match={String(match === `/${value.link}`)} to={value.link}>
-                  <ListItemImg src={value.img} alt="아이콘" />
-                  <p>{value.title}</p>
-                </ListItemLink>
-              )}
+              <ListItemLink match={String(match === `/${value.link}`)} to={value.link}>
+                <ListItemImg src={value.img} alt="아이콘" />
+                <p>{value.title}</p>
+              </ListItemLink>
             </ListItemContainer>
             {/* ) : (
           <ListItemContainer onClick={TogglesubMeru}>
