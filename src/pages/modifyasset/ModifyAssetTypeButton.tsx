@@ -7,12 +7,13 @@ const ModifyAssetTypeButton = () => {
   const [showSelectAssetType, setshowSelectAssetType] = useState(false);
   const [postAssetType, setPostAssetType] = useRecoilState(modifyAssetTypeState);
   const [selectAssetType, setSelectAssetType] = useRecoilState(modifyselectAssetTypeState);
+
   const showModifyAssetType = () => {
     setshowSelectAssetType(true);
   };
 
   return (
-    <>
+    <div>
       {selectAssetType.length !== 0 && (
         <ButtonContainer>
           <ModifyAssetTypeShowBtn onClick={showModifyAssetType}>+</ModifyAssetTypeShowBtn>
@@ -40,7 +41,7 @@ const ModifyAssetTypeButton = () => {
           )}
         </ButtonContainer>
       )}
-    </>
+    </div>
   );
 };
 

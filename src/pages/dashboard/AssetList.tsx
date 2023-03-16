@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { showAddModalState, showDeleteModalState, showModifyModalState, searchTextState } from '../../recoil/assets';
 import { getAsset } from '../../apis/asset';
-import { getAssetListType } from '../../types/asset';
+import { assetListType, getAssetListType } from '../../types/asset';
 
 import SearchList from './SearchList';
 import AssetRadioButton from './AssetRadioButton';
@@ -27,7 +27,7 @@ const AssetList = () => {
     refetch();
   }, [addShowModal, deleteShowModal, showModifyModal]);
 
-  const assetList = data?.data?.asset;
+  const assetList: assetListType = data?.data?.asset;
 
   return (
     <div>
@@ -38,10 +38,10 @@ const AssetList = () => {
           <>
             {isLoading && <li>로딩중</li>}
             {assetList ? (
-              <>
-                {assetList?.map((value: getAssetListType) => {
+              <li>
+                {assetList?.map((value) => {
                   return (
-                    <li key={value?.assetNumber}>
+                    <div key={value?.assetNumber}>
                       <AssetLabel htmlFor={String(value?.assetNumber)}>
                         <AssetItem>
                           <AssetRadioButton assetList={assetList} value={value} />
@@ -57,12 +57,12 @@ const AssetList = () => {
                         <AssetItem>{value?.status}</AssetItem>
                         <AssetItem>{value?.note}</AssetItem>
                       </AssetLabel>
-                    </li>
+                    </div>
                   );
                 })}
-              </>
+              </li>
             ) : (
-              <>{!isLoading && <li>등록된 자산이 없습니다.</li>}</>
+              <li>{!isLoading && <p>등록된 자산이 없습니다.</p>}</li>
             )}
             <TotalNumber>
               <p>

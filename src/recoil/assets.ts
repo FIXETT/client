@@ -86,7 +86,29 @@ export const searchListState = atom({
 });
 export const modifyState = atom({
   key: 'modify',
-  default: {},
+  default: [
+    {
+      _id: '',
+      assetNumber: 0,
+      department: '',
+      name: 0,
+      product: 0,
+      category: '',
+      quantity: 0,
+      status: '',
+      manufacturer: '',
+      acquisitionDate: '',
+      note: '',
+      identifier: {
+        _id: '',
+        email: '',
+        name: '',
+      },
+      createdAt: '',
+      updatedAt: '',
+      __v: 0,
+    },
+  ],
 });
 export const modifyAssetTypeState = atom({
   key: 'modifyAssetType',
@@ -111,16 +133,25 @@ export const modifyAssetlistState = atom({
   key: 'modifyAssetlist',
   default: [
     {
-      name: '',
+      _id: '',
+      assetNumber: 0,
       department: '',
-      product: '',
+      name: 0,
+      product: 0,
       category: '',
       quantity: 0,
       status: '',
       manufacturer: '',
       acquisitionDate: '',
       note: '',
-      identifier: '',
+      identifier: {
+        _id: '',
+        email: '',
+        name: '',
+      },
+      createdAt: '',
+      updatedAt: '',
+      __v: 0,
     },
   ],
 });

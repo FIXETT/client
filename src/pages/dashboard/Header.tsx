@@ -45,7 +45,7 @@ const Header = () => {
         <AddAssetButton />
       </AssetWrap>
       <AssetButton />
-      {searchText && <p>'{searchText}' 검색 결과</p>}
+      {searchText && <p>&#39;{searchText}&#39; 검색 결과</p>}
     </>
   );
 };

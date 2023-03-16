@@ -1,12 +1,13 @@
 import React from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
+import { handleChangeType } from '../../types/asset';
 import { assetNumberState, modifyState } from './../../recoil/assets';
 
 const AssetRadioButton = ({ assetList, value }: any) => {
   const [assetNumber, setAssetNumber] = useRecoilState(assetNumberState);
   const setModify = useSetRecoilState(modifyState);
 
-  const checkedInput = (e: any) => {
+  const checkedInput: handleChangeType = (e) => {
     e.stopPropagation();
     const checked = e.target.checked;
     if (checked) {
@@ -17,7 +18,7 @@ const AssetRadioButton = ({ assetList, value }: any) => {
         setModify(filteredData);
       }
     } else {
-      let filtered = assetNumber.filter((element) => element.assetNumber !== Number(e.target.id));
+      const filtered = assetNumber.filter((element) => element.assetNumber !== Number(e.target.id));
       setAssetNumber(filtered);
     }
   };

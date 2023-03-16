@@ -21,7 +21,7 @@ const DeleteModal = () => {
     setDeleteShowModal(false);
   };
   return (
-    <>
+    <div>
       {deleteShowModal && (
         <DeleteModalContainer>
           <div>
@@ -33,7 +33,7 @@ const DeleteModal = () => {
           </div>
         </DeleteModalContainer>
       )}
-    </>
+    </div>
   );
 };
 

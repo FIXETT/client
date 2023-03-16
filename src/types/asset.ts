@@ -6,7 +6,27 @@ export type inputParameterType = {
   index: number;
   handleChange?: handleChangeType;
 };
-
+export type assetListType = {
+  _id: string;
+  assetNumber: number;
+  department: string;
+  name: number;
+  product: number;
+  category: string;
+  quantity: number;
+  status: string;
+  manufacturer: string;
+  acquisitionDate: string;
+  note: string;
+  identifier: {
+    _id: string;
+    email: string;
+    name: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}[];
 export type postAssetDataType = {
   name: string;
   department?: string;

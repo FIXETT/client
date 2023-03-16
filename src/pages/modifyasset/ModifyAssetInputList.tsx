@@ -1,25 +1,31 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { modifyAssetlistState, modifyAssetTypeState } from '../../recoil/assets';
+import { modifyAssetlistState, modifyAssetTypeState, modifyState } from '../../recoil/assets';
 
 import SelectCategory from './SelectCategory';
 import SelectDepartment from './SelectDepartment';
 import SelectStatus from './SelectStatus';
-import { modifyState } from '../../recoil/assets';
+import { handleChangeType } from '../../types/asset';
 
 const ModifyAssetInputList = () => {
   const [modifyassetlist, setModifyassetlist] = useRecoilState(modifyAssetlistState);
   const modifyAssetType = useRecoilValue(modifyAssetTypeState);
-  const modify: any = useRecoilValue(modifyState);
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const identifier = window.localStorage.getItem('identifier');
+  const modify: any = useRecoilState(modifyState);
+
+  const { name, product, quantity, manufacturer, acquisitionDate, note }: any = modify[0];
+
+  const onChange: handleChangeType = (e) => {
+    const identifier = window.localStorage.getItem('identifier')!;
     const type = e.target.name;
     const value = e.target.value;
 
-    let newList: any = [Object.assign({}, modifyassetlist[0])];
-    newList[0][type] = value;
-    newList[0]['identifier'] = identifier;
+    const newList = [...modifyassetlist];
+    newList[0] = {
+      ...newList[0],
+      [type]: value,
+      [identifier]: String(identifier),
+    };
 
     setModifyassetlist(newList);
   };
@@ -38,7 +44,7 @@ const ModifyAssetInputList = () => {
             id={String(index)}
             onChange={onChange}
             name={modifyAssetType.type}
-            defaultValue={modify[0].quantity}
+            defaultValue={quantity}
           />
         );
       case '품목':
@@ -54,7 +60,7 @@ const ModifyAssetInputList = () => {
             id={String(index)}
             onChange={onChange}
             name={modifyAssetType.type}
-            defaultValue={modify[0].name}
+            defaultValue={name}
           />
         );
       case '제품명':
@@ -64,7 +70,7 @@ const ModifyAssetInputList = () => {
             id={String(index)}
             onChange={onChange}
             name={modifyAssetType.type}
-            defaultValue={modify[0].product}
+            defaultValue={product}
           />
         );
       case '제조사':
@@ -74,7 +80,7 @@ const ModifyAssetInputList = () => {
             id={String(index)}
             onChange={onChange}
             name={modifyAssetType.type}
-            defaultValue={modify[0].manufacturer}
+            defaultValue={manufacturer}
           />
         );
       case '비고':
@@ -84,7 +90,7 @@ const ModifyAssetInputList = () => {
             id={String(index)}
             onChange={onChange}
             name={modifyAssetType.type}
-            defaultValue={modify[0].note}
+            defaultValue={note}
           />
         );
       case '취득일자':
@@ -94,7 +100,7 @@ const ModifyAssetInputList = () => {
             id={String(index)}
             onChange={onChange}
             name={modifyAssetType.type}
-            defaultValue={modify[0].acquisitionDate}
+            defaultValue={acquisitionDate}
           />
         );
       default:
