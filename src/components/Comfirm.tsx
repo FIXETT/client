@@ -17,7 +17,6 @@ const Comfirm = () => {
   const navigate = useNavigate();
   const [info, setInfo] = useRecoilState(useUserState);
   //본인 이메일 인증하기 핸들러
-  console.log('info', info);
   const confirmHandler = () => {
     const confirmMail = async () => {
       try {
@@ -40,7 +39,7 @@ const Comfirm = () => {
           window.alert('이메일 형식이 맞지 않습니다. 다시 한번 확인해주세요.');
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
     authMail();

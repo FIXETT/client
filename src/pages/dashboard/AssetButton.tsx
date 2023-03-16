@@ -19,12 +19,10 @@ const AssetButton = () => {
     const defaultList = selectAssetType.filter((value) => modify[0][value.type] !== '');
 
     const newList = defaultList.filter((value) => !modifyAssetType.some((item) => item.type === value.type));
-    console.log('newList:', newList);
 
     setModifyAssetType([...modifyAssetType, ...newList]);
 
     const selectList = selectAssetType.filter((value) => !newList.some((item) => item.type === value.type));
-    console.log('selectList:', selectList);
 
     setSelectAssetType(selectList);
 
