@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { modifyAssetlistState } from '../../recoil/assets';
 import { modifyState } from './../../recoil/assets';
 
-const SelectCategory = ({ modifyAssetType, index, onChange }: any) => {
+const SelectCategory = ({ modifyAssetType, onChange }: any) => {
   const [showModifyCategory, setShowModifyCategory] = useState(false);
   const modifyAssetlist = useRecoilValue(modifyAssetlistState);
   const modify: any = useRecoilValue(modifyState);
@@ -16,14 +16,18 @@ const SelectCategory = ({ modifyAssetType, index, onChange }: any) => {
           setShowModifyCategory(!showModifyCategory);
         }}
       >
-        {modifyAssetlist[index].category ? modifyAssetlist[index].category : modify[0].category}
+        {modifyAssetlist[0].category
+          ? modifyAssetlist[0].category
+          : modify[0].category
+          ? modify[0].category
+          : '선택하기 🔽'}
       </SelectBtn>
       {showModifyCategory && (
         <SlectList>
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
+              id={String(0)}
               name={modifyAssetType.type}
               value="🖥️ 모니터"
               onChange={onChange}
@@ -37,7 +41,7 @@ const SelectCategory = ({ modifyAssetType, index, onChange }: any) => {
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
+              id={String(0)}
               name={modifyAssetType.type}
               value="💻 노트북"
               onChange={onChange}
@@ -51,7 +55,7 @@ const SelectCategory = ({ modifyAssetType, index, onChange }: any) => {
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
+              id={String(0)}
               name={modifyAssetType.type}
               value="👨‍💻 데스크탑"
               onChange={onChange}

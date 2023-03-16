@@ -74,3 +74,17 @@ export type getAssetListType = {
   __v: number;
   identifier: string;
 };
+export interface modifyListType {
+  assetNumber: number;
+  name: string;
+  department: string;
+  product: string;
+  category: string;
+  quantity: number;
+  status: string;
+  manufacturer: string;
+  acquisitionDate: string;
+  note: string;
+  identifier: string;
+  [key: string]: string | number;
+}

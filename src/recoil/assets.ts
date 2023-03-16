@@ -5,6 +5,7 @@ import manufacturer from '../assets/icon/manufacturer.svg';
 import acquisitionDate from '../assets/icon/date.svg';
 import status from '../assets/icon/status.svg';
 import note from '../assets/icon/text.svg';
+import { modifyListType } from '../types/asset';
 
 export const postAssetTypeState = atom({
   key: 'postAssetType',
@@ -56,7 +57,7 @@ export const assetlistState = atom({
     },
   ],
 });
-export const assetNumberState = atom({
+export const assetNumberListState = atom({
   key: 'assetNumber',
   default: [{ assetNumber: 0, identifier: '' }],
 });
@@ -84,31 +85,9 @@ export const searchListState = atom({
   key: 'searchList',
   default: [],
 });
-export const modifyState = atom({
+export const modifyState = atom<modifyListType[]>({
   key: 'modify',
-  default: [
-    {
-      _id: '',
-      assetNumber: 0,
-      department: '',
-      name: 0,
-      product: 0,
-      category: '',
-      quantity: 0,
-      status: '',
-      manufacturer: '',
-      acquisitionDate: '',
-      note: '',
-      identifier: {
-        _id: '',
-        email: '',
-        name: '',
-      },
-      createdAt: '',
-      updatedAt: '',
-      __v: 0,
-    },
-  ],
+  default: [],
 });
 export const modifyAssetTypeState = atom({
   key: 'modifyAssetType',
@@ -129,29 +108,21 @@ export const modifyselectAssetTypeState = atom({
     { title: '비고', type: 'note', inputType: 'text', img: note },
   ],
 });
-export const modifyAssetlistState = atom({
+export const modifyAssetlistState = atom<modifyListType[]>({
   key: 'modifyAssetlist',
   default: [
     {
-      _id: '',
       assetNumber: 0,
+      name: '',
       department: '',
-      name: 0,
-      product: 0,
+      product: '',
       category: '',
       quantity: 0,
       status: '',
       manufacturer: '',
       acquisitionDate: '',
       note: '',
-      identifier: {
-        _id: '',
-        email: '',
-        name: '',
-      },
-      createdAt: '',
-      updatedAt: '',
-      __v: 0,
+      identifier: '',
     },
   ],
 });

@@ -24,7 +24,7 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
           setShowContextMenu(true);
         }}
       >
-        {assetlist[index].status ? assetlist[index].status : '선택하기 🔽'}
+        {assetlist[index]?.status ? assetlist[index]?.status : '선택하기 🔽'}
       </SelectBtn>
       {showStatus && (
         <SlectList>

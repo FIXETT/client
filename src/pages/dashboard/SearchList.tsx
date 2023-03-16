@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { searchTextState } from '../../recoil/assets';
 import { assetListType, getAssetListType, handleChangeType } from '../../types/asset';
-import { assetNumberState } from './../../recoil/assets';
+import { assetNumberListState } from './../../recoil/assets';
 type Props = {
   assetList: assetListType;
 };
 const SearchList = ({ assetList }: Props) => {
   const searchText = useRecoilValue(searchTextState);
-  const [assetNumber, setAssetNumber] = useRecoilState(assetNumberState);
+  const [assetNumber, setAssetNumber] = useRecoilState(assetNumberListState);
 
   const searchResultList = () => {
     if (searchText !== '') {
@@ -21,7 +21,7 @@ const SearchList = ({ assetList }: Props) => {
       const searchacAuisitionDate = assetList?.filter((value) => value.acquisitionDate.includes(searchText));
       const searchStatus = assetList?.filter((value) => value.status.includes(searchText));
       const searchNote = assetList?.filter((value) => value.note.includes(searchText));
-      return [
+      const result = [
         ...searchName,
         ...searchProduct,
         ...searchCategory,
@@ -31,12 +31,10 @@ const SearchList = ({ assetList }: Props) => {
         ...searchStatus,
         ...searchNote,
       ];
+      // 중복제거
+      return [...new Set(result)];
     }
   };
-
-  useEffect(() => {
-    setAssetNumber([{ assetNumber: 0, identifier: '' }]);
-  }, []);
 
   const checkedsearch: handleChangeType = (e) => {
     const checked = e.target.checked;

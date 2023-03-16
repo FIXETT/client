@@ -11,7 +11,6 @@ const AddModal = () => {
   const navigate = useNavigate();
   const assetlist = useRecoilValue(assetlistState);
   const setAddShowModal = useSetRecoilState(showAddModalState);
-
   const addAssetMutation = useMutation(() => postAsset(assetlist));
 
   return (

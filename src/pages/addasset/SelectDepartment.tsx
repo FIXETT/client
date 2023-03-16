@@ -11,24 +11,21 @@ const SelectDepartment = ({ assetType, index, handleChange }: inputParameterType
   const assetlist = useRecoilValue(assetlistState);
 
   return (
-    <SelectContainer
-      onClick={(e) => {
-        e.preventDefault();
-        setShowContextMenu(false);
-      }}
-      onContextMenu={(e) => {
-        e.preventDefault();
-        setShowContextMenu(true);
-      }}
-    >
+    <SelectContainer>
       {showContextMenu && <ContextMenu assetType={assetType} index={index} />}
 
       <SelectBtn
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault();
+          setShowContextMenu(false);
           setShowDepartment(!showDepartment);
         }}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setShowContextMenu(true);
+        }}
       >
-        {assetlist[index].department ? assetlist[index].department : '선택하기 🔽'}
+        {assetlist[index]?.department ? assetlist[index]?.department : '선택하기 🔽'}
       </SelectBtn>
       {showDepartment && (
         <SlectList>

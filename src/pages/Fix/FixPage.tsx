@@ -1,6 +1,6 @@
 import React from 'react';
 const FixPage = () => {
-  return <></>;
+  return <div></div>;
 };
 
 export default FixPage;

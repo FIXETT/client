@@ -43,7 +43,6 @@ const AssetInputList = () => {
         return <AssetInput assetType={assetType} index={index} handleChange={handleChange} />;
     }
   };
-
   return (
     <div>
       {assetlist.map((v, index) => {

@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { showAddModalState, showDeleteModalState, showModifyModalState, searchTextState } from '../../recoil/assets';
 import { getAsset } from '../../apis/asset';
-import { assetListType, getAssetListType } from '../../types/asset';
+import { assetListType } from '../../types/asset';
 
 import SearchList from './SearchList';
 import AssetRadioButton from './AssetRadioButton';
@@ -30,50 +30,48 @@ const AssetList = () => {
   const assetList: assetListType = data?.data?.asset;
 
   return (
-    <div>
-      <AssetListContainer>
-        {searchText ? (
-          <SearchList assetList={assetList} />
-        ) : (
-          <>
-            {isLoading && <li>로딩중</li>}
-            {assetList ? (
-              <li>
-                {assetList?.map((value) => {
-                  return (
-                    <div key={value?.assetNumber}>
-                      <AssetLabel htmlFor={String(value?.assetNumber)}>
-                        <AssetItem>
-                          <AssetRadioButton assetList={assetList} value={value} />
-                        </AssetItem>
-                        <AssetItem>{value?.assetNumber}</AssetItem>
-                        <AssetItem>{value?.name}</AssetItem>
-                        <AssetItem>{value?.product}</AssetItem>
-                        <AssetItem>{value?.category}</AssetItem>
-                        <AssetItem>{value?.quantity}</AssetItem>
-                        <AssetItem>{value?.department}</AssetItem>
-                        <AssetItem>{value?.manufacturer}</AssetItem>
-                        <AssetItem>{value?.acquisitionDate}</AssetItem>
-                        <AssetItem>{value?.status}</AssetItem>
-                        <AssetItem>{value?.note}</AssetItem>
-                      </AssetLabel>
-                    </div>
-                  );
-                })}
-              </li>
-            ) : (
-              <li>{!isLoading && <p>등록된 자산이 없습니다.</p>}</li>
-            )}
-            <TotalNumber>
-              <p>
-                합계:
-                <span> {assetList?.length ? String(assetList?.length).padStart(2, '0') : '00'}</span>건
-              </p>
-            </TotalNumber>
-          </>
-        )}
-      </AssetListContainer>
-    </div>
+    <AssetListContainer>
+      {searchText ? (
+        <SearchList assetList={assetList} />
+      ) : (
+        <>
+          {isLoading && <li>로딩중</li>}
+          {assetList ? (
+            <li>
+              {assetList?.map((value) => {
+                return (
+                  <div key={value?.assetNumber}>
+                    <AssetLabel htmlFor={String(value?.assetNumber)}>
+                      <AssetItem>
+                        <AssetRadioButton assetList={assetList} value={value} />
+                      </AssetItem>
+                      <AssetItem>{value?.assetNumber}</AssetItem>
+                      <AssetItem>{value?.name}</AssetItem>
+                      <AssetItem>{value?.product}</AssetItem>
+                      <AssetItem>{value?.category}</AssetItem>
+                      <AssetItem>{value?.quantity}</AssetItem>
+                      <AssetItem>{value?.department}</AssetItem>
+                      <AssetItem>{value?.manufacturer}</AssetItem>
+                      <AssetItem>{value?.acquisitionDate}</AssetItem>
+                      <AssetItem>{value?.status}</AssetItem>
+                      <AssetItem>{value?.note}</AssetItem>
+                    </AssetLabel>
+                  </div>
+                );
+              })}
+            </li>
+          ) : (
+            <li>{!isLoading && <p>등록된 자산이 없습니다.</p>}</li>
+          )}
+          <TotalNumber>
+            <p>
+              합계:
+              <span> {assetList?.length ? String(assetList?.length).padStart(2, '0') : '00'}</span>건
+            </p>
+          </TotalNumber>
+        </>
+      )}
+    </AssetListContainer>
   );
 };
 

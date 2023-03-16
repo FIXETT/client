@@ -13,9 +13,9 @@ const ModifyAssetTypeButton = () => {
   };
 
   return (
-    <div>
+    <ButtonContainer>
       {selectAssetType.length !== 0 && (
-        <ButtonContainer>
+        <>
           <ModifyAssetTypeShowBtn onClick={showModifyAssetType}>+</ModifyAssetTypeShowBtn>
           {showSelectAssetType && (
             <ModifyAssetTypeList>
@@ -39,9 +39,9 @@ const ModifyAssetTypeButton = () => {
               ))}
             </ModifyAssetTypeList>
           )}
-        </ButtonContainer>
+        </>
       )}
-    </div>
+    </ButtonContainer>
   );
 };
 

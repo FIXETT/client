@@ -1,132 +1,92 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
+
 import { modifyAssetlistState, modifyAssetTypeState, modifyState } from '../../recoil/assets';
 
 import SelectCategory from './SelectCategory';
 import SelectDepartment from './SelectDepartment';
 import SelectStatus from './SelectStatus';
-import { handleChangeType } from '../../types/asset';
+import { assetObjType, modifyListType } from '../../types/asset';
 
 const ModifyAssetInputList = () => {
   const [modifyassetlist, setModifyassetlist] = useRecoilState(modifyAssetlistState);
   const modifyAssetType = useRecoilValue(modifyAssetTypeState);
-  const modify: any = useRecoilState(modifyState);
+  const modify = useRecoilValue(modifyState);
 
-  const { name, product, quantity, manufacturer, acquisitionDate, note }: any = modify[0];
+  const { quantity, name, product, manufacturer, note, acquisitionDate } = modify[0];
 
-  const onChange: handleChangeType = (e) => {
-    const identifier = window.localStorage.getItem('identifier')!;
-    const type = e.target.name;
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const identifier = window.localStorage.getItem('identifier');
+    const type = e.target.name as string;
     const value = e.target.value;
-
-    const newList = [...modifyassetlist];
-    newList[0] = {
-      ...newList[0],
-      [type]: value,
-      [identifier]: String(identifier),
-    };
+    const newList: modifyListType[] = [Object.assign({}, modifyassetlist[0])];
+    newList[0][type] = value as string;
+    newList[0].identifier = identifier as string;
 
     setModifyassetlist(newList);
   };
 
   useEffect(() => {
-    setModifyassetlist(modify);
+    const modifyList = [{ ...modify[0] }];
+    setModifyassetlist(modifyList);
   }, []);
 
-  const assetInput = (modifyAssetType: any, index: number) => {
-    switch (modifyAssetType.title) {
+  const assetInput = (assetType: assetObjType) => {
+    switch (assetType.title) {
       case '수량':
         return (
           <AssetInput
-            type={modifyAssetType.inputType}
+            type={assetType.inputType}
             min={0}
-            id={String(index)}
             onChange={onChange}
-            name={modifyAssetType.type}
-            defaultValue={quantity}
+            name={assetType.type}
+            defaultValue={Number(quantity)}
           />
         );
       case '품목':
-        return <SelectCategory modifyAssetType={modifyAssetType} index={index} onChange={onChange} />;
+        return <SelectCategory modifyAssetType={assetType} onChange={onChange} />;
       case '팀':
-        return <SelectDepartment modifyAssetType={modifyAssetType} index={index} onChange={onChange} />;
+        return <SelectDepartment modifyAssetType={assetType} onChange={onChange} />;
       case '상태':
-        return <SelectStatus modifyAssetType={modifyAssetType} index={index} onChange={onChange} />;
+        return <SelectStatus modifyAssetType={assetType} onChange={onChange} />;
       case '실사용자':
-        return (
-          <AssetInput
-            type={modifyAssetType.inputType}
-            id={String(index)}
-            onChange={onChange}
-            name={modifyAssetType.type}
-            defaultValue={name}
-          />
-        );
+        return <AssetInput type={assetType.inputType} onChange={onChange} name={assetType.type} defaultValue={name} />;
       case '제품명':
         return (
-          <AssetInput
-            type={modifyAssetType.inputType}
-            id={String(index)}
-            onChange={onChange}
-            name={modifyAssetType.type}
-            defaultValue={product}
-          />
+          <AssetInput type={assetType.inputType} onChange={onChange} name={assetType.type} defaultValue={product} />
         );
       case '제조사':
         return (
           <AssetInput
-            type={modifyAssetType.inputType}
-            id={String(index)}
+            type={assetType.inputType}
             onChange={onChange}
-            name={modifyAssetType.type}
+            name={assetType.type}
             defaultValue={manufacturer}
           />
         );
       case '비고':
-        return (
-          <AssetInput
-            type={modifyAssetType.inputType}
-            id={String(index)}
-            onChange={onChange}
-            name={modifyAssetType.type}
-            defaultValue={note}
-          />
-        );
+        return <AssetInput type={assetType.inputType} onChange={onChange} name={assetType.type} defaultValue={note} />;
       case '취득일자':
         return (
           <AssetInput
-            type={modifyAssetType.inputType}
-            id={String(index)}
+            type={assetType.inputType}
             onChange={onChange}
-            name={modifyAssetType.type}
+            name={assetType.type}
             defaultValue={acquisitionDate}
           />
         );
       default:
-        return (
-          <AssetInput
-            type={modifyAssetType.inputType}
-            id={String(index)}
-            onChange={onChange}
-            name={modifyAssetType.type}
-          />
-        );
+        return <AssetInput type={assetType.inputType} onChange={onChange} name={assetType.type} />;
     }
   };
 
   return (
-    <div>
-      {modifyassetlist.map((v, index) => {
-        return (
-          <AssetTypeContainer key={index}>
-            {modifyAssetType.map((modifyAssetType) => (
-              <AssetInputWrap key={modifyAssetType.title}>{assetInput(modifyAssetType, index)}</AssetInputWrap>
-            ))}
-          </AssetTypeContainer>
-        );
-      })}
-    </div>
+    <AssetTypeContainer>
+      {modifyAssetType.map((assetType) => (
+        <AssetInputWrap key={assetType.title}>{assetInput(assetType)}</AssetInputWrap>
+      ))}
+    </AssetTypeContainer>
   );
 };
 

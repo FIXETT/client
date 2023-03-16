@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { modifyAssetTypeState } from '../../recoil/assets';
 
-const AssetTypeList = () => {
+const ModifyAssetTypeList = () => {
   const modifyAssetType = useRecoilValue(modifyAssetTypeState);
   return (
     <ModifyTableWrap>
@@ -14,7 +14,7 @@ const AssetTypeList = () => {
   );
 };
 
-export default AssetTypeList;
+export default ModifyAssetTypeList;
 const ModifyTableWrap = styled.div`
   width: 100%;
   display: flex;
