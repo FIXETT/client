@@ -88,6 +88,7 @@ export default AddAsset;
 
 const AddAssetContainer = styled.div`
   position: relative;
+  width: 100%;
   height: 100%;
   padding: 50px;
 `;
@@ -105,7 +106,6 @@ const Column = styled.div<{ postAssetType: number }>`
     `}
 `;
 const Header = styled.div`
-  width: 80vw;
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;

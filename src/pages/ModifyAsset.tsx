@@ -56,7 +56,6 @@ const ModifySupplyWrap = styled.div`
   padding: 20px;
 `;
 const Header = styled.div`
-  width: 80vw;
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
