@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { modifyAssetlistState } from '../../recoil/assets';
 import { modifyState } from '../../recoil/assets';
+import { modifyInputParameterType } from '../../types/asset';
 
-const SelectDepartment = ({ modifyAssetType, onChange }: any) => {
+const SelectDepartment = ({ modifyAssetType, onChange }: modifyInputParameterType) => {
   const [showDepartment, setShowDepartment] = useState(false);
   const modifyassetlist = useRecoilValue(modifyAssetlistState);
-  const modify: any = useRecoilValue(modifyState);
+  const modify = useRecoilValue(modifyState);
 
   return (
     <SelectContainer>

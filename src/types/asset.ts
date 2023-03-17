@@ -6,6 +6,10 @@ export type inputParameterType = {
   index: number;
   handleChange?: handleChangeType;
 };
+export type modifyInputParameterType = {
+  modifyAssetType: assetObjType;
+  onChange?: handleChangeType;
+};
 export type assetListType = {
   _id: string;
   assetNumber: number;
@@ -26,7 +30,7 @@ export type assetListType = {
   createdAt: string;
   updatedAt: string;
   __v: number;
-}[];
+};
 export type postAssetDataType = {
   name: string;
   department?: string;

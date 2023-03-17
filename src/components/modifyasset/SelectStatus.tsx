@@ -3,12 +3,41 @@ import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { modifyAssetlistState } from '../../recoil/assets';
 import { modifyState } from '../../recoil/assets';
+import { modifyInputParameterType } from '../../types/asset';
 
-const SelectStatus = ({ modifyAssetType, onChange }: any) => {
+const SelectStatus = ({ modifyAssetType, onChange }: modifyInputParameterType) => {
   const [showStatus, setShowStatus] = useState(false);
   const modifyassetlist = useRecoilValue(modifyAssetlistState);
-  const modify: any = useRecoilValue(modifyState);
+  const modify = useRecoilValue(modifyState);
+  const icon = () => {
+    switch (modifyassetlist[0].status) {
+      case '정상':
+        return <span>🟢</span>;
+      case '분실':
+        return <span>🔴</span>;
+      case '수리중':
+        return <span>🟡</span>;
+      case '수리완료':
+        return <span>🔵</span>;
+      default:
+        return <span />;
+    }
+  };
 
+  const defaultIcon = () => {
+    switch (modify[0].status) {
+      case '정상':
+        return <span>🟢</span>;
+      case '분실':
+        return <span>🔴</span>;
+      case '수리중':
+        return <span>🟡</span>;
+      case '수리완료':
+        return <span>🔵</span>;
+      default:
+        return <span />;
+    }
+  };
   return (
     <SelectContainer>
       <SelectBtn
@@ -17,6 +46,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: any) => {
           setShowStatus(!showStatus);
         }}
       >
+        {icon() || defaultIcon()}
         {modifyassetlist[0].status ? modifyassetlist[0].status : modify[0].status ? modify[0].status : '선택하기 🔽'}
       </SelectBtn>
       {showStatus && (
@@ -26,7 +56,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: any) => {
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value="🟢 정상"
+              value="정상"
               checked={modify[0].status === '🟢 정상'}
               onChange={onChange}
               onClick={() => {
@@ -40,7 +70,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: any) => {
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value="🔴 분실"
+              value="분실"
               checked={modify[0].status === '🔴 분실'}
               onChange={onChange}
               onClick={() => {
@@ -54,7 +84,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: any) => {
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value="🟡 수리중"
+              value="수리중"
               checked={modify[0].status === '🟡 수리중'}
               onChange={onChange}
               onClick={() => {
@@ -68,7 +98,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: any) => {
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value="🔵 수리완료"
+              value="수리완료"
               checked={modify[0].status === '🔵 수리완료'}
               onChange={onChange}
               onClick={() => {

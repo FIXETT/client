@@ -5,9 +5,11 @@ import { searchTextState } from '../../recoil/assets';
 import { assetListType } from '../../types/asset';
 import { assetNumberListState } from './../../recoil/assets';
 import AssetRadioButton from './AssetRadioButton';
+
 type Props = {
-  assetList: assetListType;
+  assetList: assetListType[];
 };
+
 const SearchList = ({ assetList }: Props) => {
   const searchText = useRecoilValue(searchTextState);
   const setAssetNumber = useSetRecoilState(assetNumberListState);
