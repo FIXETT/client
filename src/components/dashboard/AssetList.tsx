@@ -11,7 +11,7 @@ import SearchList from './SearchList';
 import AssetRadioButton from './AssetRadioButton';
 
 const AssetList = () => {
-  const [assetList, setAssetList] = useState<assetListType>([]);
+  const [assetList, setAssetList] = useState<assetListType[]>([]);
   const searchText = useRecoilValue(searchTextState);
   const addShowModal = useRecoilValue(showAddModalState);
   const deleteShowModal = useRecoilValue(showDeleteModalState);
@@ -35,6 +35,33 @@ const AssetList = () => {
     refetch();
   }, [addShowModal, deleteShowModal, showModifyModal]);
 
+  const categoryIcon = (value: assetListType) => {
+    switch (value?.category) {
+      case '모니터':
+        return <span>🖥️</span>;
+      case '노트북':
+        return <span>💻</span>;
+      case '데스크탑':
+        return <span>👨‍💻</span>;
+      default:
+        return <span />;
+    }
+  };
+
+  const statusIcon = (value: assetListType) => {
+    switch (value?.status) {
+      case '정상':
+        return <span>🟢</span>;
+      case '분실':
+        return <span>🔴</span>;
+      case '수리중':
+        return <span>🟡</span>;
+      case '수리완료':
+        return <span>🔵</span>;
+      default:
+        return <span />;
+    }
+  };
   return (
     <AssetListContainer>
       {searchText ? (
@@ -53,12 +80,18 @@ const AssetList = () => {
                       <AssetItem>{value?.assetNumber}</AssetItem>
                       <AssetItem>{value?.name}</AssetItem>
                       <AssetItem>{value?.product}</AssetItem>
-                      <AssetItem>{value?.category}</AssetItem>
+                      <AssetItem>
+                        {categoryIcon(value)}
+                        {value?.category}
+                      </AssetItem>
                       <AssetItem>{value?.quantity}</AssetItem>
                       <AssetItem>{value?.department}</AssetItem>
                       <AssetItem>{value?.manufacturer}</AssetItem>
                       <AssetItem>{value?.acquisitionDate}</AssetItem>
-                      <AssetItem>{value?.status}</AssetItem>
+                      <AssetItem>
+                        {statusIcon(value)}
+                        {value?.status}
+                      </AssetItem>
                       <AssetItem>{value?.note}</AssetItem>
                     </AssetLabel>
                   </div>
