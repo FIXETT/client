@@ -60,7 +60,7 @@ const SelectCategory = ({ modifyAssetType, onChange }: modifyInputParameterType)
               name={modifyAssetType.type}
               value="모니터"
               onChange={onChange}
-              checked={modify[0].category === '🖥️ 모니터'}
+              checked={modify[0].category === '모니터'}
               onClick={() => {
                 setShowModifyCategory(false);
               }}
@@ -74,7 +74,7 @@ const SelectCategory = ({ modifyAssetType, onChange }: modifyInputParameterType)
               name={modifyAssetType.type}
               value="노트북"
               onChange={onChange}
-              checked={modify[0].category === '💻 노트북'}
+              checked={modify[0].category === '노트북'}
               onClick={() => {
                 setShowModifyCategory(false);
               }}
@@ -88,7 +88,7 @@ const SelectCategory = ({ modifyAssetType, onChange }: modifyInputParameterType)
               name={modifyAssetType.type}
               value="데스크탑"
               onChange={onChange}
-              checked={modify[0].category === '👨‍💻 데스크탑'}
+              checked={modify[0].category === '데스크탑'}
               onClick={() => {
                 setShowModifyCategory(false);
               }}

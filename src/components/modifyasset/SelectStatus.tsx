@@ -9,6 +9,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: modifyInputParameterType) =
   const [showStatus, setShowStatus] = useState(false);
   const modifyassetlist = useRecoilValue(modifyAssetlistState);
   const modify = useRecoilValue(modifyState);
+
   const icon = () => {
     switch (modifyassetlist[0].status) {
       case '정상':
@@ -38,6 +39,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: modifyInputParameterType) =
         return <span />;
     }
   };
+
   return (
     <SelectContainer>
       <SelectBtn
@@ -57,7 +59,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: modifyInputParameterType) =
               id={String(0)}
               name={modifyAssetType.type}
               value="정상"
-              checked={modify[0].status === '🟢 정상'}
+              checked={modify[0].status === '정상'}
               onChange={onChange}
               onClick={() => {
                 setShowStatus(false);
@@ -71,7 +73,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: modifyInputParameterType) =
               id={String(0)}
               name={modifyAssetType.type}
               value="분실"
-              checked={modify[0].status === '🔴 분실'}
+              checked={modify[0].status === '분실'}
               onChange={onChange}
               onClick={() => {
                 setShowStatus(false);
@@ -85,7 +87,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: modifyInputParameterType) =
               id={String(0)}
               name={modifyAssetType.type}
               value="수리중"
-              checked={modify[0].status === '🟡 수리중'}
+              checked={modify[0].status === '수리중'}
               onChange={onChange}
               onClick={() => {
                 setShowStatus(false);
@@ -99,7 +101,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: modifyInputParameterType) =
               id={String(0)}
               name={modifyAssetType.type}
               value="수리완료"
-              checked={modify[0].status === '🔵 수리완료'}
+              checked={modify[0].status === '수리완료'}
               onChange={onChange}
               onClick={() => {
                 setShowStatus(false);
