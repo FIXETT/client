@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+exec < /dev/tty
 . "$(dirname -- "$0")/_/husky.sh"
 
 yarn run lint
