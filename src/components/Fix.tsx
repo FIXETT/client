@@ -10,7 +10,7 @@ export interface propsType {
 }
 const Fix = () => {
   const [val, setVal] = useRecoilState(useFixState);
-  const [keyword, setKeyword] = useState('모니터 수리');
+  const [keyword, setKeyword] = useState('컴퓨터 수리');
   const clickHandler = (e: any) => {
     e.preventDefault();
 
@@ -40,9 +40,12 @@ const Fix = () => {
           </Notebook>
         </KeywordBox>
       </FixBox>
+      <TotalBox>
+        <TotalCt>총{totalCnt}개</TotalCt>
+        <FixapplyBtn>선택한 수리점에 견적 요청하기</FixapplyBtn>
+      </TotalBox>
 
       <MapBox>
-        <TotalCt>총{totalCnt}개</TotalCt>
         <KaKao searchKeyword={keyword} />
       </MapBox>
     </Wrap>
@@ -86,14 +89,15 @@ const FixBox = styled.div`
 const MapBox = styled.div`
   width: 1032px;
   border-top: 1px solid #e4ccff;
-  position: relative;
-  left: 59px;
-
-  top: 20%;
+  margin-top: auto;
+  margin-left: 55px;
 `;
 const TotalCt = styled.span`
-  position: relative;
-  top: -4%;
+  width: 413px;
+  height: 37px;
+  display: flex;
+  align-items: center;
+  margin-top: 18%;
 `;
 const KeywordBox = styled.div`
   /* width: 1032px; */
@@ -143,4 +147,22 @@ const Notebook = styled.div`
   border-radius: 87px;
   border: 1px solid #5a3092;
   cursor: pointer;
+`;
+const TotalBox = styled.div`
+  width: 1032px;
+  height: 37px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: auto;
+`;
+const FixapplyBtn = styled.button`
+  background-color: #5a3092;
+  border-radius: 87px;
+  width: 228px;
+  height: 27px;
+  margin-top: 18%;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
 `;
