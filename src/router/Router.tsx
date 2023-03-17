@@ -2,11 +2,11 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import Aside from '../components/aside';
-import Dashboard from '../pages/dashboard';
 import Layout from '../components/Layout';
+import Dashboard from '../pages/Dashboard';
 import LandingPage from '../pages/Landing/LandingPage';
-import AddAsset from '../pages/addasset';
-import ModifyAsset from '../pages/modifyasset';
+import AddAsset from '../pages/AddAsset';
+import ModifyAsset from '../pages/ModifyAsset';
 import ConfirmPage from '../pages/Signup/ConfirmPage';
 import SignupPage from '../pages/Signup/SignupPage';
 import EnterInfoPage from './../pages/Signup/EnterInfoPage';

@@ -6,7 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { patchAsset } from '../../apis/asset';
 import { modifyAssetlistState, modifyselectAssetTypeState, showModifyModalState } from '../../recoil/assets';
 import { useNavigate } from 'react-router-dom';
-import { assetNumberListState, modifyAssetTypeState } from './../../recoil/assets';
+import { assetNumberListState, modifyAssetTypeState } from '../../recoil/assets';
 
 import department from '../../assets/icon/team.svg';
 import manufacturer from '../../assets/icon/manufacturer.svg';
