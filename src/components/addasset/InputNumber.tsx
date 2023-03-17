@@ -1,11 +1,28 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { assetlistState } from '../../recoil/assets';
 import { inputParameterType } from '../../types/asset';
 import ContextMenu from './ContextMenu';
 
 const InputNumber = ({ assetType, index, handleChange }: inputParameterType) => {
   const [showContextMenu, setShowContextMenu] = useState(false);
+  const [assetlist, setassetlist] = useRecoilState(assetlistState);
+  const inputRef = useRef<HTMLInputElement>(null);
 
+  const onclickDeleteText = () => {
+    const inputEl = inputRef.current;
+    if (inputEl) {
+      inputEl.value = 0 as unknown as string;
+    }
+    const deleteTable = [...assetlist];
+    deleteTable[index] = {
+      ...deleteTable[index],
+      [assetType.type]: 0,
+    };
+    setassetlist(deleteTable);
+    setShowContextMenu(false);
+  };
   return (
     <>
       <AssetInput
@@ -23,8 +40,9 @@ const InputNumber = ({ assetType, index, handleChange }: inputParameterType) => 
           e.preventDefault();
           setShowContextMenu(true);
         }}
+        ref={inputRef}
       />
-      {showContextMenu && <ContextMenu assetType={assetType} index={index} />}
+      {showContextMenu && <ContextMenu assetType={assetType} index={index} onclickDeleteText={onclickDeleteText} />}
     </>
   );
 };

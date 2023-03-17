@@ -8,6 +8,7 @@ import AssetInputList from '../components/addasset/AssetInputList';
 import AddTableButton from '../components/addasset/AddTableButton';
 import AddAssetTypeButton from '../components/addasset/AddAssetTypeButton';
 import AddModal from '../components/addasset/AddModal';
+import Header from '../components/addasset/Header';
 
 import department from '../assets/icon/team.svg';
 import manufacturer from '../assets/icon/manufacturer.svg';
@@ -20,8 +21,6 @@ const AddAsset = () => {
   const [postAssetType, setPostAssetType] = useRecoilState(postAssetTypeState);
   const setSelectAssetType = useSetRecoilState(selectAssetTypeState);
   const setassetlist = useSetRecoilState(assetlistState);
-  const setShowModal = useSetRecoilState(showAddModalState);
-  const assetlist = useRecoilValue(assetlistState);
 
   // 초기화
   useEffect(() => {
@@ -57,22 +56,7 @@ const AddAsset = () => {
   return (
     <AddAssetContainer>
       {showModal && <AddModal />}
-      <Header>
-        <Title>제품 등록하기</Title>
-        <AddAssetBtn
-          onClick={() => {
-            assetlist.map((value) => {
-              if (value.name === '' || value.quantity === 0 || value.product === '' || value.category === '') {
-                alert('빈칸을 입력해주세요');
-              } else {
-                setShowModal(true);
-              }
-            });
-          }}
-        >
-          등록하기
-        </AddAssetBtn>
-      </Header>
+      <Header />
       <AddAssetWrap>
         <Column postAssetType={postAssetType.length}>
           <AssetTypeList />
@@ -104,21 +88,4 @@ const Column = styled.div<{ postAssetType: number }>`
     css`
       width: 100%;
     `}
-`;
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 20px;
-  border-bottom: 1px solid var(--gray);
-`;
-const Title = styled.h1`
-  font-size: var(--heading3);
-  margin: 10px 0;
-  font-weight: bold;
-`;
-const AddAssetBtn = styled.button`
-  background-color: var(--primary);
-  padding: 5px 25px;
-  color: #fff;
-  border-radius: 5px;
 `;

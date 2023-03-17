@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { assetlistState } from '../../recoil/assets';
 import { inputParameterType } from '../../types/asset';
 import ContextMenu from './ContextMenu';
@@ -8,11 +8,26 @@ import ContextMenu from './ContextMenu';
 const SelectCategory = ({ assetType, index, handleChange }: inputParameterType) => {
   const [showContextMenu, setShowContextMenu] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
-  const assetlist = useRecoilValue(assetlistState);
+  const [assetlist, setassetlist] = useRecoilState(assetlistState);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const onclickDeleteText = () => {
+    const inputEl = inputRef.current;
+    if (inputEl) {
+      inputEl.value = '';
+    }
+    const deleteTable = [...assetlist];
+    deleteTable[index] = {
+      ...deleteTable[index],
+      [assetType.type]: '',
+    };
+    setassetlist(deleteTable);
+    setShowContextMenu(false);
+  };
 
   return (
     <SelectContainer>
-      {showContextMenu && <ContextMenu assetType={assetType} index={index} />}
+      {showContextMenu && <ContextMenu assetType={assetType} index={index} onclickDeleteText={onclickDeleteText} />}
       <SelectBtn
         onClick={(e) => {
           e.preventDefault();
