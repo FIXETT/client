@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
-import { assetlistState, postAssetTypeState, selectAssetTypeState, showAddModalState } from '../../recoil/assets';
+import { assetlistState, postAssetTypeState, selectAssetTypeState, showAddModalState } from '../recoil/assets';
 
-import AssetTypeList from './AssetTypeList';
-import AssetInputList from './AssetInputList';
-import AddTableButton from './AddTableButton';
-import AddAssetTypeButton from './AddAssetTypeButton';
-import AddModal from './AddModal';
+import AssetTypeList from '../components/addasset/AssetTypeList';
+import AssetInputList from '../components/addasset/AssetInputList';
+import AddTableButton from '../components/addasset/AddTableButton';
+import AddAssetTypeButton from '../components/addasset/AddAssetTypeButton';
+import AddModal from '../components/addasset/AddModal';
 
-import department from '../../assets/icon/team.svg';
-import manufacturer from '../../assets/icon/manufacturer.svg';
-import acquisitionDate from '../../assets/icon/date.svg';
-import status from '../../assets/icon/status.svg';
-import note from '../../assets/icon/text.svg';
+import department from '../assets/icon/team.svg';
+import manufacturer from '../assets/icon/manufacturer.svg';
+import acquisitionDate from '../assets/icon/date.svg';
+import status from '../assets/icon/status.svg';
+import note from '../assets/icon/text.svg';
 
 const AddAsset = () => {
   const showModal = useRecoilValue(showAddModalState);

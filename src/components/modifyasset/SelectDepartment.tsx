@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { modifyAssetlistState } from '../../recoil/assets';
-import { modifyState } from './../../recoil/assets';
+import { modifyState } from '../../recoil/assets';
 
 const SelectDepartment = ({ modifyAssetType, onChange }: any) => {
   const [showDepartment, setShowDepartment] = useState(false);
