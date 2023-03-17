@@ -62,15 +62,15 @@ const Title = styled.span`
   font-size: 24px;
   line-height: 36px;
   text-align: left;
-  position: relative;
-  top: 65px;
-  left: 59px;
+
+  margin-top: 39px;
+  margin-left: 59px;
   font-weight: 700;
 `;
 const Sub = styled.span`
-  position: relative;
-  top: 101px;
-  left: 59px;
+  margin-left: 58px;
+
+  margin-top: 13px;
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
@@ -80,16 +80,16 @@ const TitleBox = styled.div`
   flex-direction: column;
 `;
 const FixBox = styled.div`
-  position: relative;
-  top: 165px;
-  left: 59px;
+  margin-top: 1rem;
+  margin-left: 59px;
   width: 1032px;
   border-top: 1px solid #e4ccff;
 `;
 const MapBox = styled.div`
+  margin-top: 12rem;
   width: 1032px;
   border-top: 1px solid #e4ccff;
-  margin-top: auto;
+
   margin-left: 55px;
 `;
 const TotalCt = styled.span`
@@ -97,7 +97,7 @@ const TotalCt = styled.span`
   height: 37px;
   display: flex;
   align-items: center;
-  margin-top: 18%;
+  margin-top: 11rem;
 `;
 const KeywordBox = styled.div`
   /* width: 1032px; */
@@ -149,6 +149,7 @@ const Notebook = styled.div`
   cursor: pointer;
 `;
 const TotalBox = styled.div`
+  margin-top: -10rem;
   width: 1032px;
   height: 37px;
   display: flex;
@@ -161,7 +162,7 @@ const FixapplyBtn = styled.button`
   border-radius: 87px;
   width: 228px;
   height: 27px;
-  margin-top: 18%;
+  margin-top: 11.5rem;
   font-size: 13px;
   font-weight: 700;
   color: #ffffff;

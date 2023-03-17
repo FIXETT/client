@@ -197,9 +197,12 @@ const KaKao = (props: propsType) => {
           height:70px;
           display:flex;
           align-items: center;
+          justify-content: space-between;
           " class="info">
+<div style="display:flex">
           <img style="width:29px;
             height:29px;" src="${markerimg}"/>
+            
             <div style="display:flex;
             flex-direction:column;
             margin-left:4px;">
@@ -222,8 +225,9 @@ const KaKao = (props: propsType) => {
               </span>
             </a>
             </div>
+            </div>
             
-            <div style="display:flex;flex-direction:column;align-items:end;gap:10px;position:absolute;left:47%;">
+            <div style="display:flex;flex-direction:column;align-items:end;gap:10px;">
             <input style="width:20px;
             height:20px;
             color: #5A3092;
