@@ -64,7 +64,9 @@ const NavList = () => {
           </React.Fragment>
         );
       })}
-      <BlankLink to="https://walla.my/survey/alQkguKVGeJ5VywdDQMx">견적 요청하기</BlankLink>
+      <BlankLink to="https://walla.my/survey/alQkguKVGeJ5VywdDQMx" target="_blank">
+        견적 요청하기
+      </BlankLink>
     </ListItemContainer>
   );
 };
