@@ -3,11 +3,39 @@ import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { modifyAssetlistState } from '../../recoil/assets';
 import { modifyState } from '../../recoil/assets';
+import { modifyInputParameterType } from '../../types/asset';
 
-const SelectCategory = ({ modifyAssetType, onChange }: any) => {
+const SelectCategory = ({ modifyAssetType, onChange }: modifyInputParameterType) => {
   const [showModifyCategory, setShowModifyCategory] = useState(false);
   const modifyAssetlist = useRecoilValue(modifyAssetlistState);
-  const modify: any = useRecoilValue(modifyState);
+  const modify = useRecoilValue(modifyState);
+
+  const icon = () => {
+    switch (modifyAssetlist[0].category) {
+      case '모니터':
+        return <span>🖥️</span>;
+      case '노트북':
+        return <span>💻</span>;
+      case '데스크탑':
+        return <span>👨‍💻</span>;
+      default:
+        return <span />;
+    }
+  };
+
+  const defaultIcon = () => {
+    switch (modify[0].category) {
+      case '모니터':
+        return <span>🖥️</span>;
+      case '노트북':
+        return <span>💻</span>;
+      case '데스크탑':
+        return <span>👨‍💻</span>;
+      default:
+        return <span />;
+    }
+  };
+
   return (
     <SelectContainer>
       <SelectBtn
@@ -16,6 +44,7 @@ const SelectCategory = ({ modifyAssetType, onChange }: any) => {
           setShowModifyCategory(!showModifyCategory);
         }}
       >
+        {icon() || defaultIcon()}
         {modifyAssetlist[0].category
           ? modifyAssetlist[0].category
           : modify[0].category
@@ -29,9 +58,9 @@ const SelectCategory = ({ modifyAssetType, onChange }: any) => {
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value="🖥️ 모니터"
+              value="모니터"
               onChange={onChange}
-              checked={modify[0].category && modify[0].category === '🖥️ 모니터'}
+              checked={modify[0].category === '모니터'}
               onClick={() => {
                 setShowModifyCategory(false);
               }}
@@ -43,9 +72,9 @@ const SelectCategory = ({ modifyAssetType, onChange }: any) => {
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value="💻 노트북"
+              value="노트북"
               onChange={onChange}
-              checked={modify[0].category === '💻 노트북'}
+              checked={modify[0].category === '노트북'}
               onClick={() => {
                 setShowModifyCategory(false);
               }}
@@ -57,9 +86,9 @@ const SelectCategory = ({ modifyAssetType, onChange }: any) => {
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value="👨‍💻 데스크탑"
+              value="데스크탑"
               onChange={onChange}
-              checked={modify[0].category === '👨‍💻 데스크탑'}
+              checked={modify[0].category === '데스크탑'}
               onClick={() => {
                 setShowModifyCategory(false);
               }}

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { assetlistState } from '../../recoil/assets';
 import { inputParameterType } from '../../types/asset';
 import ContextMenu from './ContextMenu';
@@ -24,6 +24,18 @@ const SelectCategory = ({ assetType, index, handleChange }: inputParameterType) 
     setassetlist(deleteTable);
     setShowContextMenu(false);
   };
+  const icon = () => {
+    switch (assetlist[index]?.category) {
+      case '모니터':
+        return <span>🖥️</span>;
+      case '노트북':
+        return <span>💻</span>;
+      case '데스크탑':
+        return <span>👨‍💻</span>;
+      default:
+        return <span />;
+    }
+  };
 
   return (
     <SelectContainer>
@@ -39,6 +51,7 @@ const SelectCategory = ({ assetType, index, handleChange }: inputParameterType) 
           setShowContextMenu(true);
         }}
       >
+        {icon()}
         {assetlist[index]?.category ? assetlist[index]?.category : '선택하기 🔽'}
       </SelectBtn>
       {showCategory && (
@@ -48,7 +61,7 @@ const SelectCategory = ({ assetType, index, handleChange }: inputParameterType) 
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value="🖥️ 모니터"
+              value="모니터"
               onChange={handleChange}
               onClick={() => {
                 setShowCategory(false);
@@ -61,7 +74,7 @@ const SelectCategory = ({ assetType, index, handleChange }: inputParameterType) 
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value="💻 노트북"
+              value="노트북"
               onChange={handleChange}
               onClick={() => {
                 setShowCategory(false);
@@ -74,7 +87,7 @@ const SelectCategory = ({ assetType, index, handleChange }: inputParameterType) 
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value="👨‍💻 데스크탑"
+              value="데스크탑"
               onChange={handleChange}
               onClick={() => {
                 setShowCategory(false);

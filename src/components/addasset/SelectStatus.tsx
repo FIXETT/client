@@ -25,6 +25,20 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
     setShowContextMenu(false);
   };
 
+  const icon = () => {
+    switch (assetlist[index]?.status) {
+      case '정상':
+        return <span>🟢</span>;
+      case '분실':
+        return <span>🔴</span>;
+      case '수리중':
+        return <span>🟡</span>;
+      case '수리완료':
+        return <span>🔵</span>;
+      default:
+        return <span />;
+    }
+  };
   return (
     <SelectContainer>
       {showContextMenu && <ContextMenu assetType={assetType} index={index} onclickDeleteText={onclickDeleteText} />}
@@ -39,6 +53,7 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
           setShowContextMenu(true);
         }}
       >
+        {icon()}
         {assetlist[index]?.status ? assetlist[index]?.status : '선택하기 🔽'}
       </SelectBtn>
       {showStatus && (
@@ -48,7 +63,7 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value="🟢 정상"
+              value="정상"
               onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
@@ -61,7 +76,7 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value="🔴 분실"
+              value="분실"
               onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
@@ -74,7 +89,7 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value="🟡 수리중"
+              value="수리중"
               onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
@@ -87,7 +102,7 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value="🔵 수리완료"
+              value="수리완료"
               onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
