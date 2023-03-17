@@ -23,7 +23,6 @@ const Header = () => {
 export default Header;
 
 const HeaderContainer = styled.div`
-  width: 80vw;
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
