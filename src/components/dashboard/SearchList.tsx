@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { searchTextState } from '../../recoil/assets';
-import { assetListType, getAssetListType, handleChangeType } from '../../types/asset';
+import { assetListType } from '../../types/asset';
 import { assetNumberListState } from './../../recoil/assets';
+import AssetRadioButton from './AssetRadioButton';
 type Props = {
   assetList: assetListType;
 };
 const SearchList = ({ assetList }: Props) => {
   const searchText = useRecoilValue(searchTextState);
-  const [assetNumber, setAssetNumber] = useRecoilState(assetNumberListState);
+  const setAssetNumber = useSetRecoilState(assetNumberListState);
 
   const searchResultList = () => {
     if (searchText !== '') {
@@ -36,16 +37,9 @@ const SearchList = ({ assetList }: Props) => {
     }
   };
 
-  const checkedsearch: handleChangeType = (e) => {
-    const checked = e.target.checked;
-    if (checked) {
-      const identifier = window.localStorage.getItem('identifier');
-      setAssetNumber([...assetNumber, { assetNumber: Number(e.target.id), identifier: identifier as string }]);
-    } else {
-      const filtered = assetNumber.filter((element) => element.assetNumber !== Number(e.target.id));
-      setAssetNumber(filtered);
-    }
-  };
+  useEffect(() => {
+    setAssetNumber([{ assetNumber: 0, identifier: '' }]);
+  }, []);
   return (
     <div>
       <AssetListContainer>
@@ -56,7 +50,7 @@ const SearchList = ({ assetList }: Props) => {
                 <li key={value?.assetNumber}>
                   <AssetLabel htmlFor={String(value?.assetNumber)}>
                     <AssetItem>
-                      <input type="checkbox" id={String(value.assetNumber)} onChange={checkedsearch} />
+                      <AssetRadioButton assetList={assetList} value={value} />
                     </AssetItem>
                     <AssetItem>{value?.assetNumber}</AssetItem>
                     <AssetItem>{value?.name}</AssetItem>
