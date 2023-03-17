@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { propsType } from '../Fix';
 import { useRecoilState } from 'recoil';
 import { useFixState } from '../../recoil/fix';
 import markerimg from '../../assets/icon/marker.svg';
+
 interface placeType {
   place_name: string;
   road_address_name: string;
@@ -378,6 +378,10 @@ const MapDiv = styled.div`
   margin-top: 1%;
 `;
 const Pagenation = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
   position: relative;
 
   top: 410px;
