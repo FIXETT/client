@@ -2,24 +2,14 @@ import React from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { assetlistState, selectAssetTypeState, showContextMenuState } from '../../recoil/assets';
-import { assetObjType, inputParameterType } from '../../types/asset';
+import { assetObjType } from '../../types/asset';
 import { postAssetTypeState } from './../../recoil/assets';
 
-const ContextMenu = ({ assetType, index }: inputParameterType) => {
+const ContextMenu = ({ assetType, index, onclickDeleteText }: any) => {
   const [assetlist, setassetlist] = useRecoilState(assetlistState);
   const [selectAssetType, setSelectAssetType] = useRecoilState(selectAssetTypeState);
   const setShowContextMenu = useSetRecoilState(showContextMenuState);
   const [postAssetType, setPostAssetType] = useRecoilState(postAssetTypeState);
-
-  const onclickDeleteText = (assetType: assetObjType, index: number) => {
-    const deleteTable = [...assetlist];
-    deleteTable[index] = {
-      ...deleteTable[index],
-      [assetType.type]: '',
-    };
-    setassetlist(deleteTable);
-    setShowContextMenu(false);
-  };
 
   const onclickDeleteTable = (index: number) => {
     if (assetlist.length > 1) {
@@ -53,13 +43,13 @@ const ContextMenu = ({ assetType, index }: inputParameterType) => {
   return (
     <ContextMenuContainer>
       <ContextMenuList>
-        {/* <ContextMenuItem
+        <ContextMenuItem
           onClick={() => {
             onclickDeleteText(assetType, index);
           }}
         >
           내용 삭제하기
-        </ContextMenuItem> */}
+        </ContextMenuItem>
         <ContextMenuItem
           onClick={() => {
             onclickDeleteTable(index);
