@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { propsType } from '../Fix';
 import { useRecoilState } from 'recoil';
 import { useFixState } from '../../recoil/fix';
 import markerimg from '../../assets/icon/marker.svg';
+
 interface placeType {
   place_name: string;
   road_address_name: string;
@@ -197,9 +197,12 @@ const KaKao = (props: propsType) => {
           height:70px;
           display:flex;
           align-items: center;
+          justify-content: space-between;
           " class="info">
+<div style="display:flex">
           <img style="width:29px;
             height:29px;" src="${markerimg}"/>
+            
             <div style="display:flex;
             flex-direction:column;
             margin-left:4px;">
@@ -222,8 +225,9 @@ const KaKao = (props: propsType) => {
               </span>
             </a>
             </div>
+            </div>
             
-            <div style="display:flex;flex-direction:column;align-items:end;gap:10px;position:absolute;left:47%;">
+            <div style="display:flex;flex-direction:column;align-items:end;gap:10px;">
             <input style="width:20px;
             height:20px;
             color: #5A3092;
@@ -378,6 +382,10 @@ const MapDiv = styled.div`
   margin-top: 1%;
 `;
 const Pagenation = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
   position: relative;
 
   top: 410px;
