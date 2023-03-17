@@ -34,10 +34,10 @@ const NavList = () => {
   ];
 
   return (
-    <ListItemContainer>
+    <>
       {navList.map((value) => {
         return (
-          <React.Fragment key={value.id}>
+          <ListItemContainer key={value.id}>
             {/* {!value?.subNavList ? ( */}
             <ListItemLink match={String(match === `/${value.link}`)} to={value.link}>
               <ListItemImg src={value.img} alt="아이콘" />
@@ -61,11 +61,13 @@ const NavList = () => {
             </SubList>
           </ListItemContainer>
         )} */}
-          </React.Fragment>
+          </ListItemContainer>
         );
       })}
-      <BlankLink to="https://walla.my/survey/alQkguKVGeJ5VywdDQMx">견적 요청하기</BlankLink>
-    </ListItemContainer>
+      <BlankLink to="https://walla.my/survey/alQkguKVGeJ5VywdDQMx" target="_blank">
+        견적 요청하기
+      </BlankLink>
+    </>
   );
 };
 
