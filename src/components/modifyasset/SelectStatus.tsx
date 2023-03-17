@@ -1,40 +1,34 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
-import { assetlistState } from '../../recoil/assets';
-import { inputParameterType } from '../../types/asset';
-import ContextMenu from './ContextMenu';
+import { modifyAssetlistState } from '../../recoil/assets';
+import { modifyState } from '../../recoil/assets';
 
-const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) => {
-  const [showContextMenu, setShowContextMenu] = useState(false);
+const SelectStatus = ({ modifyAssetType, onChange }: any) => {
   const [showStatus, setShowStatus] = useState(false);
-  const assetlist = useRecoilValue(assetlistState);
+  const modifyassetlist = useRecoilValue(modifyAssetlistState);
+  const modify: any = useRecoilValue(modifyState);
 
   return (
     <SelectContainer>
-      {showContextMenu && <ContextMenu assetType={assetType} index={index} />}
       <SelectBtn
         onClick={(e) => {
           e.preventDefault();
-          setShowContextMenu(false);
           setShowStatus(!showStatus);
         }}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          setShowContextMenu(true);
-        }}
       >
-        {assetlist[index]?.status ? assetlist[index]?.status : '선택하기 🔽'}
+        {modifyassetlist[0].status ? modifyassetlist[0].status : modify[0].status ? modify[0].status : '선택하기 🔽'}
       </SelectBtn>
       {showStatus && (
         <SlectList>
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
-              name={assetType.type}
+              id={String(0)}
+              name={modifyAssetType.type}
               value="🟢 정상"
-              onChange={handleChange}
+              checked={modify[0].status === '🟢 정상'}
+              onChange={onChange}
               onClick={() => {
                 setShowStatus(false);
               }}
@@ -44,10 +38,11 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
-              name={assetType.type}
+              id={String(0)}
+              name={modifyAssetType.type}
               value="🔴 분실"
-              onChange={handleChange}
+              checked={modify[0].status === '🔴 분실'}
+              onChange={onChange}
               onClick={() => {
                 setShowStatus(false);
               }}
@@ -57,10 +52,11 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
-              name={assetType.type}
+              id={String(0)}
+              name={modifyAssetType.type}
               value="🟡 수리중"
-              onChange={handleChange}
+              checked={modify[0].status === '🟡 수리중'}
+              onChange={onChange}
               onClick={() => {
                 setShowStatus(false);
               }}
@@ -70,10 +66,11 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
-              name={assetType.type}
+              id={String(0)}
+              name={modifyAssetType.type}
               value="🔵 수리완료"
-              onChange={handleChange}
+              checked={modify[0].status === '🔵 수리완료'}
+              onChange={onChange}
               onClick={() => {
                 setShowStatus(false);
               }}
@@ -101,6 +98,9 @@ const AssetLabel = styled.label`
   }
   input {
     display: none;
+    ::placeholder {
+      opacity: 0;
+    }
   }
 `;
 

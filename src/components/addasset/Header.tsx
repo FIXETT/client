@@ -1,17 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState } from 'recoil';
-import { showAddModalState } from './../../recoil/assets';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { assetlistState, showAddModalState } from './../../recoil/assets';
 
 const Header = () => {
   const setShowModal = useSetRecoilState(showAddModalState);
+  const assetlist = useRecoilValue(assetlistState);
 
   return (
     <HeaderContainer>
       <Title>제품 등록하기</Title>
       <AddAssetBtn
         onClick={() => {
-          setShowModal(true);
+          assetlist.map((value) => {
+            if (value.name === '' || value.quantity === 0 || value.product === '' || value.category === '') {
+              alert('빈칸을 입력해주세요');
+            } else {
+              setShowModal(true);
+            }
+          });
         }}
       >
         등록하기
@@ -23,7 +30,6 @@ const Header = () => {
 export default Header;
 
 const HeaderContainer = styled.div`
-  width: 80vw;
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;

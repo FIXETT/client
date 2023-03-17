@@ -1,34 +1,55 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
-import { modifyAssetlistState } from '../../recoil/assets';
-import { modifyState } from './../../recoil/assets';
+import { useRecoilState } from 'recoil';
+import { assetlistState } from '../../recoil/assets';
+import { inputParameterType } from '../../types/asset';
+import ContextMenu from './ContextMenu';
 
-const SelectStatus = ({ modifyAssetType, onChange }: any) => {
+const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) => {
+  const [showContextMenu, setShowContextMenu] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
-  const modifyassetlist = useRecoilValue(modifyAssetlistState);
-  const modify: any = useRecoilValue(modifyState);
+  const [assetlist, setassetlist] = useRecoilState(assetlistState);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const onclickDeleteText = () => {
+    const inputEl = inputRef.current;
+    if (inputEl) {
+      inputEl.value = '';
+    }
+    const deleteTable = [...assetlist];
+    deleteTable[index] = {
+      ...deleteTable[index],
+      [assetType.type]: '',
+    };
+    setassetlist(deleteTable);
+    setShowContextMenu(false);
+  };
 
   return (
     <SelectContainer>
+      {showContextMenu && <ContextMenu assetType={assetType} index={index} onclickDeleteText={onclickDeleteText} />}
       <SelectBtn
         onClick={(e) => {
           e.preventDefault();
+          setShowContextMenu(false);
           setShowStatus(!showStatus);
         }}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setShowContextMenu(true);
+        }}
       >
-        {modifyassetlist[0].status ? modifyassetlist[0].status : modify[0].status ? modify[0].status : '선택하기 🔽'}
+        {assetlist[index]?.status ? assetlist[index]?.status : '선택하기 🔽'}
       </SelectBtn>
       {showStatus && (
         <SlectList>
           <AssetLabel>
             <input
               type="radio"
-              id={String(0)}
-              name={modifyAssetType.type}
+              id={String(index)}
+              name={assetType.type}
               value="🟢 정상"
-              checked={modify[0].status === '🟢 정상'}
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
               }}
@@ -38,11 +59,10 @@ const SelectStatus = ({ modifyAssetType, onChange }: any) => {
           <AssetLabel>
             <input
               type="radio"
-              id={String(0)}
-              name={modifyAssetType.type}
+              id={String(index)}
+              name={assetType.type}
               value="🔴 분실"
-              checked={modify[0].status === '🔴 분실'}
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
               }}
@@ -52,11 +72,10 @@ const SelectStatus = ({ modifyAssetType, onChange }: any) => {
           <AssetLabel>
             <input
               type="radio"
-              id={String(0)}
-              name={modifyAssetType.type}
+              id={String(index)}
+              name={assetType.type}
               value="🟡 수리중"
-              checked={modify[0].status === '🟡 수리중'}
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
               }}
@@ -66,11 +85,10 @@ const SelectStatus = ({ modifyAssetType, onChange }: any) => {
           <AssetLabel>
             <input
               type="radio"
-              id={String(0)}
-              name={modifyAssetType.type}
+              id={String(index)}
+              name={assetType.type}
               value="🔵 수리완료"
-              checked={modify[0].status === '🔵 수리완료'}
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
               }}
@@ -98,9 +116,6 @@ const AssetLabel = styled.label`
   }
   input {
     display: none;
-    ::placeholder {
-      opacity: 0;
-    }
   }
 `;
 

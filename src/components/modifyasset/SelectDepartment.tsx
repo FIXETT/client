@@ -2,69 +2,84 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { modifyAssetlistState } from '../../recoil/assets';
-import { modifyState } from './../../recoil/assets';
+import { modifyState } from '../../recoil/assets';
 
-const SelectCategory = ({ modifyAssetType, onChange }: any) => {
-  const [showModifyCategory, setShowModifyCategory] = useState(false);
-  const modifyAssetlist = useRecoilValue(modifyAssetlistState);
+const SelectDepartment = ({ modifyAssetType, onChange }: any) => {
+  const [showDepartment, setShowDepartment] = useState(false);
+  const modifyassetlist = useRecoilValue(modifyAssetlistState);
   const modify: any = useRecoilValue(modifyState);
+
   return (
     <SelectContainer>
       <SelectBtn
         onClick={(e) => {
           e.preventDefault();
-          setShowModifyCategory(!showModifyCategory);
+          setShowDepartment(!showDepartment);
         }}
       >
-        {modifyAssetlist[0].category
-          ? modifyAssetlist[0].category
-          : modify[0].category
-          ? modify[0].category
+        {modifyassetlist[0].department
+          ? modifyassetlist[0].department
+          : modify[0].department
+          ? modify[0].department
           : '선택하기 🔽'}
       </SelectBtn>
-      {showModifyCategory && (
+      {showDepartment && (
         <SlectList>
           <AssetLabel>
             <input
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value="🖥️ 모니터"
+              value="개발"
+              checked={modify[0].department === '개발'}
               onChange={onChange}
-              checked={modify[0].category && modify[0].category === '🖥️ 모니터'}
               onClick={() => {
-                setShowModifyCategory(false);
+                setShowDepartment(false);
               }}
             />
-            🖥️ 모니터
+            개발
           </AssetLabel>
           <AssetLabel>
             <input
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value="💻 노트북"
+              value="경영지원"
+              checked={modify[0].department === '경영지원'}
               onChange={onChange}
-              checked={modify[0].category === '💻 노트북'}
               onClick={() => {
-                setShowModifyCategory(false);
+                setShowDepartment(false);
               }}
             />
-            💻 노트북
+            경영지원
           </AssetLabel>
           <AssetLabel>
             <input
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value="👨‍💻 데스크탑"
+              value="세일즈"
+              checked={modify[0].department === '세일즈'}
               onChange={onChange}
-              checked={modify[0].category === '👨‍💻 데스크탑'}
               onClick={() => {
-                setShowModifyCategory(false);
+                setShowDepartment(false);
               }}
             />
-            👨‍💻 데스크탑
+            세일즈
+          </AssetLabel>
+          <AssetLabel>
+            <input
+              type="radio"
+              id={String(0)}
+              name={modifyAssetType.type}
+              value="마케팅"
+              checked={modify[0].department === '마케팅'}
+              onChange={onChange}
+              onClick={() => {
+                setShowDepartment(false);
+              }}
+            />
+            마케팅
           </AssetLabel>
         </SlectList>
       )}
@@ -72,7 +87,7 @@ const SelectCategory = ({ modifyAssetType, onChange }: any) => {
   );
 };
 
-export default SelectCategory;
+export default SelectDepartment;
 
 const AssetLabel = styled.label`
   display: block;
@@ -97,11 +112,9 @@ const SelectContainer = styled.div`
   position: relative;
   padding: 5px;
 `;
-
 const SelectBtn = styled.button`
   width: 100%;
 `;
-
 const SlectList = styled.div`
   width: 85%;
   padding: 10px;

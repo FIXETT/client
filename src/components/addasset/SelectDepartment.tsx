@@ -1,71 +1,100 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { assetlistState } from '../../recoil/assets';
 import { inputParameterType } from '../../types/asset';
 import ContextMenu from './ContextMenu';
 
-const SelectCategory = ({ assetType, index, handleChange }: inputParameterType) => {
+const SelectDepartment = ({ assetType, index, handleChange }: inputParameterType) => {
   const [showContextMenu, setShowContextMenu] = useState(false);
-  const [showCategory, setShowCategory] = useState(false);
-  const assetlist = useRecoilValue(assetlistState);
+  const [showDepartment, setShowDepartment] = useState(false);
+  const [assetlist, setassetlist] = useRecoilState(assetlistState);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const onclickDeleteText = () => {
+    const inputEl = inputRef.current;
+    if (inputEl) {
+      inputEl.value = '';
+    }
+    const deleteTable = [...assetlist];
+    deleteTable[index] = {
+      ...deleteTable[index],
+      [assetType.type]: '',
+    };
+    setassetlist(deleteTable);
+    setShowContextMenu(false);
+  };
 
   return (
     <SelectContainer>
-      {showContextMenu && <ContextMenu assetType={assetType} index={index} />}
+      {showContextMenu && <ContextMenu assetType={assetType} index={index} onclickDeleteText={onclickDeleteText} />}
+
       <SelectBtn
         onClick={(e) => {
           e.preventDefault();
           setShowContextMenu(false);
-          setShowCategory(!showCategory);
+          setShowDepartment(!showDepartment);
         }}
         onContextMenu={(e) => {
           e.preventDefault();
           setShowContextMenu(true);
         }}
       >
-        {assetlist[index]?.category ? assetlist[index]?.category : '선택하기 🔽'}
+        {assetlist[index]?.department ? assetlist[index]?.department : '선택하기 🔽'}
       </SelectBtn>
-      {showCategory && (
+      {showDepartment && (
         <SlectList>
           <AssetLabel>
             <input
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value="🖥️ 모니터"
+              value="개발"
               onChange={handleChange}
               onClick={() => {
-                setShowCategory(false);
+                setShowDepartment(false);
               }}
             />
-            🖥️ 모니터
+            개발
           </AssetLabel>
           <AssetLabel>
             <input
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value="💻 노트북"
+              value="경영지원"
               onChange={handleChange}
               onClick={() => {
-                setShowCategory(false);
+                setShowDepartment(false);
               }}
             />
-            💻 노트북
+            경영지원
           </AssetLabel>
           <AssetLabel>
             <input
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value="👨‍💻 데스크탑"
+              value="세일즈"
               onChange={handleChange}
               onClick={() => {
-                setShowCategory(false);
+                setShowDepartment(false);
               }}
             />
-            👨‍💻 데스크탑
+            세일즈
+          </AssetLabel>
+          <AssetLabel>
+            <input
+              type="radio"
+              id={String(index)}
+              name={assetType.type}
+              value="마케팅"
+              onChange={handleChange}
+              onClick={() => {
+                setShowDepartment(false);
+              }}
+            />
+            마케팅
           </AssetLabel>
         </SlectList>
       )}
@@ -73,7 +102,7 @@ const SelectCategory = ({ assetType, index, handleChange }: inputParameterType) 
   );
 };
 
-export default SelectCategory;
+export default SelectDepartment;
 
 const AssetLabel = styled.label`
   display: block;
@@ -95,11 +124,9 @@ const SelectContainer = styled.div`
   position: relative;
   padding: 5px;
 `;
-
 const SelectBtn = styled.button`
   width: 100%;
 `;
-
 const SlectList = styled.div`
   width: 85%;
   padding: 10px;

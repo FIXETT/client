@@ -2,13 +2,13 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { useRecoilValue, useRecoilState } from 'recoil';
 
-import { modifyAssetTypeState, showModifyModalState } from '../../recoil/assets';
+import { modifyAssetTypeState, showModifyModalState } from '../recoil/assets';
 
-import ModifyAssetInput from './ModifyAssetTypeList';
-import ModifyAssetInputList from './ModifyAssetInputList';
-import ModifyAssetTypeButton from './ModifyAssetTypeButton';
-import ModifyModal from './ModifyModal';
-import { modifyAssetlistState } from './../../recoil/assets';
+import ModifyAssetInput from '../components/modifyasset/ModifyAssetTypeList';
+import ModifyAssetInputList from '../components/modifyasset/ModifyAssetInputList';
+import ModifyAssetTypeButton from '../components/modifyasset/ModifyAssetTypeButton';
+import ModifyModal from '../components/modifyasset/ModifyModal';
+import { modifyAssetlistState } from '../recoil/assets';
 
 const ModifyAsset = () => {
   const modifyassetlist = useRecoilValue(modifyAssetlistState);
@@ -56,7 +56,6 @@ const ModifySupplyWrap = styled.div`
   padding: 20px;
 `;
 const Header = styled.div`
-  width: 80vw;
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;

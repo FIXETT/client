@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-
-import AssetList from './AssetTypeList';
-import Header from './Header';
-import DeleteModal from './DeleteModal';
 import { useSetRecoilState } from 'recoil';
-import { assetNumberListState } from './../../recoil/assets';
+import { assetNumberListState } from '../recoil/assets';
+
+import AssetList from '../components/dashboard/AssetTypeList';
+import Header from '../components/dashboard/Header';
+import DeleteModal from '../components/dashboard/DeleteModal';
 
 const Dashboard = () => {
   const setAssetNumber = useSetRecoilState(assetNumberListState);
