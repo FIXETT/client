@@ -34,17 +34,15 @@ const NavList = () => {
   ];
 
   return (
-    <>
+    <ListItemContainer>
       {navList.map((value) => {
         return (
           <React.Fragment key={value.id}>
             {/* {!value?.subNavList ? ( */}
-            <ListItemContainer>
-              <ListItemLink match={String(match === `/${value.link}`)} to={value.link}>
-                <ListItemImg src={value.img} alt="아이콘" />
-                <p>{value.title}</p>
-              </ListItemLink>
-            </ListItemContainer>
+            <ListItemLink match={String(match === `/${value.link}`)} to={value.link}>
+              <ListItemImg src={value.img} alt="아이콘" />
+              <p>{value.title}</p>
+            </ListItemLink>
             {/* ) : (
           <ListItemContainer onClick={TogglesubMeru}>
             <ListItem>
@@ -66,7 +64,8 @@ const NavList = () => {
           </React.Fragment>
         );
       })}
-    </>
+      <BlankLink to="https://walla.my/survey/alQkguKVGeJ5VywdDQMx">견적 요청하기</BlankLink>
+    </ListItemContainer>
   );
 };
 
@@ -89,8 +88,19 @@ const ListItemLink = styled(Link)<{ match?: string }>`
     `}
   display: flex;
   gap: 10px;
-  padding: 10px;
+  padding: 12px;
   padding-left: 22px;
+`;
+
+const BlankLink = styled(Link)`
+  margin-top: 5px;
+  display: block;
+  background-color: var(--primary);
+  color: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 14px;
 `;
 
 const ListItem = styled.div`
