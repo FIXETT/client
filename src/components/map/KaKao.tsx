@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { propsType } from '../Fix';
 import { useRecoilState } from 'recoil';
 import { useFixState } from '../../recoil/fix';
-
+import markerimg from '../../assets/icon/marker.svg';
 interface placeType {
   place_name: string;
   road_address_name: string;
@@ -184,10 +184,26 @@ const KaKao = (props: propsType) => {
       const el = document.createElement('li');
       const itemStr = `
       
-          <div style="padding:5px;z-index:1;border: 1px solid #E4CCFF;
+          <div style="padding:5px;
+          z-index:1;
+          border: 1px solid #E4CCFF;
           box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-          border-radius: 3px; margin-top:2%;margin-left:-10%;width:610px;height:70px;" class="info">
-           
+          border-radius: 3px; 
+          margin-top:2%;
+          margin-left:-10%;
+          width: 100%;
+          max-width: 610px;
+          min-width:610px;
+          height:70px;
+          display:flex;
+          align-items: center;
+          " class="info">
+          <img style="width:29px;
+            height:29px;" src="${markerimg}"/>
+            <div style="display:flex;
+            flex-direction:column;
+            margin-left:4px;">
+            
             <a href="${places.place_url}" target="_blank">
               <h5 style="font-size:11px" class="info-item place-name">${places.place_name}</h5>
               ${
@@ -205,6 +221,20 @@ const KaKao = (props: propsType) => {
                 ${places.phone}
               </span>
             </a>
+            </div>
+            
+            <div style="display:flex;flex-direction:column;align-items:end;gap:10px;position:absolute;left:47%;">
+            <input style="width:20px;
+            height:20px;
+            color: #5A3092;
+            border:1px solid;
+            accent-color:#5A3092;
+            " type="checkbox"/>
+            <button style="width:63px;
+            height:23px;color:#5A3092;
+            border:1px solid #5A3092;
+            border-radius:11.5px;font-size:10px">위치보기</button>
+            </div>
           </div>
           `;
 
