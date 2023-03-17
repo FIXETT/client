@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
@@ -11,23 +11,29 @@ import SearchList from './SearchList';
 import AssetRadioButton from './AssetRadioButton';
 
 const AssetList = () => {
+  const [assetList, setAssetList] = useState<assetListType>([]);
   const searchText = useRecoilValue(searchTextState);
   const addShowModal = useRecoilValue(showAddModalState);
   const deleteShowModal = useRecoilValue(showDeleteModalState);
   const showModifyModal = useRecoilValue(showModifyModalState);
 
-  const { data, isLoading, refetch } = useQuery({
+  const { status, refetch } = useQuery({
     queryKey: ['getAsset', { addShowModal, deleteShowModal, showModifyModal }],
     queryFn: async () => await getAsset(),
+    retry: 0, // 실패시 재호출 몇번 할지
     keepPreviousData: true,
-    staleTime: 1000,
+    onSuccess: (data) => {
+      const list = data?.data?.asset;
+      setAssetList(list);
+    },
+    onError: () => {
+      setAssetList([]);
+    },
   });
 
   useEffect(() => {
     refetch();
   }, [addShowModal, deleteShowModal, showModifyModal]);
-
-  const assetList: assetListType = data?.data?.asset;
 
   return (
     <AssetListContainer>
@@ -35,8 +41,7 @@ const AssetList = () => {
         <SearchList assetList={assetList} />
       ) : (
         <>
-          {isLoading && <li>로딩중</li>}
-          {assetList ? (
+          {assetList && (
             <li>
               {assetList?.map((value) => {
                 return (
@@ -60,9 +65,9 @@ const AssetList = () => {
                 );
               })}
             </li>
-          ) : (
-            <li>{!isLoading && <p>등록된 자산이 없습니다.</p>}</li>
           )}
+          {status === 'loading' && <li>로딩중</li>}
+          {status === 'error' && <li>등록된 자산이 없습니다.</li>}
           <TotalNumber>
             <p>
               합계:
