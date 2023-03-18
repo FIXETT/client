@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { assetlistState } from '../../recoil/assets';
 import { inputParameterType } from '../../types/asset';
 import ContextMenu from './ContextMenu';
@@ -49,7 +49,7 @@ const SelectDepartment = ({ assetType, index, handleChange }: inputParameterType
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value="개발"
+              value={4}
               onChange={handleChange}
               onClick={() => {
                 setShowDepartment(false);
@@ -62,7 +62,7 @@ const SelectDepartment = ({ assetType, index, handleChange }: inputParameterType
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value="경영지원"
+              value={3}
               onChange={handleChange}
               onClick={() => {
                 setShowDepartment(false);
@@ -75,7 +75,7 @@ const SelectDepartment = ({ assetType, index, handleChange }: inputParameterType
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value="세일즈"
+              value={2}
               onChange={handleChange}
               onClick={() => {
                 setShowDepartment(false);
@@ -88,7 +88,7 @@ const SelectDepartment = ({ assetType, index, handleChange }: inputParameterType
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value="마케팅"
+              value={1}
               onChange={handleChange}
               onClick={() => {
                 setShowDepartment(false);
