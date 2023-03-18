@@ -14,13 +14,14 @@ AxiosInstance.interceptors.response.use(
     return response;
   },
   function (error) {
+    console.error(error);
     if (error.response.status === 400) {
       const newToken = error.response.data.newToken;
       if (newToken !== undefined) {
         localStorage.setItem('token', newToken);
       }
     }
-    if (error.response.data.errorMessage === 'wrong token. please login again.') {
+    if (error.response.data.errorMessage === 'The token is incorrect. Please login again.') {
       alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
       localStorage.clear();
       window.location.href = '/';
