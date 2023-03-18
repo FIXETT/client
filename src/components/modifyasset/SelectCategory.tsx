@@ -58,7 +58,7 @@ const SelectCategory = ({ modifyAssetType, onChange }: modifyInputParameterType)
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value="모니터"
+              value={1}
               onChange={onChange}
               checked={modify[0].category === '모니터'}
               onClick={() => {
@@ -72,7 +72,7 @@ const SelectCategory = ({ modifyAssetType, onChange }: modifyInputParameterType)
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value="노트북"
+              value={2}
               onChange={onChange}
               checked={modify[0].category === '노트북'}
               onClick={() => {
@@ -86,7 +86,7 @@ const SelectCategory = ({ modifyAssetType, onChange }: modifyInputParameterType)
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value="데스크탑"
+              value={3}
               onChange={onChange}
               checked={modify[0].category === '데스크탑'}
               onClick={() => {

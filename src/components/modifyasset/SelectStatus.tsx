@@ -58,7 +58,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: modifyInputParameterType) =
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value="정상"
+              value={1}
               checked={modify[0].status === '정상'}
               onChange={onChange}
               onClick={() => {
@@ -72,7 +72,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: modifyInputParameterType) =
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value="분실"
+              value={2}
               checked={modify[0].status === '분실'}
               onChange={onChange}
               onClick={() => {
@@ -86,7 +86,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: modifyInputParameterType) =
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value="수리중"
+              value={3}
               checked={modify[0].status === '수리중'}
               onChange={onChange}
               onClick={() => {
@@ -100,7 +100,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: modifyInputParameterType) =
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value="수리완료"
+              value={4}
               checked={modify[0].status === '수리완료'}
               onChange={onChange}
               onClick={() => {
