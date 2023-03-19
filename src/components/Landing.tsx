@@ -1,66 +1,77 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { UserApi } from '../apis/axiosInstance';
 import landingimage from '../assets/ladingimage.svg';
 import landinglogo from '../assets/landinglogo.svg';
 import useInputs from '../hooks/useInput';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { readuser } from '../apis/auth';
-import ModalIcon from '../assets/modal.svg';
-import CloseModal from '../assets/closemodal.svg';
-import AxiosError from 'axios';
 
 export interface FormValue {
   name: string;
   password: string;
   email: string;
-  code: string;
-  agreePi: boolean;
 }
-const Lading = () => {
+const defalutValues = {
+  email: '',
+  password: '',
+};
+const Landing = () => {
   const [{ email, password }, onChange] = useInputs({
     email: '',
     password: '',
   });
+
+  const ref = useRef();
+  const navigate = useNavigate();
   //yup schema
   const schema = yup.object().shape({
     email: yup
       .string()
 
-      .required('이메일을 입력해주세요.')
-      .matches(/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, '올바른 이메일 형식이 아닙니다.'),
+      .matches(/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, '올바른 이메일 형식이 아닙니다.')
+      .required('이메일을 입력해주세요.'),
     password: yup
       .string()
 
-      .required('비밀번호를 입력해주세요')
       .matches(
-        /(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,30}$/,
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,30}/,
         '비밀번호를 8~30자로 영문 대소문자, 숫자, 특수문자를 조합해서 사용하세요.',
-      ),
+      )
+      .required('비밀번호를 입력해주세요'),
   });
+
   //react-hook-form
   const {
     register,
-    handleSubmit,
+    control,
+    handleSubmit: onSubmit,
+    watch,
     formState: { errors },
   } = useForm<FormValue>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
     resolver: yupResolver(schema),
-    mode: 'onChange',
+    mode: 'all',
   });
-  const [ismodal, setIsModal] = useState(true);
-  const navigate = useNavigate();
+
+  console.log(watch);
 
   const signHandler = () => {
     navigate('/signup');
   };
 
-  const loginHandler: SubmitHandler<FormValue> = async () => {
+  const loginHandler: SubmitHandler<FormValue> = async (data) => {
+    const email = data.email;
+    const password = data.password;
     try {
-      const { data } = await UserApi.signin(email, password);
-      const token = data.token;
+      const { data: Token } = await UserApi.signin(email, password);
+      const token = Token.token;
       localStorage.setItem('token', token);
 
       const { data: userData } = await readuser({ token, email, password });
@@ -75,6 +86,16 @@ const Lading = () => {
       }
     }
   };
+  // const keyupHandler = (event: any) => {
+  //   if (event.key === 'Enter') {
+  //     handleSubmit(loginHandler);
+  //     // debugger;
+
+  //     return;
+  //   }
+  // };
+
+  console.log(errors);
   return (
     <Wrap>
       <ImageContainer>
@@ -84,7 +105,7 @@ const Lading = () => {
           <Text>또 회사 자산정리로 야근 중이시라면?</Text>
         </SpanBox>
       </ImageContainer>
-      <LoginContainer onSubmit={handleSubmit(loginHandler)}>
+      <LoginContainer onSubmit={onSubmit(loginHandler)} tabIndex={0} autoComplete="off">
         <Logo src={landinglogo} alt="" />
         <Errormessage>
           {errors.email?.message}
@@ -93,52 +114,28 @@ const Lading = () => {
 
         <Email
           className={errors.email?.message && 'error'}
-          {...register('email', { required: true, maxLength: 20 })}
+          {...register('email')}
           type="text"
           name="email"
-          value={email}
-          onChange={onChange}
           placeholder="회사 이메일을 입력해주세요"
         />
         <Password
           className={errors.password?.message && 'error'}
-          {...register('password', {
-            required: true,
-            pattern: {
-              value: /(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,30}$/,
-              message: '비밀번호를 8~30자로 영문 대소문자, 숫자, 특수문자를 조합해서 사용하세요.',
-            },
-          })}
+          {...register('password')}
           type="password"
           name="password"
-          value={password}
-          onChange={onChange}
           placeholder="비밀번호"
         />
-        <LoginBtn>로그인</LoginBtn>
+        <input type="submit" style={{ display: 'none' }} />
+        <LoginBtn type="submit">로그인</LoginBtn>
         <FindPW>비밀번호를 잊으셨나요?</FindPW>
         <SignBtn onClick={signHandler}>회원가입</SignBtn>
       </LoginContainer>
-      {/* {ismodal && (
-        <Modal>
-          <Close onClick={() => setIsModal(!ismodal)} src={CloseModal} alt={' '} />
-          <ModalImg src={ModalIcon} alt="" />
-          <ModalDiv>
-            <ModalText>앗!</ModalText>
-            <ComputerText>내 컴퓨터/모니터가 고장났다구요?!</ComputerText>
-            <FixText>관리어쩔이 엄선한 최고의 수리기사에게</FixText>
-            <FixText>수리를 맡겨보세요 😉</FixText>
-            <Apply href="https://walla.my/survey/alQkguKVGeJ5VywdDQMx" target="_blank">
-              수리견적 요청하기
-            </Apply>
-          </ModalDiv>
-        </Modal>
-      )} */}
     </Wrap>
   );
 };
 
-export default Lading;
+export default Landing;
 const Wrap = styled.div`
   width: 100vw;
   height: 100vh;
