@@ -9,7 +9,20 @@ export const AxiosInstance = axios.create({
     Accept: 'application/json',
   },
 });
-
+AxiosInstance.interceptors.request.use(
+  function (config) {
+    // Do something before request is sent
+    const token = window.localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+  },
+);
 AxiosInstance.interceptors.response.use(
   function (response) {
     return response;
