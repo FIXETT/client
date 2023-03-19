@@ -67,8 +67,9 @@ const Lading = () => {
     const login = async () => {
       try {
         const { data } = await UserApi.signin(email, password);
+        console.log(data);
 
-        const token = data.token.accessToken;
+        const token = data.token;
         (async () => {
           const { data } = await readuser({ token, email, password });
           if (data) {
