@@ -11,7 +11,8 @@ const Dashboard = () => {
   const setAssetNumber = useSetRecoilState(assetNumberListState);
 
   useEffect(() => {
-    setAssetNumber([{ assetNumber: 0, identifier: '' }]);
+    const identifier = Number(window.localStorage.getItem('identifier'));
+    setAssetNumber([{ assetNumber: 0, identifier }]);
   }, []);
 
   return (

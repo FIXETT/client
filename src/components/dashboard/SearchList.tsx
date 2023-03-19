@@ -18,11 +18,11 @@ const SearchList = ({ assetList }: Props) => {
     if (searchText !== '') {
       const searchName = assetList?.filter((value) => String(value.name).includes(searchText));
       const searchProduct = assetList?.filter((value) => String(value.product).includes(searchText));
-      const searchCategory = assetList?.filter((value) => value.category.includes(searchText));
-      const searchDepartment = assetList?.filter((value) => value.department.includes(searchText));
+      const searchCategory = assetList?.filter((value) => String(value.category).includes(searchText));
+      const searchDepartment = assetList?.filter((value) => String(value.department).includes(searchText));
       const searchManufacturer = assetList?.filter((value) => value.manufacturer.includes(searchText));
       const searchacAuisitionDate = assetList?.filter((value) => value.acquisitionDate.includes(searchText));
-      const searchStatus = assetList?.filter((value) => value.status.includes(searchText));
+      const searchStatus = assetList?.filter((value) => String(value.status).includes(searchText));
       const searchNote = assetList?.filter((value) => value.note.includes(searchText));
       const result = [
         ...searchName,
@@ -40,7 +40,8 @@ const SearchList = ({ assetList }: Props) => {
   };
 
   useEffect(() => {
-    setAssetNumber([{ assetNumber: 0, identifier: '' }]);
+    const identifier = Number(window.localStorage.getItem('identifier'));
+    setAssetNumber([{ assetNumber: 0, identifier }]);
   }, []);
   return (
     <div>

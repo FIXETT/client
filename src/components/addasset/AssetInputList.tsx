@@ -16,15 +16,20 @@ const AssetInputList = () => {
   const [assetlist, setassetlist] = useRecoilState(assetlistState);
 
   const handleChange: handleChangeType = (e) => {
-    const identifier = window.localStorage.getItem('identifier');
+    const identifier = Number(window.localStorage.getItem('identifier'));
     const type = e.target.name;
-    const value = e.target.value;
+    let value: string | number = e.target.value; // Allow value to be either a string or number
     const index = Number(e.target.id);
     const newList = [...assetlist];
+
+    if (type === 'quantity') {
+      value = Number(value); // Convert value to a number
+    }
+
     newList[index] = {
       ...newList[index],
-      [type]: value,
-      identifier: String(identifier),
+      [type]: value as string, // Use a type assertion to tell TypeScript that value is a string
+      identifier,
     };
     setassetlist(newList);
   };

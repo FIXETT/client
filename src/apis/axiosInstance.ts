@@ -11,6 +11,10 @@ export const AxiosInstance = axios.create({
 
 AxiosInstance.interceptors.response.use(
   function (response) {
+    const newToken = response?.data?.newToken;
+    if (newToken !== undefined) {
+      localStorage.setItem('token', newToken);
+    }
     return response;
   },
   function (error) {
@@ -20,7 +24,7 @@ AxiosInstance.interceptors.response.use(
         localStorage.setItem('token', newToken);
       }
     }
-    if (error.response.data.errorMessage === 'wrong token. please login again.') {
+    if (error.response.data.errorMessage === 'The token is incorrect. Please login again.') {
       alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
       localStorage.clear();
       window.location.href = '/';

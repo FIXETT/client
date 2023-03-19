@@ -26,40 +26,27 @@ export const selectAssetTypeState = atom({
     { title: '비고', type: 'note', inputType: 'text', img: note },
   ],
 });
-export const inputsState = atom({
-  key: 'inputs',
-  default: {
-    name: '',
-    department: '',
-    product: '',
-    category: '',
-    quantity: 0,
-    status: '',
-    manufacturer: '',
-    acquisitionDate: '',
-    note: '',
-  },
-});
 export const assetlistState = atom({
   key: 'assetlist',
   default: [
     {
-      name: '',
+      status: '',
       department: '',
-      product: '',
       category: '',
       quantity: 0,
-      status: '',
+      identifier: 0,
+      assetNumber: 0,
+      name: '',
+      product: '',
       manufacturer: '',
       acquisitionDate: '',
       note: '',
-      identifier: '',
     },
   ],
 });
 export const assetNumberListState = atom({
   key: 'assetNumber',
-  default: [{ assetNumber: 0, identifier: '' }],
+  default: [{ assetNumber: 0, identifier: 0 }],
 });
 export const showContextMenuState = atom({
   key: 'showContextMenu',
@@ -112,17 +99,18 @@ export const modifyAssetlistState = atom<modifyListType[]>({
   key: 'modifyAssetlist',
   default: [
     {
-      assetNumber: 0,
-      name: '',
+      assetId: 0,
+      status: '',
       department: '',
-      product: '',
       category: '',
       quantity: 0,
-      status: '',
+      identifier: 0,
+      assetNumber: 0,
+      name: '',
+      product: '',
       manufacturer: '',
       acquisitionDate: '',
       note: '',
-      identifier: '',
     },
   ],
 });

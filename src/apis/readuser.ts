@@ -11,6 +11,6 @@ export const readuser = async ({ token, email, password }: readuserType) => {
 
   const response = await AxiosInstance.post('/user/readuser', { email, password }, { headers });
   window.localStorage.setItem('name', response.data.user.name);
-  window.localStorage.setItem('identifier', response.data.user._id);
+  window.localStorage.setItem('identifier', response.data.user.identifier);
   return response;
 };

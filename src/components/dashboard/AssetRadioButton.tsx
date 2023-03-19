@@ -26,8 +26,8 @@ const AssetRadioButton = ({ assetList, value }: any) => {
     e.stopPropagation();
     const checked = e.target.checked;
     if (checked) {
-      const identifier = window.localStorage.getItem('identifier');
-      setAssetNumberList([...assetNumberList, { assetNumber: Number(e.target.id), identifier: String(identifier) }]);
+      const identifier = Number(window.localStorage.getItem('identifier'));
+      setAssetNumberList([...assetNumberList, { assetNumber: Number(e.target.id), identifier }]);
       const filteredData = assetList.filter((item: patchAssetDataType) => item.assetNumber === Number(e.target.id));
       setModify(filteredData);
     } else {
@@ -51,17 +51,18 @@ const AssetRadioButton = ({ assetList, value }: any) => {
     ]);
     setModifyassetlist([
       {
+        assetId: 0,
+        status: 0,
+        department: 0,
+        category: 0,
+        quantity: 0,
+        identifier: 0,
         assetNumber: 0,
         name: '',
-        department: '',
         product: '',
-        category: '',
-        quantity: 0,
-        status: '',
         manufacturer: '',
         acquisitionDate: '',
         note: '',
-        identifier: '',
       },
     ]);
   }, []);

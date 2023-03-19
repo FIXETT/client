@@ -17,12 +17,12 @@ const ModifyAssetInputList = () => {
   const { quantity, name, product, manufacturer, note, acquisitionDate } = modify[0];
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const identifier = window.localStorage.getItem('identifier');
+    const identifier = Number(window.localStorage.getItem('identifier'));
     const type = e.target.name as string;
     const value = e.target.value;
     const newList: modifyListType[] = [Object.assign({}, modifyassetlist[0])];
     newList[0][type] = value as string;
-    newList[0].identifier = identifier as string;
+    newList[0].identifier = identifier;
 
     setModifyassetlist(newList);
   };
