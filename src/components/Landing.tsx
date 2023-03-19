@@ -8,9 +8,10 @@ import useInputs from '../hooks/useInput';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { readuser } from '../apis/readuser';
+import { readuser } from '../apis/auth';
 import ModalIcon from '../assets/modal.svg';
 import CloseModal from '../assets/closemodal.svg';
+import AxiosError from 'axios';
 
 export interface FormValue {
   name: string;
@@ -61,6 +62,7 @@ const Lading = () => {
     navigate('/signup');
   };
 
+<<<<<<< HEAD
   const loginHandler: SubmitHandler<FormValue> = (data: FormValue) => {
     console.log('submit', data);
 
@@ -82,9 +84,25 @@ const Lading = () => {
         if (error.response) {
           window.alert(error.response.data.error);
         }
+=======
+  const loginHandler: SubmitHandler<FormValue> = async () => {
+    try {
+      const { data } = await UserApi.signin(email, password);
+      const token = data.token;
+      localStorage.setItem('token', token);
+
+      const { data: userData } = await readuser({ token, email, password });
+      if (userData) {
+        window.localStorage.setItem('name', userData.user.name);
+        window.localStorage.setItem('identifier', userData.user.identifier);
+        navigate('/dashboard');
+>>>>>>> 331750e2cd1840175d5a9ffb6d78318d7067475b
       }
-    };
-    login();
+    } catch (error: any) {
+      if (error.response) {
+        window.alert(error.response.data.error);
+      }
+    }
   };
   // const keyupHandler = (event: any) => {
   //   if (event.keyCode === 13) {

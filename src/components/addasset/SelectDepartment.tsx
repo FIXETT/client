@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { assetlistState } from '../../recoil/assets';
 import { inputParameterType } from '../../types/asset';
 import ContextMenu from './ContextMenu';
@@ -49,26 +49,13 @@ const SelectDepartment = ({ assetType, index, handleChange }: inputParameterType
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value="개발"
+              value="마케팅"
               onChange={handleChange}
               onClick={() => {
                 setShowDepartment(false);
               }}
             />
-            개발
-          </AssetLabel>
-          <AssetLabel>
-            <input
-              type="radio"
-              id={String(index)}
-              name={assetType.type}
-              value="경영지원"
-              onChange={handleChange}
-              onClick={() => {
-                setShowDepartment(false);
-              }}
-            />
-            경영지원
+            마케팅
           </AssetLabel>
           <AssetLabel>
             <input
@@ -88,13 +75,26 @@ const SelectDepartment = ({ assetType, index, handleChange }: inputParameterType
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value="마케팅"
+              value="경영지원"
               onChange={handleChange}
               onClick={() => {
                 setShowDepartment(false);
               }}
             />
-            마케팅
+            경영지원
+          </AssetLabel>
+          <AssetLabel>
+            <input
+              type="radio"
+              id={String(index)}
+              name={assetType.type}
+              value="개발"
+              onChange={handleChange}
+              onClick={() => {
+                setShowDepartment(false);
+              }}
+            />
+            개발
           </AssetLabel>
         </SlectList>
       )}

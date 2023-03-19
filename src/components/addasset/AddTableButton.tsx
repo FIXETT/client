@@ -5,22 +5,22 @@ import { assetlistState } from '../../recoil/assets';
 
 const AddTableButton = () => {
   const [assetlist, setassetlist] = useRecoilState(assetlistState);
-  const identifier = window.localStorage.getItem('identifier') as string;
 
   const addTabel = () => {
     setassetlist([
       ...assetlist,
       {
-        name: '',
+        status: '',
         department: '',
-        product: '',
         category: '',
         quantity: 0,
-        status: '',
+        identifier: 0,
+        assetNumber: 0,
+        name: '',
+        product: '',
         manufacturer: '',
         acquisitionDate: '',
         note: '',
-        identifier,
       },
     ]);
   };

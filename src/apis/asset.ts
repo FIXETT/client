@@ -33,13 +33,12 @@ export const deleteAsset = async (assetNumber: object[]) => {
 
 export const getAsset = async () => {
   const token = window.localStorage.getItem('token');
-  const identifier = window.localStorage.getItem('identifier');
-
+  const identifier = Number(window.localStorage.getItem('identifier'));
   const headers = {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   };
 
-  const response = await AxiosInstance.get(`/asset?identifier=${identifier}`, { headers });
+  const response = await AxiosInstance.get(`/asset/?cursor=${identifier}`, { headers });
   return response;
 };

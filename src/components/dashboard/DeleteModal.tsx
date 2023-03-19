@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { deleteAsset } from '../../apis/asset';
 import { assetNumberListState, showDeleteModalState } from '../../recoil/assets';
@@ -9,15 +9,21 @@ import { assetNumberListState, showDeleteModalState } from '../../recoil/assets'
 const DeleteModal = () => {
   const [deleteShowModal, setDeleteShowModal] = useRecoilState(showDeleteModalState);
   const [assetNumber, setAssetNumber] = useRecoilState(assetNumberListState);
+  const queryClient = useQueryClient();
 
-  const deleteAssetMutation = useMutation(() => deleteAsset(assetNumber.slice(1)));
+  const deleteAssetMutation = useMutation(() => deleteAsset(assetNumber.slice(1)), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['getAsset']);
+    },
+  });
   const hideModal = () => {
     setDeleteShowModal(false);
   };
   const addAsset = (e: any) => {
+    const identifier = Number(window.localStorage.getItem('identifier'));
     e.stopPropagation();
     deleteAssetMutation.mutate();
-    setAssetNumber([{ assetNumber: 0, identifier: '' }]);
+    setAssetNumber([{ assetNumber: 0, identifier }]);
     setDeleteShowModal(false);
   };
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState, useRecoilState } from 'recoil';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { patchAsset } from '../../apis/asset';
 import { modifyAssetlistState, modifyselectAssetTypeState, showModifyModalState } from '../../recoil/assets';
@@ -18,13 +18,83 @@ const ModifyModal = () => {
   const navigate = useNavigate();
   const [modifyassetlist, setModifyassetlist] = useRecoilState(modifyAssetlistState);
   const setModifyShowModal = useSetRecoilState(showModifyModalState);
-  const ModifyAssetMutation = useMutation(() => patchAsset(modifyassetlist));
   const setAssetNumber = useSetRecoilState(assetNumberListState);
   const setModifyPostAssetType = useSetRecoilState(modifyAssetTypeState);
   const setModifySelectAssetType = useSetRecoilState(modifyselectAssetTypeState);
+  const queryClient = useQueryClient();
 
-  // 초기화
+  const newList = [...modifyassetlist];
+  const updatedAssetList = newList.map((asset) => {
+    const cleanedAsset = Object.fromEntries(
+      Object.entries(asset)
+        .filter(([_, value]) => value !== '')
+        .map(([key, value]) => [key, typeof value === 'string' ? value.trim() : value]),
+    );
 
+    let updatedCategory = cleanedAsset?.category;
+    let updatedDepartment = cleanedAsset?.department;
+    let updatedStatus = cleanedAsset?.status;
+
+    if (cleanedAsset?.category !== '') {
+      switch (cleanedAsset?.category) {
+        case '모니터':
+          updatedCategory = 1;
+          break;
+        case '노트북':
+          updatedCategory = 2;
+          break;
+        case '데스크탑':
+          updatedCategory = 3;
+          break;
+      }
+    }
+
+    if (cleanedAsset?.department !== '') {
+      switch (cleanedAsset?.department) {
+        case '마케팅':
+          updatedDepartment = 1;
+          break;
+        case '세일즈':
+          updatedDepartment = 2;
+          break;
+        case '경영지원':
+          updatedDepartment = 3;
+          break;
+        case '개발':
+          updatedDepartment = 4;
+          break;
+      }
+    }
+
+    if (cleanedAsset?.status !== '') {
+      switch (cleanedAsset?.status) {
+        case '정상':
+          updatedStatus = 1;
+          break;
+        case '분실':
+          updatedStatus = 2;
+          break;
+        case '수리중':
+          updatedStatus = 3;
+          break;
+        case '수리완료':
+          updatedStatus = 4;
+          break;
+      }
+    }
+
+    return {
+      ...cleanedAsset,
+      category: updatedCategory,
+      department: updatedDepartment,
+      status: updatedStatus,
+    };
+  });
+  const ModifyAssetMutation = useMutation(() => patchAsset(updatedAssetList), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['getAsset']);
+    },
+  });
   return (
     <ModifyModalContainer>
       <div>
@@ -41,7 +111,8 @@ const ModifyModal = () => {
             onClick={(e) => {
               e.stopPropagation();
               ModifyAssetMutation.mutate();
-              setAssetNumber([{ assetNumber: 0, identifier: '' }]);
+              const identifier = Number(window.localStorage.getItem('identifier'));
+              setAssetNumber([{ assetNumber: 0, identifier }]);
               setModifyPostAssetType([
                 { title: '실사용자', type: 'name', inputType: 'text' },
                 { title: '제품명', type: 'product', inputType: 'text' },
@@ -57,17 +128,18 @@ const ModifyModal = () => {
               ]);
               setModifyassetlist([
                 {
-                  assetNumber: 0,
-                  name: '',
+                  assetId: 0,
+                  status: '',
                   department: '',
-                  product: '',
                   category: '',
                   quantity: 0,
-                  status: '',
+                  identifier: 0,
+                  assetNumber: 0,
+                  name: '',
+                  product: '',
                   manufacturer: '',
                   acquisitionDate: '',
                   note: '',
-                  identifier: '',
                 },
               ]);
               setModifyShowModal(false);
