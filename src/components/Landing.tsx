@@ -15,30 +15,19 @@ export interface FormValue {
   password: string;
   email: string;
 }
-const defalutValues = {
-  email: '',
-  password: '',
-};
-const Landing = () => {
-  const [{ email, password }, onChange] = useInputs({
-    email: '',
-    password: '',
-  });
 
-  const ref = useRef();
+const Landing = () => {
   const navigate = useNavigate();
   //yup schema
   const schema = yup.object().shape({
     email: yup
       .string()
-
-      .matches(/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, '올바른 이메일 형식이 아닙니다.')
-      .required('이메일을 입력해주세요.'),
+      .required('이메일을 입력해주세요.')
+      .matches(/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, '올바른 이메일 형식이 아닙니다.'),
     password: yup
       .string()
-
       .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,30}/,
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,30}$/,
         '비밀번호를 8~30자로 영문 대소문자, 숫자, 특수문자를 조합해서 사용하세요.',
       )
       .required('비밀번호를 입력해주세요'),
@@ -47,9 +36,7 @@ const Landing = () => {
   //react-hook-form
   const {
     register,
-    control,
     handleSubmit: onSubmit,
-    watch,
     formState: { errors },
   } = useForm<FormValue>({
     defaultValues: {
@@ -59,8 +46,6 @@ const Landing = () => {
     resolver: yupResolver(schema),
     mode: 'all',
   });
-
-  console.log(watch);
 
   const signHandler = () => {
     navigate('/signup');
@@ -86,16 +71,6 @@ const Landing = () => {
       }
     }
   };
-  // const keyupHandler = (event: any) => {
-  //   if (event.key === 'Enter') {
-  //     handleSubmit(loginHandler);
-  //     // debugger;
-
-  //     return;
-  //   }
-  // };
-
-  console.log(errors);
   return (
     <Wrap>
       <ImageContainer>
@@ -126,7 +101,6 @@ const Landing = () => {
           name="password"
           placeholder="비밀번호"
         />
-        <input type="submit" style={{ display: 'none' }} />
         <LoginBtn type="submit">로그인</LoginBtn>
         <FindPW>비밀번호를 잊으셨나요?</FindPW>
         <SignBtn onClick={signHandler}>회원가입</SignBtn>
