@@ -39,16 +39,17 @@ const AddAsset = () => {
     ]);
     setassetlist([
       {
-        name: '',
+        status: '',
         department: '',
-        product: '',
         category: '',
         quantity: 0,
-        status: '',
+        identifier: 0,
+        assetNumber: 0,
+        name: '',
+        product: '',
         manufacturer: '',
         acquisitionDate: '',
         note: '',
-        identifier: '',
       },
     ]);
   }, []);

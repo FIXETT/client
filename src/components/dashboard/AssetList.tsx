@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
 
-import { showAddModalState, showDeleteModalState, showModifyModalState, searchTextState } from '../../recoil/assets';
+import { searchTextState } from '../../recoil/assets';
 import { getAsset } from '../../apis/asset';
 import { assetListType } from '../../types/asset';
 
@@ -13,27 +13,18 @@ import AssetRadioButton from './AssetRadioButton';
 const AssetList = () => {
   const [assetList, setAssetList] = useState<assetListType[]>([]);
   const searchText = useRecoilValue(searchTextState);
-  const addShowModal = useRecoilValue(showAddModalState);
-  const deleteShowModal = useRecoilValue(showDeleteModalState);
-  const showModifyModal = useRecoilValue(showModifyModalState);
 
-  const { status, refetch } = useQuery({
-    queryKey: ['getAsset', { addShowModal, deleteShowModal, showModifyModal }],
+  const { data, status } = useQuery({
+    queryKey: ['getAsset'],
     queryFn: async () => await getAsset(),
     retry: 0, // 실패시 재호출 몇번 할지
     keepPreviousData: true,
     onSuccess: (data) => {
-      const list = data?.data?.asset;
+      data.data.asset === 'does not exist asset';
+      const list = data?.data?.asset?.Assets;
       setAssetList(list);
     },
-    onError: () => {
-      setAssetList([]);
-    },
   });
-
-  useEffect(() => {
-    refetch();
-  }, [addShowModal, deleteShowModal, showModifyModal]);
 
   const categoryIcon = (value: assetListType) => {
     switch (value?.category) {
@@ -100,7 +91,7 @@ const AssetList = () => {
             </li>
           )}
           {status === 'loading' && <li>로딩중</li>}
-          {status === 'error' && <li>등록된 자산이 없습니다.</li>}
+          {data?.data?.asset === 'does not exist asset' && <li>등록된 자산이 없습니다.</li>}
           <TotalNumber>
             <p>
               합계:

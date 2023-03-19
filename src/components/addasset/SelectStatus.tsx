@@ -63,7 +63,7 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value={1}
+              value="정상"
               onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
@@ -76,7 +76,7 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value={2}
+              value="분실"
               onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
@@ -89,7 +89,7 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value={3}
+              value="수리중"
               onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
@@ -102,7 +102,7 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value={4}
+              value="수리완료"
               onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);

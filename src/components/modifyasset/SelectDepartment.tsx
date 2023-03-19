@@ -31,7 +31,7 @@ const SelectDepartment = ({ modifyAssetType, onChange }: modifyInputParameterTyp
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value={4}
+              value="개발"
               checked={modify[0].department === '개발'}
               onChange={onChange}
               onClick={() => {
@@ -45,7 +45,7 @@ const SelectDepartment = ({ modifyAssetType, onChange }: modifyInputParameterTyp
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value={3}
+              value="경영지원"
               checked={modify[0].department === '경영지원'}
               onChange={onChange}
               onClick={() => {
@@ -59,7 +59,7 @@ const SelectDepartment = ({ modifyAssetType, onChange }: modifyInputParameterTyp
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value={2}
+              value="세일즈"
               checked={modify[0].department === '세일즈'}
               onChange={onChange}
               onClick={() => {
@@ -73,7 +73,7 @@ const SelectDepartment = ({ modifyAssetType, onChange }: modifyInputParameterTyp
               type="radio"
               id={String(0)}
               name={modifyAssetType.type}
-              value={1}
+              value="마케팅"
               checked={modify[0].department === '마케팅'}
               onChange={onChange}
               onClick={() => {

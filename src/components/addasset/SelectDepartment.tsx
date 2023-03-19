@@ -49,33 +49,20 @@ const SelectDepartment = ({ assetType, index, handleChange }: inputParameterType
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value={4}
+              value="마케팅"
               onChange={handleChange}
               onClick={() => {
                 setShowDepartment(false);
               }}
             />
-            개발
+            마케팅
           </AssetLabel>
           <AssetLabel>
             <input
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value={3}
-              onChange={handleChange}
-              onClick={() => {
-                setShowDepartment(false);
-              }}
-            />
-            경영지원
-          </AssetLabel>
-          <AssetLabel>
-            <input
-              type="radio"
-              id={String(index)}
-              name={assetType.type}
-              value={2}
+              value="세일즈"
               onChange={handleChange}
               onClick={() => {
                 setShowDepartment(false);
@@ -88,13 +75,26 @@ const SelectDepartment = ({ assetType, index, handleChange }: inputParameterType
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value={1}
+              value="경영지원"
               onChange={handleChange}
               onClick={() => {
                 setShowDepartment(false);
               }}
             />
-            마케팅
+            경영지원
+          </AssetLabel>
+          <AssetLabel>
+            <input
+              type="radio"
+              id={String(index)}
+              name={assetType.type}
+              value="개발"
+              onChange={handleChange}
+              onClick={() => {
+                setShowDepartment(false);
+              }}
+            />
+            개발
           </AssetLabel>
         </SlectList>
       )}

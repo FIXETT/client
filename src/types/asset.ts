@@ -11,51 +11,47 @@ export type modifyInputParameterType = {
   onChange?: handleChangeType;
 };
 export type assetListType = {
-  _id: string;
-  assetNumber: number;
-  department: string;
-  name: number;
-  product: number;
-  category: string;
+  assetId: number;
+  status: string | number;
+  department: string | number;
+  category: string | number;
   quantity: number;
-  status: string;
+  identifier: number;
+  assetNumber: number;
+  name: null;
+  product: string;
   manufacturer: string;
   acquisitionDate: string;
   note: string;
-  identifier: {
-    _id: string;
-    email: string;
-    name: string;
-  };
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
 };
 export type postAssetDataType = {
   name: string;
-  department?: string;
+  department?: string | number;
   product: string;
-  category: string;
+  category: string | number;
   quantity: number;
-  status?: string;
+  status?: string | number;
   manufacturer?: string;
   acquisitionDate?: string;
   note?: string;
-  identifier?: string;
+  identifier?: number;
+  assetId: number;
+  assetNumber: number;
 };
 
 export type patchAssetDataType = {
-  assetNumber: number;
   name: string;
-  department?: string;
+  department?: string | number;
   product: string;
-  category: string;
+  category: string | number;
   quantity: number;
-  status?: string;
+  status?: string | number;
   manufacturer?: string;
   acquisitionDate?: string;
   note?: string;
-  identifier: string;
+  identifier?: number;
+  assetId: number;
+  assetNumber: number;
 };
 export type subNavListType = {
   id: string;
@@ -63,32 +59,25 @@ export type subNavListType = {
   title: string;
 };
 export type getAssetListType = {
-  assetNumber: number;
   name: string;
-  department?: string;
+  department?: string | number;
   product: string;
-  category: string;
+  category: string | number;
   quantity: number;
-  status?: string;
+  status?: string | number;
   manufacturer?: string;
   acquisitionDate?: string;
   note?: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  identifier: string;
+  identifier?: number;
+  assetId: number;
+  assetNumber: number;
 };
 export interface modifyListType {
-  assetNumber: number;
   name: string;
-  department: string;
   product: string;
-  category: string;
+  category: string | number;
   quantity: number;
-  status: string;
-  manufacturer: string;
-  acquisitionDate: string;
-  note: string;
-  identifier: string;
+  assetId: number;
+  assetNumber: number;
   [key: string]: string | number;
 }

@@ -11,10 +11,13 @@ export const AxiosInstance = axios.create({
 
 AxiosInstance.interceptors.response.use(
   function (response) {
+    const newToken = response?.data?.newToken;
+    if (newToken !== undefined) {
+      localStorage.setItem('token', newToken);
+    }
     return response;
   },
   function (error) {
-    console.error(error);
     if (error.response.status === 400) {
       const newToken = error.response.data.newToken;
       if (newToken !== undefined) {

@@ -61,7 +61,7 @@ const SelectCategory = ({ assetType, index, handleChange }: inputParameterType) 
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value={1}
+              value="모니터"
               onChange={handleChange}
               onClick={() => {
                 setShowCategory(false);
@@ -74,7 +74,7 @@ const SelectCategory = ({ assetType, index, handleChange }: inputParameterType) 
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value={2}
+              value="노트북"
               onChange={handleChange}
               onClick={() => {
                 setShowCategory(false);
@@ -87,7 +87,7 @@ const SelectCategory = ({ assetType, index, handleChange }: inputParameterType) 
               type="radio"
               id={String(index)}
               name={assetType.type}
-              value={3}
+              value="데스크탑"
               onChange={handleChange}
               onClick={() => {
                 setShowCategory(false);
