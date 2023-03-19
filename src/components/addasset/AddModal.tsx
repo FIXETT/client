@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { postAsset } from '../../apis/asset';
 import { assetlistState, showAddModalState } from '../../recoil/assets';
@@ -9,9 +9,76 @@ import { useNavigate } from 'react-router-dom';
 
 const AddModal = () => {
   const navigate = useNavigate();
-  const assetlist = useRecoilValue(assetlistState);
+  const queryClient = useQueryClient();
   const setAddShowModal = useSetRecoilState(showAddModalState);
-  const addAssetMutation = useMutation(() => postAsset(assetlist));
+
+  const assetlist = useRecoilValue(assetlistState);
+  const newList = [...assetlist];
+  const updatedAssetList = newList.map((asset) => {
+    let updatedCategory, updatedDepartment, updatedStatus;
+
+    switch (asset?.category) {
+      case '모니터':
+        updatedCategory = 1;
+        break;
+      case '노트북':
+        updatedCategory = 2;
+        break;
+      case '데스크탑':
+        updatedCategory = 3;
+        break;
+      default:
+        updatedCategory = asset?.category;
+    }
+
+    switch (asset?.department) {
+      case '마케팅':
+        updatedDepartment = 1;
+        break;
+      case '세일즈':
+        updatedDepartment = 2;
+        break;
+      case '경영지원':
+        updatedDepartment = 3;
+        break;
+      case '개발':
+        updatedDepartment = 4;
+        break;
+      default:
+        updatedDepartment = asset?.department;
+    }
+
+    switch (asset?.status) {
+      case '정상':
+        updatedStatus = 1;
+        break;
+      case '분실':
+        updatedStatus = 2;
+        break;
+      case '수리중':
+        updatedStatus = 3;
+        break;
+      case '수리완료':
+        updatedStatus = 4;
+        break;
+      default:
+        updatedStatus = asset?.status;
+    }
+
+    const cleanedAsset = Object.fromEntries(Object.entries(asset).filter(([_, value]) => value !== ''));
+
+    return {
+      ...cleanedAsset,
+      category: updatedCategory,
+      department: updatedDepartment,
+      status: updatedStatus,
+    };
+  });
+  const addAssetMutation = useMutation(() => postAsset(updatedAssetList), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['getAsset']);
+    },
+  });
 
   return (
     <AddModalContainer>
