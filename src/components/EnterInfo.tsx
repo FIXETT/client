@@ -32,7 +32,7 @@ const EnterInfo = () => {
 
       .required('비밀번호를 입력해주세요')
       .matches(
-        /(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,30}$/,
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,30}/,
         '비밀번호를 8~30자로 영문 대소문자, 숫자, 특수문자를 조합해서 사용하세요.',
       )
       .min(8, '비밀번호는 최소 8글자 이상입니다.')
@@ -46,13 +46,14 @@ const EnterInfo = () => {
     formState: { errors },
   } = useForm<FormValue>({
     resolver: yupResolver(schema),
-    mode: 'onChange',
+    mode: 'onBlur',
   });
 
   const signupHandler: SubmitHandler<FormValue> = () => {
     const signup = async () => {
       try {
         await UserApi.signup(info, password, name, agreePi);
+        alert(`안녕하세요😊 ${name}님 FIXET에 오신걸 환영합니다.`);
         navigate('/');
       } catch (error: any) {
         window.alert(error?.response?.data.error);
@@ -66,6 +67,7 @@ const EnterInfo = () => {
       <Img src={enter} alt={''}></Img>
       <InfoBox onSubmit={handleSubmit(signupHandler)}>
         <Text>마지막으로,이름과 비밀번호를 입력해주세요.</Text>
+
         <Name
           className={errors.name?.message && 'error'}
           {...register('name', { required: true })}
