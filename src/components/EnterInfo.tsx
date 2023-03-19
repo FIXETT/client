@@ -25,66 +25,66 @@ const EnterInfo = () => {
     name: yup
       .string()
 
-      .required('이름을 입력해주세요.')
-      .matches(/^[가-힣]{2,20}$/, '2~20자로 입력해주세요.'),
+      .matches(/^[가-힣]{2,20}$/, '2~20자로 입력해주세요.')
+      .required('이름을 입력해주세요.'),
     password: yup
       .string()
 
-      .required('비밀번호를 입력해주세요')
       .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,30}/,
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,30}$/,
         '비밀번호를 8~30자로 영문 대소문자, 숫자, 특수문자를 조합해서 사용하세요.',
       )
       .min(8, '비밀번호는 최소 8글자 이상입니다.')
-      .max(30, '비밀번호는 최대 30글자 이상입니다.'),
+      .max(30, '비밀번호는 최대 30글자 이상입니다.')
+      .required('비밀번호를 입력해주세요'),
   });
   //react-hook-form
   const {
     register,
-    handleSubmit,
+    handleSubmit: onSubmit,
     watch,
     formState: { errors },
   } = useForm<FormValue>({
+    defaultValues: {
+      name: '',
+      password: '',
+    },
     resolver: yupResolver(schema),
-    mode: 'onBlur',
+    mode: 'all',
   });
 
-  const signupHandler: SubmitHandler<FormValue> = () => {
-    const signup = async () => {
-      try {
-        await UserApi.signup(info, password, name, agreePi);
-        alert(`안녕하세요😊 ${name}님 FIXET에 오신걸 환영합니다.`);
-        navigate('/');
-      } catch (error: any) {
-        window.alert(error?.response?.data.error);
-      }
-    };
-    signup();
+  const signupHandler: SubmitHandler<FormValue> = async (data) => {
+    const name = data.name;
+    const password = data.password;
+
+    try {
+      await UserApi.signup(info, password, name, agreePi);
+      alert(`안녕하세요😊 ${name}님 FIXET에 오신걸 환영합니다.`);
+      navigate('/');
+    } catch (error: any) {
+      window.alert(error?.response?.data.error);
+    }
   };
 
   return (
     <Wrap>
       <Img src={enter} alt={''}></Img>
-      <InfoBox onSubmit={handleSubmit(signupHandler)}>
+      <InfoBox onSubmit={onSubmit(signupHandler)}>
         <Text>마지막으로,이름과 비밀번호를 입력해주세요.</Text>
 
         <Name
           className={errors.name?.message && 'error'}
-          {...register('name', { required: true })}
+          {...register('name')}
           id="name"
           name="name"
-          value={name}
-          onChange={onChange}
           placeholder="이름"
         />
         <Errormessage>{errors.name?.message}</Errormessage>
         <Password
           className={errors.password?.message && 'error'}
-          {...register('password', { required: true })}
+          {...register('password')}
           id="password"
           name="password"
-          value={password}
-          onChange={onChange}
           type="password"
           placeholder="비밀번호"
         />
