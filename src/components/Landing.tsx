@@ -9,24 +9,20 @@ import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { readuser } from '../apis/auth';
-import ModalIcon from '../assets/modal.svg';
-import CloseModal from '../assets/closemodal.svg';
-import AxiosError from 'axios';
 
 export interface FormValue {
   name: string;
   password: string;
   email: string;
-  code: string;
-  agreePi: boolean;
 }
-const Lading = () => {
+const Landing = () => {
   const [{ email, password }, onChange] = useInputs({
     email: '',
     password: '',
   });
 
-  const ref = useRef<HTMLFormElement | null>(null);
+  const ref = useRef(null);
+  const navigate = useNavigate();
   //yup schema
   const schema = yup.object().shape({
     email: yup
@@ -34,14 +30,14 @@ const Lading = () => {
       .matches(/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, '올바른 이메일 형식이 아닙니다.')
       .required('이메일을 입력해주세요.'),
 
-    password: yup
-      .string()
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,30}/,
-        '비밀번호를 8~30자로 영문 대소문자, 숫자, 특수문자를 조합해서 사용하세요.',
-      )
-      .required('비밀번호를 입력해주세요'),
+    password: yup.string(),
+    // .matches(
+    //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,30}/,
+    //   '비밀번호를 8~30자로 영문 대소문자, 숫자, 특수문자를 조합해서 사용하세요.',
+    // )
+    // .required('비밀번호를 입력해주세요'),
   });
+  type FormData = yup.InferType<typeof schema>;
   //react-hook-form
   const {
     register,
@@ -50,45 +46,22 @@ const Lading = () => {
     control,
 
     formState: { errors },
-  } = useForm<FormValue>({
+  } = useForm<FormData>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
   });
   const watch = useWatch({ control, name: ['password'] });
   console.log(watch);
-  const navigate = useNavigate();
 
   const signHandler = () => {
     navigate('/signup');
   };
 
-<<<<<<< HEAD
-  const loginHandler: SubmitHandler<FormValue> = (data: FormValue) => {
-    console.log('submit', data);
-
-    const login = async () => {
-      try {
-        const { data } = await UserApi.signin(email, password);
-        console.log(data);
-
-        const token = data.token;
-        (async () => {
-          const { data } = await readuser({ token, email, password });
-          if (data) {
-            navigate('/dashboard');
-          }
-        })();
-
-        localStorage.setItem('token', token);
-      } catch (error: any) {
-        if (error.response) {
-          window.alert(error.response.data.error);
-        }
-=======
-  const loginHandler: SubmitHandler<FormValue> = async () => {
+  const loginHandler: SubmitHandler<FormData> = async (data) => {
+    console.log(data);
     try {
-      const { data } = await UserApi.signin(email, password);
-      const token = data.token;
+      const { data: Token } = await UserApi.signin(email, password);
+      const token = Token.token;
       localStorage.setItem('token', token);
 
       const { data: userData } = await readuser({ token, email, password });
@@ -96,7 +69,6 @@ const Lading = () => {
         window.localStorage.setItem('name', userData.user.name);
         window.localStorage.setItem('identifier', userData.user.identifier);
         navigate('/dashboard');
->>>>>>> 331750e2cd1840175d5a9ffb6d78318d7067475b
       }
     } catch (error: any) {
       if (error.response) {
@@ -104,15 +76,14 @@ const Lading = () => {
       }
     }
   };
-  // const keyupHandler = (event: any) => {
-  //   if (event.keyCode === 13) {
-  //     event.preventDefault();
-  //     debugger;
-  //     // ref?.current?.submit();
+  const keyupHandler = (event: any) => {
+    if (event.key === 'Enter') {
+      handleSubmit(loginHandler);
+      // debugger;
 
-  //     // return;
-  //   }
-  // };
+      return;
+    }
+  };
 
   console.log(errors);
   return (
@@ -149,6 +120,7 @@ const Lading = () => {
           onChange={onChange}
           placeholder="비밀번호"
         />
+        <input type="submit" style={{ display: 'none' }} />
         <LoginBtn type="submit">로그인</LoginBtn>
         <FindPW>비밀번호를 잊으셨나요?</FindPW>
         <SignBtn onClick={signHandler}>회원가입</SignBtn>
@@ -157,7 +129,7 @@ const Lading = () => {
   );
 };
 
-export default Lading;
+export default Landing;
 const Wrap = styled.div`
   width: 100vw;
   height: 100vh;
