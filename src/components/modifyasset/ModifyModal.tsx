@@ -25,57 +25,63 @@ const ModifyModal = () => {
 
   const newList = [...modifyassetlist];
   const updatedAssetList = newList.map((asset) => {
-    let updatedCategory, updatedDepartment, updatedStatus;
+    const cleanedAsset = Object.fromEntries(
+      Object.entries(asset)
+        .filter(([_, value]) => value !== '')
+        .map(([key, value]) => [key, typeof value === 'string' ? value.trim() : value]),
+    );
 
-    switch (asset?.category) {
-      case '모니터':
-        updatedCategory = 1;
-        break;
-      case '노트북':
-        updatedCategory = 2;
-        break;
-      case '데스크탑':
-        updatedCategory = 3;
-        break;
-      default:
-        updatedCategory = asset?.category;
+    let updatedCategory = cleanedAsset?.category;
+    let updatedDepartment = cleanedAsset?.department;
+    let updatedStatus = cleanedAsset?.status;
+
+    if (cleanedAsset?.category !== '') {
+      switch (cleanedAsset?.category) {
+        case '모니터':
+          updatedCategory = 1;
+          break;
+        case '노트북':
+          updatedCategory = 2;
+          break;
+        case '데스크탑':
+          updatedCategory = 3;
+          break;
+      }
     }
 
-    switch (asset?.department) {
-      case '마케팅':
-        updatedDepartment = 1;
-        break;
-      case '세일즈':
-        updatedDepartment = 2;
-        break;
-      case '경영지원':
-        updatedDepartment = 3;
-        break;
-      case '개발':
-        updatedDepartment = 4;
-        break;
-      default:
-        updatedDepartment = asset?.department;
+    if (cleanedAsset?.department !== '') {
+      switch (cleanedAsset?.department) {
+        case '마케팅':
+          updatedDepartment = 1;
+          break;
+        case '세일즈':
+          updatedDepartment = 2;
+          break;
+        case '경영지원':
+          updatedDepartment = 3;
+          break;
+        case '개발':
+          updatedDepartment = 4;
+          break;
+      }
     }
 
-    switch (asset?.status) {
-      case '정상':
-        updatedStatus = 1;
-        break;
-      case '분실':
-        updatedStatus = 2;
-        break;
-      case '수리중':
-        updatedStatus = 3;
-        break;
-      case '수리완료':
-        updatedStatus = 4;
-        break;
-      default:
-        updatedStatus = asset?.status;
+    if (cleanedAsset?.status !== '') {
+      switch (cleanedAsset?.status) {
+        case '정상':
+          updatedStatus = 1;
+          break;
+        case '분실':
+          updatedStatus = 2;
+          break;
+        case '수리중':
+          updatedStatus = 3;
+          break;
+        case '수리완료':
+          updatedStatus = 4;
+          break;
+      }
     }
-
-    const cleanedAsset = Object.fromEntries(Object.entries(asset).filter(([_, value]) => value !== ''));
 
     return {
       ...cleanedAsset,
