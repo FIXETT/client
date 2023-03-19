@@ -15,50 +15,60 @@ export interface FormValue {
   password: string;
   email: string;
 }
+const defalutValues = {
+  email: '',
+  password: '',
+};
 const Landing = () => {
   const [{ email, password }, onChange] = useInputs({
     email: '',
     password: '',
   });
 
-  const ref = useRef(null);
+  const ref = useRef();
   const navigate = useNavigate();
   //yup schema
   const schema = yup.object().shape({
     email: yup
       .string()
+
       .matches(/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, '올바른 이메일 형식이 아닙니다.')
       .required('이메일을 입력해주세요.'),
+    password: yup
+      .string()
 
-    password: yup.string(),
-    // .matches(
-    //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,30}/,
-    //   '비밀번호를 8~30자로 영문 대소문자, 숫자, 특수문자를 조합해서 사용하세요.',
-    // )
-    // .required('비밀번호를 입력해주세요'),
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,30}/,
+        '비밀번호를 8~30자로 영문 대소문자, 숫자, 특수문자를 조합해서 사용하세요.',
+      )
+      .required('비밀번호를 입력해주세요'),
   });
-  type FormData = yup.InferType<typeof schema>;
+
   //react-hook-form
   const {
     register,
-    handleSubmit,
-    reset,
     control,
-
+    handleSubmit: onSubmit,
+    watch,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<FormValue>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
     resolver: yupResolver(schema),
-    mode: 'onBlur',
+    mode: 'all',
   });
-  const watch = useWatch({ control, name: ['password'] });
+
   console.log(watch);
 
   const signHandler = () => {
     navigate('/signup');
   };
 
-  const loginHandler: SubmitHandler<FormData> = async (data) => {
-    console.log(data);
+  const loginHandler: SubmitHandler<FormValue> = async (data) => {
+    const email = data.email;
+    const password = data.password;
     try {
       const { data: Token } = await UserApi.signin(email, password);
       const token = Token.token;
@@ -76,14 +86,14 @@ const Landing = () => {
       }
     }
   };
-  const keyupHandler = (event: any) => {
-    if (event.key === 'Enter') {
-      handleSubmit(loginHandler);
-      // debugger;
+  // const keyupHandler = (event: any) => {
+  //   if (event.key === 'Enter') {
+  //     handleSubmit(loginHandler);
+  //     // debugger;
 
-      return;
-    }
-  };
+  //     return;
+  //   }
+  // };
 
   console.log(errors);
   return (
@@ -95,7 +105,7 @@ const Landing = () => {
           <Text>또 회사 자산정리로 야근 중이시라면?</Text>
         </SpanBox>
       </ImageContainer>
-      <LoginContainer onSubmit={handleSubmit(loginHandler)} ref={ref} tabIndex={0} autoComplete="off">
+      <LoginContainer onSubmit={onSubmit(loginHandler)} tabIndex={0} autoComplete="off">
         <Logo src={landinglogo} alt="" />
         <Errormessage>
           {errors.email?.message}
@@ -107,8 +117,6 @@ const Landing = () => {
           {...register('email')}
           type="text"
           name="email"
-          value={email}
-          onChange={onChange}
           placeholder="회사 이메일을 입력해주세요"
         />
         <Password
@@ -116,8 +124,6 @@ const Landing = () => {
           {...register('password')}
           type="password"
           name="password"
-          value={password}
-          onChange={onChange}
           placeholder="비밀번호"
         />
         <input type="submit" style={{ display: 'none' }} />
