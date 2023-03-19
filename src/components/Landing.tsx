@@ -8,9 +8,10 @@ import useInputs from '../hooks/useInput';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { readuser } from '../apis/readuser';
+import { readuser } from '../apis/auth';
 import ModalIcon from '../assets/modal.svg';
 import CloseModal from '../assets/closemodal.svg';
+import AxiosError from 'axios';
 
 export interface FormValue {
   name: string;
@@ -56,27 +57,23 @@ const Lading = () => {
     navigate('/signup');
   };
 
-  const loginHandler: SubmitHandler<FormValue> = (data) => {
-    const login = async () => {
-      try {
-        const { data } = await UserApi.signin(email, password);
+  const loginHandler: SubmitHandler<FormValue> = async () => {
+    try {
+      const { data } = await UserApi.signin(email, password);
+      const token = data.token;
+      localStorage.setItem('token', token);
 
-        const token = data.token;
-        (async () => {
-          const { data } = await readuser({ token, email, password });
-          if (data) {
-            navigate('/dashboard');
-          }
-        })();
-
-        localStorage.setItem('token', token);
-      } catch (error: any) {
-        if (error.response) {
-          window.alert(error.response.data.error);
-        }
+      const { data: userData } = await readuser({ token, email, password });
+      if (userData) {
+        window.localStorage.setItem('name', userData.user.name);
+        window.localStorage.setItem('identifier', userData.user.identifier);
+        navigate('/dashboard');
       }
-    };
-    login();
+    } catch (error: any) {
+      if (error.response) {
+        window.alert(error.response.data.error);
+      }
+    }
   };
   return (
     <Wrap>
