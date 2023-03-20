@@ -11,7 +11,7 @@ export interface propsType {
 const Fix = () => {
   const [val, setVal] = useRecoilState(useFixState);
   const [keyword, setKeyword] = useState('컴퓨터 수리');
-  const [isClick, setIsClick] = useState('');
+  const [isClick, setIsClick] = useState('1');
   const clickHandler = (e: any) => {
     // e.preventDefault();
 
@@ -29,7 +29,7 @@ const Fix = () => {
     { value: '3', name: '노트북', id: '노트북 수리' },
   ];
   const totalCnt = val.toString();
-  console.log(keyword);
+
   return (
     <Wrap>
       <TitleBox>
