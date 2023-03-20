@@ -185,6 +185,10 @@ const KaKao = (props: propsType) => {
 
     // 검색결과 항목을 Element로 반환하는 함수
     function getListItem(index: number, places: placeType) {
+      // document.getElementById('btn')?.addEventListener('click', space);
+      // function space() {
+      //   window.location.href = `${places.place_url}`;
+      // }
       const el = document.createElement('li');
       const itemStr = `
       
@@ -211,7 +215,7 @@ const KaKao = (props: propsType) => {
             flex-direction:column;
             margin-left:4px;">
             
-            <a href="${places.place_url}" target="_blank">
+           
               <h5 style="font-size:11px" class="info-item place-name">${places.place_name}</h5>
               ${
                 places.road_address_name
@@ -232,16 +236,20 @@ const KaKao = (props: propsType) => {
             </div>
             
             <div style="display:flex;flex-direction:column;align-items:end;gap:10px;">
+            
             <input style="width:20px;
             height:20px;
             color: #5A3092;
             border:1px solid;
             accent-color:#5A3092;
             " type="checkbox"/>
-            <button style="width:63px;
+            
+            <button onclick="window.open('${places.place_url}')" id="btn" style="width:63px;
             height:23px;color:#5A3092;
             border:1px solid #5A3092;
-            border-radius:11.5px;font-size:10px">위치보기</button>
+            
+            border-radius:11.5px;font-size:10px "> 위치보기</button>
+            
             </div>
           </div>
           `;
