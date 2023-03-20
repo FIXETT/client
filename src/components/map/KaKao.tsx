@@ -213,7 +213,7 @@ const KaKao = (props: propsType) => {
             
             <div style="display:flex;
             flex-direction:column;
-            margin-left:4px;">
+            margin-left:4px;gap:4px;">
             
            
               <h5 style="font-size:11px" class="info-item place-name">${places.place_name}</h5>
@@ -227,7 +227,7 @@ const KaKao = (props: propsType) => {
              	     ${places.address_name}
                   </span>`
               }
-              <br>
+             
               <span style="font-size:9px;" class="info-item tel">
                 ${places.phone}
               </span>
