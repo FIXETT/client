@@ -129,9 +129,7 @@ const KaKao = (props: propsType) => {
         alert('검색 결과 중 오류가 발생했습니다.');
         return;
       }
-      console.log(data, status, pagination);
     };
-    console.log(page);
     // 검색 결과 목록과 마커를 표출하는 함수
     const displayPlaces = (places: string | any[]) => {
       const listEl = document.getElementById('places-list'),
@@ -429,4 +427,5 @@ const Pagenation = styled.div`
   align-items: center;
   margin-top: 425px;
   margin-left: -87px;
+  gap: 16px;
 `;
