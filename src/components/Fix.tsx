@@ -76,7 +76,7 @@ const Title = styled.span`
   line-height: 36px;
   text-align: left;
 
-  margin-top: 39px;
+  margin-top: 65px;
   margin-left: 59px;
   font-weight: 700;
 `;
@@ -123,7 +123,8 @@ const KeywordBox = styled.div`
   margin-top: 1%;
   gap: 63px;
 `;
-const Select = styled.span`
+const Select = styled.div`
+  margin-top: 14px;
   font-weight: 700;
   font-size: 15px;
   line-height: 22.5px;
