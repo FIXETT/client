@@ -2,9 +2,11 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { propsType } from '../Fix';
 import { useRecoilState } from 'recoil';
-import { useFixState } from '../../recoil/fix';
+import { useFixState, usePagination } from '../../recoil/fix';
 import markerimg from '../../assets/icon/marker.svg';
-
+import { icons } from 'react-icons';
+import previcon from '../../assets/icon/prev.png';
+import nexticon from '../../assets/icon/next.png';
 interface placeType {
   place_name: string;
   road_address_name: string;
@@ -39,6 +41,7 @@ const getCurrentLocation = async () => {
 const { kakao } = window as any;
 const KaKao = (props: propsType) => {
   const [count, setCount] = useRecoilState(useFixState);
+  const [page, setPage] = useRecoilState(usePagination);
 
   // 지도를 표시할 div
   let markers: any[] = [];
@@ -113,7 +116,10 @@ const KaKao = (props: propsType) => {
         // 정상적으로 검색이 완료됐으면
         // 검색 목록과 마커를 표출
         displayPlaces(data);
+        //페이지네이션 전체 갯수 저장
         setCount(pagination?.totalCount);
+        //페이지네이션 arg 저장
+        setPage([pagination.current, pagination.last]);
         //페이지 번호를 표출
         displayPagination(pagination);
       } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
@@ -125,6 +131,7 @@ const KaKao = (props: propsType) => {
       }
       console.log(data, status, pagination);
     };
+    console.log(page);
     // 검색 결과 목록과 마커를 표출하는 함수
     const displayPlaces = (places: string | any[]) => {
       const listEl = document.getElementById('places-list'),
@@ -293,23 +300,57 @@ const KaKao = (props: propsType) => {
         paginationEl.lastChild && paginationEl.removeChild(paginationEl.lastChild);
       }
 
-      for (i = 1; i <= pagination.last; i++) {
-        const el = document.createElement('a') as HTMLAnchorElement;
-        el.href = '#';
-        el.innerHTML = i.toString();
+      //이전 페이지 가는 함수
+      const prevEl = document.createElement('img') as HTMLImageElement;
+      // prevEl.href = '#';
 
-        if (i === pagination.current) {
-          el.className = 'on';
-        } else {
-          el.onclick = (function (i) {
-            return function () {
-              pagination.gotoPage(i);
-            };
-          })(i);
+      prevEl.src = previcon;
+      prevEl.style.cursor = 'pointer';
+      prevEl.onclick = function () {
+        if (pagination.current > 1) {
+          pagination.gotoPage(pagination.current - 1);
         }
+        return false;
+      };
+      fragment.appendChild(prevEl);
+      paginationEl.appendChild(fragment);
+      // 페이지 번호 생성
+      // for (i = 1; i <= pagination.last; i++) {
+      //   const el = document.createElement('a') as HTMLAnchorElement;
+      //   el.href = '#';
+      //   el.innerHTML = i.toString();
 
-        fragment.appendChild(el);
-      }
+      //   if (i === pagination.current) {
+      //     el.className = 'on';
+      //   } else {
+      //     el.onclick = (function (i) {
+      //       return function () {
+      //         pagination.gotoPage(i);
+      //       };
+      //     })(i);
+      //   }
+
+      //   fragment.appendChild(el);
+      // }
+
+      //현재페이지 / 마지막페이지 나타내는 함수
+      const pageStatusEl = document.createElement('a') as HTMLAnchorElement;
+      pageStatusEl.style.display = 'flex';
+      pageStatusEl.style.flexDirection = 'row';
+      pageStatusEl.innerHTML = `<div style="color:#5A3092;display:flex;">${pagination.current}</div> / <div>${pagination.last}</div>`;
+      paginationEl.appendChild(pageStatusEl);
+      //다음페이지 가는 함수
+      const nextEl = document.createElement('img') as HTMLImageElement;
+      nextEl.src = nexticon;
+      nextEl.style.cursor = 'pointer';
+      nextEl.onclick = function () {
+        if (pagination.current < pagination.last) {
+          pagination.gotoPage(pagination.current + 1);
+        }
+        return false;
+      };
+      fragment.appendChild(nextEl);
+
       paginationEl.appendChild(fragment);
     }
     //검색 결과 목록 또는 마커 클릭 했을때 호출되는 함수
@@ -340,6 +381,7 @@ const KaKao = (props: propsType) => {
           <div className="scroll-wrapper">
             <PlaceList id="places-list"></PlaceList>
           </div>
+
           <Pagenation id="pagination"></Pagenation>
         </div>
       </ResultList>
@@ -385,9 +427,6 @@ const Pagenation = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
-  position: relative;
-
-  top: 410px;
-  left: 200px;
+  margin-top: 425px;
+  margin-left: -87px;
 `;
