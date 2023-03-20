@@ -111,19 +111,16 @@ const Landing = () => {
 
 export default Landing;
 const Wrap = styled.div`
-  width: 100vw;
   height: 100vh;
   display: flex;
-  flex-direction: row;
-  margin: 0 auto;
 `;
 
 //이미지 컨테이너
 const ImageContainer = styled.div`
   display: flex;
   flex-direction: column;
-
-  /* margin-left: 5%; */
+  margin-top: 125px;
+  margin-left: 66px;
 `;
 const LandingImage = styled.img`
   width: 52rem;
@@ -153,8 +150,8 @@ const LoginContainer = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: relative;
-  left: 9.125rem;
+  margin-top: 196px;
+  margin-left: 129px;
 `;
 const Logo = styled.img`
   position: relative;
