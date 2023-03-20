@@ -4,7 +4,6 @@ import { propsType } from '../Fix';
 import { useRecoilState } from 'recoil';
 import { useFixState, usePagination } from '../../recoil/fix';
 import markerimg from '../../assets/icon/marker.svg';
-import { icons } from 'react-icons';
 import previcon from '../../assets/icon/prev.png';
 import nexticon from '../../assets/icon/next.png';
 interface placeType {
