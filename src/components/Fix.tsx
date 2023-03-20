@@ -11,13 +11,25 @@ export interface propsType {
 const Fix = () => {
   const [val, setVal] = useRecoilState(useFixState);
   const [keyword, setKeyword] = useState('컴퓨터 수리');
+  const [isClick, setIsClick] = useState('');
   const clickHandler = (e: any) => {
-    e.preventDefault();
+    // e.preventDefault();
 
-    setKeyword(e.target.id);
+    setKeyword((prev) => {
+      return e.target.id;
+    });
+
+    setIsClick((prev) => {
+      return e.target.value;
+    });
   };
+  const ButtonList = [
+    { value: '1', name: 'PC', id: '컴퓨터 수리' },
+    { value: '2', name: '모니터', id: '모니터 수리' },
+    { value: '3', name: '노트북', id: '노트북 수리' },
+  ];
   const totalCnt = val.toString();
-
+  console.log(keyword);
   return (
     <Wrap>
       <TitleBox>
@@ -28,15 +40,17 @@ const Fix = () => {
       <FixBox>
         <Select>수리 제품 선택</Select>
         <KeywordBox>
-          <PC onClick={clickHandler} id="컴퓨터 수리">
-            PC
-          </PC>
-          <Monitor onClick={clickHandler} id="모니터 수리">
-            모니터
-          </Monitor>
-          <Notebook onClick={clickHandler} id="노트북 수리">
-            노트북
-          </Notebook>
+          {ButtonList.map((item, index) => (
+            <PC
+              id={item.id}
+              value={item.value}
+              className={item.value === isClick ? 'active' : ''}
+              key={index}
+              onClick={clickHandler}
+            >
+              {item.name}
+            </PC>
+          ))}
         </KeywordBox>
       </FixBox>
       <TotalBox>
@@ -114,39 +128,23 @@ const Select = styled.span`
   font-size: 15px;
   line-height: 22.5px;
 `;
-const PC = styled.div`
-  width: 79px;
-  height: 27px;
-  background-color: #5a3092;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 87px;
-  cursor: pointer;
-`;
-const Monitor = styled.div`
+const PC = styled.button`
   width: 79px;
   height: 27px;
   background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #5a3092;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 87px;
-  border: 1px solid #5a3092;
   cursor: pointer;
+  &.active {
+    background-color: #5a3092;
+    color: #ffffff;
+  }
 `;
-const Notebook = styled.div`
-  width: 79px;
-  height: 27px;
-  background-color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 87px;
-  border: 1px solid #5a3092;
-  cursor: pointer;
-`;
+
 const TotalBox = styled.div`
   margin-top: -10rem;
   width: 1032px;
