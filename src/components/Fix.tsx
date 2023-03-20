@@ -17,7 +17,6 @@ const Fix = () => {
     setKeyword(e.target.id);
   };
   const totalCnt = val.toString();
-  console.log(val);
 
   return (
     <Wrap>
