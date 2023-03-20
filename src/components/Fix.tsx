@@ -29,7 +29,10 @@ const Fix = () => {
     { value: '3', name: '노트북', id: '노트북 수리' },
   ];
   const totalCnt = val.toString();
+
   console.log(keyword);
+
+
   return (
     <Wrap>
       <TitleBox>
