@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import confirm from '../assets/confirm.svg';
-import useInputs from './../hooks/useInput';
+import confirm from '../../assets/confirm.svg';
+import useInputs from '../../hooks/useInput';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
-import { useInfoState, useUserState } from '../recoil/userList';
-import { User } from './../recoil/userList';
+import { useInfoState, useUserState } from '../../recoil/userList';
+import { User } from '../../recoil/userList';
 import { useNavigate } from 'react-router-dom';
-import { UserApi } from '../apis/axiosInstance';
+import { UserApi } from '../../apis/axiosInstance';
 
 const Comfirm = () => {
   const [{ email, code }, onChange, Reset] = useInputs({

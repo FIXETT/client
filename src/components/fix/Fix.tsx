@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
-import KaKao from './map/KaKao';
+import KaKao from '../map/KaKao';
 import { useRecoilState } from 'recoil';
-import { useFixState } from '../recoil/fix';
+import { useFixState } from '../../recoil/fix';
 
 export interface propsType {
   searchKeyword: string;

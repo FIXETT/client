@@ -1,14 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { UserApi } from '../apis/axiosInstance';
-import landingimage from '../assets/ladingimage.svg';
-import landinglogo from '../assets/landinglogo.svg';
-import useInputs from '../hooks/useInput';
+import { UserApi } from '../../apis/axiosInstance';
+import landingimage from '../../assets/ladingimage.svg';
+import landinglogo from '../../assets/landinglogo.svg';
+import useInputs from '../../hooks/useInput';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { readuser } from '../apis/auth';
+import { readuser } from '../../apis/auth';
 
 export interface FormValue {
   name: string;

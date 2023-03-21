@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { propsType } from '../Fix';
+import { propsType } from '../fix/Fix';
 import { useRecoilState } from 'recoil';
 import { useFixState, usePagination } from '../../recoil/fix';
 import markerimg from '../../assets/icon/marker.svg';
@@ -237,12 +237,7 @@ const KaKao = (props: propsType) => {
             
             <div style="display:flex;flex-direction:column;align-items:end;gap:10px;">
             
-            <input style="width:20px;
-            height:20px;
-            color: #5A3092;
-            border:1px solid;
-            accent-color:#5A3092;
-            " type="checkbox"/>
+            
             
             <button onclick="window.open('${places.place_url}')" id="btn" style="width:63px;
             height:23px;color:#5A3092;
