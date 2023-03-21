@@ -56,6 +56,10 @@ export const showAddModalState = atom({
   key: 'showAddModal',
   default: false,
 });
+export const showModifyContextMenuState = atom({
+  key: 'showModifyContextMenu',
+  default: false,
+});
 export const showModifyModalState = atom({
   key: 'showModifyModal',
   default: false,
@@ -100,17 +104,12 @@ export const modifyAssetlistState = atom<modifyListType[]>({
   default: [
     {
       assetId: 0,
-      status: '',
-      department: '',
       category: '',
       quantity: 0,
       identifier: 0,
       assetNumber: 0,
       name: '',
       product: '',
-      manufacturer: '',
-      acquisitionDate: '',
-      note: '',
     },
   ],
 });

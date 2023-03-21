@@ -1,4 +1,5 @@
-import { AxiosInstance } from './axiosInstance';
+import { AxiosInstance } from './assetInstance';
+
 type readuserType = {
   token: string;
   email: string;

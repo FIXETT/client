@@ -1,5 +1,4 @@
-import { patchAssetDataType, postAssetDataType } from '../types/asset';
-import { AxiosInstance } from './axiosInstance';
+import { AxiosInstance } from './assetInstance';
 
 const token = window.localStorage.getItem('token');
 

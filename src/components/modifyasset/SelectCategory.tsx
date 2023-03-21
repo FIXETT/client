@@ -1,14 +1,37 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { modifyAssetlistState } from '../../recoil/assets';
 import { modifyState } from '../../recoil/assets';
-import { modifyInputParameterType } from '../../types/asset';
+import ContextMenu from './ContextMenu';
 
-const SelectCategory = ({ modifyAssetType, onChange }: modifyInputParameterType) => {
+const SelectCategory = ({ modifyAssetType, handleChange }: any) => {
+  const [showContextMenu, setShowContextMenu] = useState(false);
   const [showModifyCategory, setShowModifyCategory] = useState(false);
-  const modifyAssetlist = useRecoilValue(modifyAssetlistState);
-  const modify = useRecoilValue(modifyState);
+  const [modifyAssetlist, setModifyAssetlist] = useRecoilState(modifyAssetlistState);
+  const [modify, setModifyAsset] = useRecoilState(modifyState);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const onclickDeleteText = () => {
+    const inputEl = inputRef.current;
+    if (inputEl) {
+      inputEl.value = '';
+    }
+    const deleteTable = [...modifyAssetlist];
+    deleteTable[0] = {
+      ...deleteTable[0],
+      category: '', // reset status
+    };
+    setModifyAssetlist(deleteTable);
+
+    const deleteModify = [...modify];
+    deleteModify[0] = {
+      ...deleteModify[0],
+      category: '', // reset category
+    };
+    setModifyAsset(deleteModify);
+    setShowContextMenu(false);
+  };
 
   const icon = () => {
     switch (modifyAssetlist[0].category) {
@@ -38,18 +61,20 @@ const SelectCategory = ({ modifyAssetType, onChange }: modifyInputParameterType)
 
   return (
     <SelectContainer>
+      {showContextMenu && <ContextMenu modifyAssetType={modifyAssetType} onclickDeleteText={onclickDeleteText} />}
       <SelectBtn
         onClick={(e) => {
           e.preventDefault();
           setShowModifyCategory(!showModifyCategory);
+          setShowContextMenu(false);
+        }}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setShowContextMenu(true);
         }}
       >
         {icon() || defaultIcon()}
-        {modifyAssetlist[0].category
-          ? modifyAssetlist[0].category
-          : modify[0].category
-          ? modify[0].category
-          : '선택하기 🔽'}
+        {modifyAssetlist[0].category || modify[0].category || '선택하기 🔽'}
       </SelectBtn>
       {showModifyCategory && (
         <SlectList>
@@ -59,7 +84,7 @@ const SelectCategory = ({ modifyAssetType, onChange }: modifyInputParameterType)
               id={String(0)}
               name={modifyAssetType.type}
               value="모니터"
-              onChange={onChange}
+              onChange={handleChange}
               checked={modify[0].category === '모니터'}
               onClick={() => {
                 setShowModifyCategory(false);
@@ -73,7 +98,7 @@ const SelectCategory = ({ modifyAssetType, onChange }: modifyInputParameterType)
               id={String(0)}
               name={modifyAssetType.type}
               value="노트북"
-              onChange={onChange}
+              onChange={handleChange}
               checked={modify[0].category === '노트북'}
               onClick={() => {
                 setShowModifyCategory(false);
@@ -87,7 +112,7 @@ const SelectCategory = ({ modifyAssetType, onChange }: modifyInputParameterType)
               id={String(0)}
               name={modifyAssetType.type}
               value="데스크탑"
-              onChange={onChange}
+              onChange={handleChange}
               checked={modify[0].category === '데스크탑'}
               onClick={() => {
                 setShowModifyCategory(false);

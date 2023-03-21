@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import { modifyAssetTypeState, showModifyModalState } from '../recoil/assets';
 
@@ -8,63 +8,37 @@ import ModifyAssetInput from '../components/modifyasset/ModifyAssetTypeList';
 import ModifyAssetInputList from '../components/modifyasset/ModifyAssetInputList';
 import ModifyAssetTypeButton from '../components/modifyasset/ModifyAssetTypeButton';
 import ModifyModal from '../components/modifyasset/ModifyModal';
-import { modifyAssetlistState } from '../recoil/assets';
+import Header from '../components/modifyasset/Header';
 
 const ModifyAsset = () => {
-  const modifyassetlist = useRecoilValue(modifyAssetlistState);
-  const [showModal, setShowModal] = useRecoilState(showModifyModalState);
+  const showModal = useRecoilValue(showModifyModalState);
   const modifyAssetType = useRecoilValue(modifyAssetTypeState);
 
   return (
-    <ModifySupplyContainer>
+    <ModifyAssetContainer>
       {showModal && <ModifyModal />}
-      <Header>
-        <Title>제품 등록하기</Title>
-        <ModifyAssetBtn
-          onClick={() => {
-            modifyassetlist.map((value) => {
-              if (value.name === '' || value.quantity === 0 || value.product === '' || value.category === '') {
-                alert('빈칸을 입력해주세요');
-              } else {
-                setShowModal(true);
-              }
-            });
-          }}
-        >
-          등록하기
-        </ModifyAssetBtn>
-      </Header>
-      <ModifySupplyWrap>
+      <Header />
+      <ModifyAssetWrap>
         <Column modifyAssetType={modifyAssetType.length}>
           <ModifyAssetInput />
           <ModifyAssetInputList />
         </Column>
         {modifyAssetType.length !== 9 && <ModifyAssetTypeButton />}
-      </ModifySupplyWrap>
-    </ModifySupplyContainer>
+      </ModifyAssetWrap>
+    </ModifyAssetContainer>
   );
 };
 export default ModifyAsset;
 
-const ModifySupplyContainer = styled.div`
+const ModifyAssetContainer = styled.div`
   position: relative;
+  width: 100%;
   height: 100%;
   padding: 50px;
 `;
-const ModifySupplyWrap = styled.div`
+const ModifyAssetWrap = styled.div`
   display: flex;
   padding: 20px;
-`;
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 20px;
-  border-bottom: 1px solid var(--gray);
-`;
-const Title = styled.h1`
-  font-size: var(--heading3);
-  margin: 10px 0;
-  font-weight: bold;
 `;
 const Column = styled.div<{ modifyAssetType: number }>`
   display: flex;
@@ -74,11 +48,4 @@ const Column = styled.div<{ modifyAssetType: number }>`
     css`
       width: 100%;
     `}
-`;
-
-const ModifyAssetBtn = styled.button`
-  background-color: var(--primary);
-  padding: 5px 25px;
-  color: #fff;
-  border-radius: 5px;
 `;
