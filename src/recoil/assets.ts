@@ -56,6 +56,10 @@ export const showAddModalState = atom({
   key: 'showAddModal',
   default: false,
 });
+export const showModifyContextMenuState = atom({
+  key: 'showModifyContextMenu',
+  default: false,
+});
 export const showModifyModalState = atom({
   key: 'showModifyModal',
   default: false,

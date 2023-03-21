@@ -5,8 +5,8 @@ import { modifyAssetTypeState, modifyselectAssetTypeState } from '../../recoil/a
 
 const ModifyAssetTypeButton = () => {
   const [showSelectAssetType, setshowSelectAssetType] = useState(false);
-  const [postAssetType, setPostAssetType] = useRecoilState(modifyAssetTypeState);
-  const [selectAssetType, setSelectAssetType] = useRecoilState(modifyselectAssetTypeState);
+  const [modifyAssetType, setModifyAssetType] = useRecoilState(modifyAssetTypeState);
+  const [modifyselectAssetType, setModifyselectAssetType] = useRecoilState(modifyselectAssetTypeState);
 
   const showModifyAssetType = () => {
     setshowSelectAssetType(true);
@@ -14,7 +14,7 @@ const ModifyAssetTypeButton = () => {
 
   return (
     <ButtonContainer>
-      {selectAssetType.length !== 0 && (
+      {modifyselectAssetType.length !== 0 && (
         <>
           <ModifyAssetTypeShowBtn onClick={showModifyAssetType}>+</ModifyAssetTypeShowBtn>
           {showSelectAssetType && (
@@ -23,13 +23,15 @@ const ModifyAssetTypeButton = () => {
                 <h4>새 속성</h4>
                 <h5>유형</h5>
               </ModifyAssetTypeTitle>
-              {selectAssetType.map((value) => (
+              {modifyselectAssetType.map((value) => (
                 <ModifyAssetType key={value.title}>
                   <ModifyAssetTypeBtn
                     onClick={(e) => {
                       e.preventDefault();
-                      setPostAssetType([...postAssetType, value]);
-                      setSelectAssetType(selectAssetType.filter((selectValue) => selectValue.title !== value.title));
+                      setModifyAssetType([...modifyAssetType, value]);
+                      setModifyselectAssetType(
+                        modifyselectAssetType.filter((selectValue) => selectValue.title !== value.title),
+                      );
                     }}
                   >
                     <img src={value.img} alt="아이콘" />

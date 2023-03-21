@@ -1,28 +1,52 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { modifyAssetlistState } from '../../recoil/assets';
 import { modifyState } from '../../recoil/assets';
-import { modifyInputParameterType } from '../../types/asset';
+import ContextMenu from './ContextMenu';
 
-const SelectDepartment = ({ modifyAssetType, onChange }: modifyInputParameterType) => {
+const SelectDepartment = ({ modifyAssetType, handleChange }: any) => {
+  const [showContextMenu, setShowContextMenu] = useState(false);
   const [showDepartment, setShowDepartment] = useState(false);
-  const modifyassetlist = useRecoilValue(modifyAssetlistState);
-  const modify = useRecoilValue(modifyState);
+  const [modifyAssetlist, setModifyAssetlist] = useRecoilState(modifyAssetlistState);
+  const [modify, setModifyAsset] = useRecoilState(modifyState);
+  const inputRef = useRef<HTMLInputElement>(null);
 
+  const onclickDeleteText = () => {
+    const inputEl = inputRef.current;
+    if (inputEl) {
+      inputEl.value = '';
+    }
+    const deleteTable = [...modifyAssetlist];
+    deleteTable[0] = {
+      ...deleteTable[0],
+      department: '',
+    };
+    setModifyAssetlist(deleteTable);
+
+    const deleteModify = [...modify];
+    deleteModify[0] = {
+      ...deleteModify[0],
+      department: '', // reset category
+    };
+    setModifyAsset(deleteModify);
+    setShowContextMenu(false);
+  };
   return (
     <SelectContainer>
+      {showContextMenu && <ContextMenu modifyAssetType={modifyAssetType} onclickDeleteText={onclickDeleteText} />}
       <SelectBtn
         onClick={(e) => {
           e.preventDefault();
           setShowDepartment(!showDepartment);
+          setShowContextMenu(false);
+        }}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setShowContextMenu(true);
         }}
       >
-        {modifyassetlist[0].department
-          ? modifyassetlist[0].department
-          : modify[0].department
-          ? modify[0].department
-          : '선택하기 🔽'}
+        {modifyAssetlist[0].department || modify[0].department || '선택하기 🔽'}
       </SelectBtn>
       {showDepartment && (
         <SlectList>
@@ -33,7 +57,7 @@ const SelectDepartment = ({ modifyAssetType, onChange }: modifyInputParameterTyp
               name={modifyAssetType.type}
               value="개발"
               checked={modify[0].department === '개발'}
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowDepartment(false);
               }}
@@ -47,7 +71,7 @@ const SelectDepartment = ({ modifyAssetType, onChange }: modifyInputParameterTyp
               name={modifyAssetType.type}
               value="경영지원"
               checked={modify[0].department === '경영지원'}
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowDepartment(false);
               }}
@@ -61,7 +85,7 @@ const SelectDepartment = ({ modifyAssetType, onChange }: modifyInputParameterTyp
               name={modifyAssetType.type}
               value="세일즈"
               checked={modify[0].department === '세일즈'}
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowDepartment(false);
               }}
@@ -75,7 +99,7 @@ const SelectDepartment = ({ modifyAssetType, onChange }: modifyInputParameterTyp
               name={modifyAssetType.type}
               value="마케팅"
               checked={modify[0].department === '마케팅'}
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowDepartment(false);
               }}

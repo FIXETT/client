@@ -1,17 +1,40 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { modifyAssetlistState } from '../../recoil/assets';
 import { modifyState } from '../../recoil/assets';
-import { modifyInputParameterType } from '../../types/asset';
+import ContextMenu from './ContextMenu';
 
-const SelectStatus = ({ modifyAssetType, onChange }: modifyInputParameterType) => {
+const SelectStatus = ({ modifyAssetType, handleChange }: any) => {
+  const [showContextMenu, setShowContextMenu] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
-  const modifyassetlist = useRecoilValue(modifyAssetlistState);
-  const modify = useRecoilValue(modifyState);
+  const [modifyAssetlist, setModifyAssetlist] = useRecoilState(modifyAssetlistState);
+  const [modify, setModifyAsset] = useRecoilState(modifyState);
+  const inputRef = useRef<HTMLInputElement>(null);
 
+  const onclickDeleteText = () => {
+    const inputEl = inputRef.current;
+    if (inputEl) {
+      inputEl.value = '';
+    }
+    const deleteTable = [...modifyAssetlist];
+    deleteTable[0] = {
+      ...deleteTable[0],
+      [modifyAssetType.type]: '',
+      status: '',
+    };
+    setModifyAssetlist(deleteTable);
+
+    const deleteModify = [...modify];
+    deleteModify[0] = {
+      ...deleteModify[0],
+      status: '', // reset category
+    };
+    setModifyAsset(deleteModify);
+    setShowContextMenu(false);
+  };
   const icon = () => {
-    switch (modifyassetlist[0].status) {
+    switch (modifyAssetlist[0].status) {
       case '정상':
         return <span>🟢</span>;
       case '분실':
@@ -42,14 +65,20 @@ const SelectStatus = ({ modifyAssetType, onChange }: modifyInputParameterType) =
 
   return (
     <SelectContainer>
+      {showContextMenu && <ContextMenu modifyAssetType={modifyAssetType} onclickDeleteText={onclickDeleteText} />}
       <SelectBtn
         onClick={(e) => {
           e.preventDefault();
           setShowStatus(!showStatus);
+          setShowContextMenu(false);
+        }}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setShowContextMenu(true);
         }}
       >
         {icon() || defaultIcon()}
-        {modifyassetlist[0].status ? modifyassetlist[0].status : modify[0].status ? modify[0].status : '선택하기 🔽'}
+        {modifyAssetlist[0].status || modify[0].status || '선택하기 🔽'}
       </SelectBtn>
       {showStatus && (
         <SlectList>
@@ -60,7 +89,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: modifyInputParameterType) =
               name={modifyAssetType.type}
               value="정상"
               checked={modify[0].status === '정상'}
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
               }}
@@ -74,7 +103,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: modifyInputParameterType) =
               name={modifyAssetType.type}
               value="분실"
               checked={modify[0].status === '분실'}
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
               }}
@@ -88,7 +117,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: modifyInputParameterType) =
               name={modifyAssetType.type}
               value="수리중"
               checked={modify[0].status === '수리중'}
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
               }}
@@ -102,7 +131,7 @@ const SelectStatus = ({ modifyAssetType, onChange }: modifyInputParameterType) =
               name={modifyAssetType.type}
               value="수리완료"
               checked={modify[0].status === '수리완료'}
-              onChange={onChange}
+              onChange={handleChange}
               onClick={() => {
                 setShowStatus(false);
               }}

@@ -2,35 +2,33 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { modifyAssetTypeState, showDeleteModalState } from '../../recoil/assets';
-import { modifyselectAssetTypeState, assetNumberListState, modifyState } from './../../recoil/assets';
+import {
+  modifyAssetTypeState,
+  showDeleteModalState,
+  modifyselectAssetTypeState,
+  assetNumberListState,
+  modifyState,
+} from './../../recoil/assets';
 
 const AssetButton = () => {
   const navigate = useNavigate();
   const [modifyAssetType, setModifyAssetType] = useRecoilState(modifyAssetTypeState);
-  const [modifyselectAssetType, setModifySelectAssetType] = useRecoilState(modifyselectAssetTypeState);
+  const [modifySelectAssetType, setModifySelectAssetType] = useRecoilState(modifyselectAssetTypeState);
   const modify = useRecoilValue(modifyState);
   const assetNumber = useRecoilValue(assetNumberListState);
   const setDeleteShowModal = useSetRecoilState(showDeleteModalState);
-
   const modifyAsset = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    const defaultList = modifyselectAssetType.filter(
+    const defaultList = modifySelectAssetType.filter(
       (value) => modify[0][value.type] !== null && modify[0][value.type] !== undefined,
     );
-
     const newModifyAssetType = modifyAssetType.filter((value) => !defaultList.some((item) => item.type === value.type));
-
-    const newModifyselectAssetType = modifyselectAssetType.filter(
-      (value) =>
-        !newModifyAssetType.some((item) => item.type === value.type) &&
-        !modifyAssetType.some((item) => item.type === value.type),
-    );
-
     setModifyAssetType([...newModifyAssetType, ...defaultList]);
+    const newModifyselectAssetType = modifySelectAssetType.filter(
+      (value) => !defaultList.some((item) => item.type === value.type),
+    );
     setModifySelectAssetType(newModifyselectAssetType);
-
     navigate('/modifyasset');
   };
 
