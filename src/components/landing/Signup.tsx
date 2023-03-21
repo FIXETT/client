@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import landingimage from '../assets/ladingimage.svg';
-import landinglogo from '../assets/landinglogo.svg';
-import useInputs from './../hooks/useInput';
+import landingimage from '../../assets/ladingimage.svg';
+import landinglogo from '../../assets/landinglogo.svg';
+import useInputs from '../../hooks/useInput';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useInfoState, useUserState } from '../recoil/userList';
+import { useInfoState, useUserState } from '../../recoil/userList';
 import { useRecoilState } from 'recoil';
-import { UserApi } from '../apis/axiosInstance';
+import { UserApi } from '../../apis/axiosInstance';
 
 const Signup = () => {
   const [{ email }, onChange, reset] = useInputs({

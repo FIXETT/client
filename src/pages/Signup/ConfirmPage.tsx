@@ -1,5 +1,5 @@
 import React from 'react';
-import Comfirm from '../../components/Comfirm';
+import Comfirm from '../../components/landing/Comfirm';
 const ConfirmPage = () => {
   return <Comfirm />;
 };

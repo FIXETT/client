@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { UserApi } from '../apis/axiosInstance';
-import enter from '../assets/enterinfo.svg';
-import { useUserState } from '../recoil/userList';
-import useInputs from './../hooks/useInput';
+import { UserApi } from '../../apis/axiosInstance';
+import enter from '../../assets/enterinfo.svg';
+import { useUserState } from '../../recoil/userList';
+import useInputs from '../../hooks/useInput';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormValue } from './Landing';
-import { User } from './../recoil/userList';
+import { User } from '../../recoil/userList';
 import { useNavigate } from 'react-router-dom';
 
 const EnterInfo = () => {
