@@ -1,14 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { UserApi } from '../apis/axiosInstance';
-import landingimage from '../assets/ladingimage.svg';
-import landinglogo from '../assets/landinglogo.svg';
-import useInputs from '../hooks/useInput';
+import { UserApi } from '../../apis/axiosInstance';
+import landingimage from '../../assets/ladingimage.svg';
+import landinglogo from '../../assets/landinglogo.svg';
+import useInputs from '../../hooks/useInput';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { readuser } from '../apis/auth';
+import { readuser } from '../../apis/auth';
 
 export interface FormValue {
   name: string;
@@ -26,11 +26,11 @@ const Landing = () => {
       .matches(/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, '올바른 이메일 형식이 아닙니다.'),
     password: yup
       .string()
-      .required('비밀번호를 입력해주세요')
       .matches(
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,30}$/,
         '비밀번호를 8~30자로 영문 대소문자, 숫자, 특수문자를 조합해서 사용하세요.',
-      ),
+      )
+      .required('비밀번호를 입력해주세요'),
   });
 
   //react-hook-form
@@ -71,6 +71,7 @@ const Landing = () => {
       }
     }
   };
+
   return (
     <Wrap>
       <ImageContainer>
@@ -111,19 +112,16 @@ const Landing = () => {
 
 export default Landing;
 const Wrap = styled.div`
-  width: 100vw;
   height: 100vh;
   display: flex;
-  flex-direction: row;
-  margin: 0 auto;
 `;
 
 //이미지 컨테이너
 const ImageContainer = styled.div`
   display: flex;
   flex-direction: column;
-
-  /* margin-left: 5%; */
+  margin-top: 125px;
+  margin-left: 66px;
 `;
 const LandingImage = styled.img`
   width: 52rem;
@@ -153,8 +151,8 @@ const LoginContainer = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: relative;
-  left: 9.125rem;
+  margin-top: 196px;
+  margin-left: 129px;
 `;
 const Logo = styled.img`
   position: relative;
@@ -259,78 +257,4 @@ const Errormessage = styled.div`
   line-height: 15px;
 
   width: 305px;
-`;
-const Modal = styled.div`
-  width: 600px;
-  height: 600px;
-
-  position: absolute;
-  left: 427px;
-  top: 10%;
-  background-color: #efe6f8;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-const ModalImg = styled.img`
-  position: relative;
-  top: -10%;
-`;
-const ModalDiv = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-`;
-const ModalText = styled.span`
-  position: relative;
-  top: -40%;
-  font-weight: 700;
-  font-size: 48px;
-  font-style: normal;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-`;
-const ComputerText = styled.span`
-  position: relative;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 150%;
-  text-align: center;
-  top: -30%;
-`;
-const FixText = styled.span`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 22.5px;
-
-  text-align: center;
-  position: relative;
-  top: -20%;
-`;
-const Apply = styled.a`
-  border-radius: 10px;
-  background-color: #5a3092;
-  color: #ffffff;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 150%;
-  width: 259px;
-  height: 86px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-`;
-const Close = styled.img`
-  position: absolute;
-  top: 21px;
-  left: 549px;
-  cursor: pointer;
 `;
