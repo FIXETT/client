@@ -8,7 +8,7 @@ import { modifyselectAssetTypeState, assetNumberListState, modifyState } from '.
 const AssetButton = () => {
   const navigate = useNavigate();
   const [modifyAssetType, setModifyAssetType] = useRecoilState(modifyAssetTypeState);
-  const [selectAssetType, setSelectAssetType] = useRecoilState(modifyselectAssetTypeState);
+  const [modifyselectAssetType, setModifySelectAssetType] = useRecoilState(modifyselectAssetTypeState);
   const modify = useRecoilValue(modifyState);
   const assetNumber = useRecoilValue(assetNumberListState);
   const setDeleteShowModal = useSetRecoilState(showDeleteModalState);
@@ -16,15 +16,20 @@ const AssetButton = () => {
   const modifyAsset = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    const defaultList = selectAssetType.filter((value) => modify[0][value.type] !== '');
+    const defaultList = modifyselectAssetType.filter(
+      (value) => modify[0][value.type] !== null && modify[0][value.type] !== undefined,
+    );
 
-    const newList = defaultList.filter((value) => !modifyAssetType.some((item) => item.type === value.type));
+    const newModifyAssetType = modifyAssetType.filter((value) => !defaultList.some((item) => item.type === value.type));
 
-    setModifyAssetType([...modifyAssetType, ...newList]);
+    const newModifyselectAssetType = modifyselectAssetType.filter(
+      (value) =>
+        !newModifyAssetType.some((item) => item.type === value.type) &&
+        !modifyAssetType.some((item) => item.type === value.type),
+    );
 
-    const selectList = selectAssetType.filter((value) => !newList.some((item) => item.type === value.type));
-
-    setSelectAssetType(selectList);
+    setModifyAssetType([...newModifyAssetType, ...defaultList]);
+    setModifySelectAssetType(newModifyselectAssetType);
 
     navigate('/modifyasset');
   };

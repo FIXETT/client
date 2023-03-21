@@ -100,17 +100,12 @@ export const modifyAssetlistState = atom<modifyListType[]>({
   default: [
     {
       assetId: 0,
-      status: '',
-      department: '',
       category: '',
       quantity: 0,
       identifier: 0,
       assetNumber: 0,
       name: '',
       product: '',
-      manufacturer: '',
-      acquisitionDate: '',
-      note: '',
     },
   ],
 });
