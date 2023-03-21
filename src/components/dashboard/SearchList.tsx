@@ -16,14 +16,14 @@ const SearchList = ({ assetList }: Props) => {
 
   const searchResultList = () => {
     if (searchText !== '') {
-      const searchName = assetList?.filter((value) => String(value.name).includes(searchText));
-      const searchProduct = assetList?.filter((value) => String(value.product).includes(searchText));
-      const searchCategory = assetList?.filter((value) => String(value.category).includes(searchText));
-      const searchDepartment = assetList?.filter((value) => String(value.department).includes(searchText));
-      const searchManufacturer = assetList?.filter((value) => String(value.manufacturer).includes(searchText));
-      const searchacAuisitionDate = assetList?.filter((value) => String(value.acquisitionDate).includes(searchText));
-      const searchStatus = assetList?.filter((value) => String(value.status).includes(searchText));
-      const searchNote = assetList?.filter((value) => String(value.note).includes(searchText));
+      const searchName = assetList?.filter((value) => String(value.name)?.includes(searchText));
+      const searchProduct = assetList?.filter((value) => String(value.product)?.includes(searchText));
+      const searchCategory = assetList?.filter((value) => String(value.category)?.includes(searchText));
+      const searchDepartment = assetList?.filter((value) => String(value.department)?.includes(searchText));
+      const searchManufacturer = assetList?.filter((value) => String(value.manufacturer)?.includes(searchText));
+      const searchacAuisitionDate = assetList?.filter((value) => String(value.acquisitionDate)?.includes(searchText));
+      const searchStatus = assetList?.filter((value) => String(value.status)?.includes(searchText));
+      const searchNote = assetList?.filter((value) => String(value.note)?.includes(searchText));
       const result = [
         ...searchName,
         ...searchProduct,
@@ -77,7 +77,7 @@ const SearchList = ({ assetList }: Props) => {
       <TotalNumber>
         <p>
           합계:
-          <span> {searchResultList()?.length ? String(searchResultList()?.length).padStart(2, '0') : '00'}</span>건
+          <span> {searchResultList()?.length ? String(searchResultList()?.length)?.padStart(2, '0') : '00'}</span>건
         </p>
       </TotalNumber>
     </div>
