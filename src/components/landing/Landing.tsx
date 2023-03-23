@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { UserApi } from '../../apis/axiosInstance';
 import landingimage from '../../assets/ladingimage.svg';
 import landinglogo from '../../assets/landinglogo.svg';
+import closeModal from '../../assets/closemodal.svg';
 import useInputs from '../../hooks/useInput';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -17,6 +18,7 @@ export interface FormValue {
 }
 
 const Landing = () => {
+  const [ismodal, setIsModal] = useState(true);
   const navigate = useNavigate();
   //yup schema
   const schema = yup.object().shape({
@@ -26,11 +28,11 @@ const Landing = () => {
       .matches(/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, '올바른 이메일 형식이 아닙니다.'),
     password: yup
       .string()
+      .required('비밀번호를 입력해주세요')
       .matches(
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,30}$/,
         '비밀번호를 8~30자로 영문 대소문자, 숫자, 특수문자를 조합해서 사용하세요.',
-      )
-      .required('비밀번호를 입력해주세요'),
+      ),
   });
 
   //react-hook-form
@@ -50,6 +52,9 @@ const Landing = () => {
   const signHandler = () => {
     navigate('/signup');
   };
+  const watchClickHandler = () => {
+    navigate('/fix');
+  };
 
   const loginHandler: SubmitHandler<FormValue> = async (data) => {
     const email = data.email;
@@ -67,7 +72,7 @@ const Landing = () => {
       }
     } catch (error: any) {
       if (error.response) {
-        window.alert(error.response.data.error);
+        return <Errormessage>{error?.response?.data?.error}</Errormessage>;
       }
     }
   };
@@ -75,11 +80,11 @@ const Landing = () => {
   return (
     <Wrap>
       <ImageContainer>
-        <LandingImage src={landingimage} />
         <SpanBox>
-          <Text>우당탕탕💥</Text>
-          <Text>또 회사 자산정리로 야근 중이시라면?</Text>
+          <Text>{'김대리, 컴퓨터 이거 또 안되는데..'}</Text>
+          <Text>{'하..내 업무는 컴퓨터 수리가 아닌데..'}</Text>
         </SpanBox>
+        <LandingImage src={landingimage} />
       </ImageContainer>
       <LoginContainer onSubmit={onSubmit(loginHandler)} tabIndex={0} autoComplete="off">
         <Logo src={landinglogo} alt="" />
@@ -102,10 +107,43 @@ const Landing = () => {
           name="password"
           placeholder="비밀번호"
         />
-        <LoginBtn type="submit">로그인</LoginBtn>
+        <BtnDiv>
+          <LoginBtn type="submit">로그인</LoginBtn>
+          <SignBtn onClick={signHandler}>회원가입</SignBtn>
+        </BtnDiv>
+
         <FindPW>비밀번호를 잊으셨나요?</FindPW>
-        <SignBtn onClick={signHandler}>회원가입</SignBtn>
+        <WatchBtn onClick={watchClickHandler}>자산 수리는 픽셋에게! 궁금하시다면 지금 둘러보세요! </WatchBtn>
       </LoginContainer>
+      {ismodal && (
+        <Modalback>
+          <Modal>
+            <ModalDiv>
+              <ModalText>
+                설문 참여하고 <br />
+                스타벅스 커피 드세요 ☕️
+              </ModalText>
+              <ComputerText>
+                FIXET 사용해보시고 설문에 참여하세요 <br />
+                추첨을 통해 5분께 커피쿠폰을 쏩니다😁
+              </ComputerText>
+              <FixText>
+                여러분의 소중한 의견을 모아
+                <br /> 보다 나은 서비스를 제공하겠습니다😁
+                <br />
+                <br /> 참여기간:2023년 4월 8일까지
+              </FixText>
+              <Apply
+                href="https://docs.google.com/forms/d/e/1FAIpQLSfVmmLLUC7WKGxU1xAAkCMtkKB5-QovCgVW5yye1goXEDTnzg/viewform"
+                target="_blank"
+              >
+                설문 참여하기
+              </Apply>
+            </ModalDiv>
+          </Modal>
+          <Close onClick={() => setIsModal(!ismodal)} src={closeModal} alt={' '} />
+        </Modalback>
+      )}
     </Wrap>
   );
 };
@@ -120,12 +158,13 @@ const Wrap = styled.div`
 const ImageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 125px;
+  margin-top: 218px;
   margin-left: 66px;
 `;
 const LandingImage = styled.img`
-  width: 52rem;
-  height: 47.3rem;
+  width: 447px;
+  height: 447px;
+  margin-left: 228px;
 `;
 const Text = styled.span`
   font-family: Inter;
@@ -136,13 +175,12 @@ const Text = styled.span`
   text-align: top;
   vertical-align: top;
   letter-spacing: -1.1%;
+  display: flex;
+  justify-content: end;
 `;
 const SpanBox = styled.div`
   display: flex;
   flex-direction: column;
-  position: relative;
-  top: -13rem;
-  left: 3rem;
 `;
 
 //로그인 컨테이너
@@ -206,11 +244,14 @@ const Password = styled.input`
   }
 `;
 const LoginBtn = styled.button`
-  width: 416px;
+  width: 188px;
   height: 43px;
-  background-color: #8e52d9;
+  background-color: #5a3092;
   color: white;
   border-radius: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 22.5px;
 `;
 const FindPW = styled.div`
   font-family: Inter;
@@ -226,26 +267,30 @@ const FindPW = styled.div`
   margin-top: 10px;
   border-bottom: 0.5px solid gray;
   gap: 10px;
-  width: 416px;
+  width: 417px;
+  height: 27px;
 
   justify-content: flex-end;
   align-items: center;
 `;
 
 const SignBtn = styled.button`
-  width: 416px;
+  width: 188px;
   height: 43px;
   background-color: #ffffff;
   color: black;
   border-radius: 10px;
-  border: 1px solid #5a3092;
+  border: 1px solid #000000;
   font-weight: 700;
   font-family: Inter;
   font-size: 15px;
   line-height: 22.5px;
   letter-spacing: -1.1%;
   text-align: center;
-  margin-top: 30px;
+`;
+const BtnDiv = styled.div`
+  display: flex;
+  gap: 37px;
 `;
 const Errormessage = styled.div`
   color: #da1919;
@@ -257,4 +302,90 @@ const Errormessage = styled.div`
   line-height: 15px;
 
   width: 305px;
+`;
+const WatchBtn = styled.button`
+  width: 418px;
+  height: 57px;
+  background-color: #5a3092;
+  color: #ffffff;
+  margin-top: 17px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 22.5px;
+`;
+//Modal
+
+const Modalback = styled.div`
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const Modal = styled.div`
+  width: 600px;
+  height: 600px;
+
+  background-color: #efe6f8;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const ModalDiv = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+const ModalText = styled.span`
+  font-weight: 700;
+  font-size: 48px;
+  font-style: normal;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  line-height: 74px;
+  margin-top: 59px;
+`;
+const ComputerText = styled.span`
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 36px;
+  text-align: center;
+  margin-top: 42px;
+`;
+const FixText = styled.span`
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 22.5px;
+  text-align: center;
+  margin-top: 25px;
+`;
+const Apply = styled.a`
+  margin-top: 35px;
+  border-radius: 10px;
+  background-color: #5a3092;
+  color: #ffffff;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 150%;
+  width: 259px;
+  height: 86px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+const Close = styled.img`
+  position: relative;
+  top: -275px;
+  left: -38px;
+  cursor: pointer;
 `;
