@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import confirm from '../../assets/confirm.svg';
 import useInputs from '../../hooks/useInput';
 import axios from 'axios';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useInfoState, useUserState } from '../../recoil/userList';
 import { User } from '../../recoil/userList';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +16,8 @@ const Comfirm = () => {
   });
   const navigate = useNavigate();
   const [info, setInfo] = useRecoilState(useUserState);
+  const thisemail = useRecoilValue(useUserState);
+  console.log(thisemail);
   //본인 이메일 인증하기 핸들러
   const confirmHandler = () => {
     const confirmMail = async () => {
