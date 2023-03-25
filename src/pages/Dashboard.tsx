@@ -11,6 +11,12 @@ const Dashboard = () => {
   const setAssetNumber = useSetRecoilState(assetNumberListState);
 
   useEffect(() => {
+    const token = window.localStorage.getItem('token');
+    if (!token) {
+      alert('로그인이 필요한 페이지 입니다. 로그인해주세요.');
+      localStorage.clear();
+      window.location.href = '/';
+    }
     const identifier = Number(window.localStorage.getItem('identifier'));
     setAssetNumber([{ assetNumber: 0, identifier }]);
   }, []);
