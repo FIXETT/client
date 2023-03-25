@@ -24,6 +24,12 @@ const AddAsset = () => {
 
   // 초기화
   useEffect(() => {
+    const token = window.localStorage.getItem('token');
+    if (!token) {
+      alert('로그인이 필요한 페이지 입니다. 로그인해주세요.');
+      localStorage.clear();
+      window.location.href = '/';
+    }
     setPostAssetType([
       { title: '실사용자', type: 'name', inputType: 'text' },
       { title: '제품명', type: 'product', inputType: 'text' },

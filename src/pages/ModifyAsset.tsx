@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { useRecoilValue } from 'recoil';
 
@@ -13,7 +13,14 @@ import Header from '../components/modifyasset/Header';
 const ModifyAsset = () => {
   const showModal = useRecoilValue(showModifyModalState);
   const modifyAssetType = useRecoilValue(modifyAssetTypeState);
-
+  useEffect(() => {
+    const token = window.localStorage.getItem('token');
+    if (!token) {
+      alert('로그인이 필요한 페이지 입니다. 로그인해주세요.');
+      localStorage.clear();
+      window.location.href = '/';
+    }
+  });
   return (
     <ModifyAssetContainer>
       {showModal && <ModifyModal />}
