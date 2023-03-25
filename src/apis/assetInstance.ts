@@ -31,17 +31,14 @@ AxiosInstance.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
       const token = window.localStorage.getItem('token') as string;
-      try {
-        originalRequest._retry = true;
-        const { data: tokenData } = await refreshToken(token);
-        if (tokenData) {
-          window.localStorage.setItem('token', tokenData.token);
-        }
-        AxiosInstance.defaults.headers.common.Authorization = `Bearer ${tokenData.token}`;
-        return AxiosInstance(originalRequest);
-      } catch (refreshError) {
-        return Promise.reject(refreshError);
+
+      originalRequest._retry = true;
+      const { data: tokenData } = await refreshToken(token);
+      if (tokenData) {
+        window.localStorage.setItem('token', tokenData.token);
       }
+      AxiosInstance.defaults.headers.common.Authorization = `Bearer ${tokenData.token}`;
+      return AxiosInstance(originalRequest);
     }
     if (error.response.data.errorMessage === 'The token is incorrect. Please login again.') {
       alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
