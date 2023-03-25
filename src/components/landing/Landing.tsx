@@ -53,6 +53,7 @@ const Landing = () => {
     navigate('/signup');
   };
   const watchClickHandler = () => {
+    localStorage.clear();
     navigate('/fix');
   };
 
