@@ -55,7 +55,7 @@ const Fix = () => {
       </FixBox>
       <TotalBox>
         <TotalCt>총{totalCnt}개</TotalCt>
-        <FixapplyBtn>선택한 수리점에 견적 요청하기</FixapplyBtn>
+        {/* <FixapplyBtn>선택한 수리점에 견적 요청하기</FixapplyBtn> */}
       </TotalBox>
 
       <MapBox>
