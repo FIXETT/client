@@ -14,11 +14,19 @@ const AssetList = () => {
   const [assetList, setAssetList] = useState<assetListType[]>([]);
   const searchText = useRecoilValue(searchTextState);
 
+  useEffect(() => {
+    const token = window.localStorage.getItem('token');
+    if (!token) {
+      alert('로그인이 필요한 페이지 입니다. 로그인해주세요.');
+      localStorage.clear();
+      window.location.href = '/';
+    }
+  }, []);
   const { data, status } = useQuery({
     queryKey: ['getAsset'],
     queryFn: async () => await getAsset(),
     retry: 0, // 실패시 재호출 몇번 할지
-    keepPreviousData: true,
+    cacheTime: 10000, // 10초 동안 캐싱
     onSuccess: (data) => {
       data.data.asset === 'does not exist asset';
       const list = data?.data?.asset?.Assets;
