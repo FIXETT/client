@@ -7,8 +7,12 @@ type readuserType = {
 };
 
 export const refreshToken = async (token: string) => {
-  const response = await AuthAxiosInstance.post('/authtoken', { token });
-  return response;
+  try {
+    const response = await AuthAxiosInstance.post('/authtoken', { token });
+    return response;
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 export const readuser = async ({ token, email, password }: readuserType) => {
   const headers = {
