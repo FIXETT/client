@@ -45,7 +45,6 @@ AxiosInstance.interceptors.response.use(
       localStorage.clear();
       window.location.href = '/';
     }
-
     return Promise.reject(error);
   },
 );
