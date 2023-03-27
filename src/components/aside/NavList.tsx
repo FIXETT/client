@@ -9,6 +9,7 @@ import search from '../../assets/icon/search.svg';
 import mypage from '../../assets/icon/mypage.svg';
 
 import { subNavListType } from '../../types/asset';
+import { Logout } from '../modal/Logout';
 
 const NavList = () => {
   const match = useLocation().pathname;
@@ -134,4 +135,13 @@ const SubList = styled.ul<{ subToggleMeru: boolean }>`
   transition: display 3s;
   flex-direction: column;
   padding-left: 20px;
+`;
+const LogoutBtn = styled.button`
+  background-color: var(--gray);
+  border-radius: 8px;
+  color: var(--black2);
+  font-weight: 700;
+  font-size: 15px;
+  height: 44px;
+  margin-top: 356px;
 `;
