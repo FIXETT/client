@@ -1,4 +1,4 @@
-import { AxiosInstance } from './assetInstance';
+import { AuthAxiosInstance, AxiosInstance } from './assetInstance';
 
 type readuserType = {
   token: string;
@@ -7,7 +7,7 @@ type readuserType = {
 };
 
 export const refreshToken = async (token: string) => {
-  const response = await AxiosInstance.post('/authtoken', { token });
+  const response = await AuthAxiosInstance.post('/authtoken', { token });
   return response;
 };
 export const readuser = async ({ token, email, password }: readuserType) => {
