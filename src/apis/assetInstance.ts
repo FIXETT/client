@@ -14,20 +14,6 @@ export const AuthAxiosInstance = axios.create({
   },
 });
 
-AuthAxiosInstance.interceptors.request.use(
-  function (config) {
-    // Do something before request is sent
-    const token = window.localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  function (error) {
-    // Do something with request error
-    return Promise.reject(error);
-  },
-);
 AxiosInstance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
@@ -53,17 +39,23 @@ AxiosInstance.interceptors.response.use(
       const token = window.localStorage.getItem('token') as string;
 
       originalRequest._retry = true;
-      const { data: tokenData } = await refreshToken(token);
-      if (tokenData) {
-        window.localStorage.setItem('token', tokenData.token);
+      try {
+        const { data: tokenData } = await refreshToken(token);
+        if (tokenData) {
+          window.localStorage.setItem('token', tokenData.token);
+        }
+        AxiosInstance.defaults.headers.common.Authorization = `Bearer ${tokenData.token}`;
+        return AxiosInstance(originalRequest);
+      } catch (err) {
+        // 에러 처리
+        return Promise.reject(err);
       }
-      AxiosInstance.defaults.headers.common.Authorization = `Bearer ${tokenData.token}`;
-      return AxiosInstance(originalRequest);
     }
 
     return Promise.reject(error);
   },
 );
+
 AuthAxiosInstance.interceptors.response.use(
   function (response) {
     return response;
