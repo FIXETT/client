@@ -42,6 +42,7 @@ const LogoutModal = styled.div`
   flex-direction: column;
   box-shadow: var(--box-shadow);
   gap: 40px;
+  border-radius: 3px;
 `;
 const LogoutSpan = styled.span`
   width: 145px;
@@ -68,6 +69,8 @@ const ReturnBtn = styled.button`
   height: 31px;
   border: 1px solid var(--sub);
   border-radius: 3px;
+  font-size: 12px;
+  font-weight: 400;
 `;
 const ConfirmBtn = styled.button`
   width: 40px;
@@ -75,4 +78,6 @@ const ConfirmBtn = styled.button`
   background-color: var(--primary);
   border-radius: 3px;
   color: #ffffff;
+  font-weight: 700;
+  font-size: 12px;
 `;
