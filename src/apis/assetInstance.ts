@@ -7,6 +7,12 @@ export const AxiosInstance = axios.create({
     Accept: 'application/json',
   },
 });
+export const AuthAxiosInstance = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL,
+  headers: {
+    Accept: 'application/json',
+  },
+});
 
 AxiosInstance.interceptors.request.use(
   function (config) {
@@ -40,11 +46,21 @@ AxiosInstance.interceptors.response.use(
       AxiosInstance.defaults.headers.common.Authorization = `Bearer ${tokenData.token}`;
       return AxiosInstance(originalRequest);
     }
-    if (error.response.data.errorMessage === 'The token is incorrect. Please login again.') {
+
+    return Promise.reject(error);
+  },
+);
+AuthAxiosInstance.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  async (error) => {
+    if (error.response.status === 401) {
       alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
       localStorage.clear();
       window.location.href = '/';
     }
+
     return Promise.reject(error);
   },
 );
