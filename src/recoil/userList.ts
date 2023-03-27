@@ -8,6 +8,9 @@ export interface User {
   token: string;
   agreePi?: boolean;
 }
+export interface Logout {
+  islogout: boolean;
+}
 
 const USER_KEY = 'user';
 const Token_KEY = 'token';
@@ -29,5 +32,9 @@ const useAccountState = atom({
   default: [] as User[],
   effects: [localStorageEffect(Account_KEY)],
 });
+const useLogoutState = atom({
+  key: 'Logout',
+  default: false,
+});
 
-export { useInfoState, useUserState, useAccountState };
+export { useInfoState, useUserState, useAccountState, useLogoutState };

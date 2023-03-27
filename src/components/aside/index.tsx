@@ -1,10 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
 import NavList from './NavList';
+import { useRecoilState } from 'recoil';
+import { useLogoutState } from '../../recoil/userList';
 
 const Aside = () => {
   const name = window.localStorage.getItem('name') as string;
+  const [islogout, setIslogout] = useRecoilState(useLogoutState);
+  const logoutHandler = () => {
+    console.log('실행됨');
+    setIslogout(!islogout);
+  };
 
   return (
     <>
@@ -16,6 +23,7 @@ const Aside = () => {
         <NavListContainer>
           <AsideTitle>대시보드</AsideTitle>
           <NavList />
+          <LogoutBtn onClick={logoutHandler}>로그아웃</LogoutBtn>
         </NavListContainer>
       </AsideContainer>
       <Outlet />
@@ -61,4 +69,13 @@ const AsideTitle = styled.p`
 const NavListContainer = styled.ul`
   display: flex;
   flex-direction: column;
+`;
+const LogoutBtn = styled.button`
+  background-color: var(--gray);
+  border-radius: 8px;
+  color: var(--black2);
+  font-weight: 700;
+  font-size: 15px;
+  height: 44px;
+  margin-top: 356px;
 `;
