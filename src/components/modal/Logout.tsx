@@ -2,16 +2,24 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { UserApi } from '../../apis/axiosInstance';
+import { logout } from '../../apis/logout';
 import { useLogoutState } from '../../recoil/userList';
 
 export const Logout = () => {
   const navigate = useNavigate();
   const [islogout, setIslogout] = useRecoilState(useLogoutState);
-  const logoutHandler = () => {
-    localStorage.clear();
-    setIslogout(!islogout);
+  const logoutHandler = async () => {
+    try {
+      const token = window?.localStorage?.getItem('token');
 
-    navigate('/');
+      const response = await logout(token);
+      localStorage.clear();
+      setIslogout(!islogout);
+      navigate('/');
+    } catch (error) {
+      return Promise.reject(error);
+    }
   };
   return (
     <Modalback>

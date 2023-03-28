@@ -73,7 +73,7 @@ const Landing = () => {
       }
     } catch (error: any) {
       if (error.response) {
-        return <Errormessage>{error?.response?.data?.error}</Errormessage>;
+        window.confirm(error?.response?.data?.error);
       }
     }
   };
