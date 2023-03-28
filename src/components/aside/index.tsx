@@ -9,7 +9,6 @@ const Aside = () => {
   const name = window.localStorage.getItem('name') as string;
   const [islogout, setIslogout] = useRecoilState(useLogoutState);
   const logoutHandler = () => {
-    console.log('실행됨');
     setIslogout(!islogout);
   };
 
