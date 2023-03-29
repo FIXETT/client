@@ -134,10 +134,7 @@ const Landing = () => {
                 <br />
                 <br /> 참여기간:2023년 4월 8일까지
               </FixText>
-              <Apply
-                href="https://docs.google.com/forms/d/e/1FAIpQLSfVmmLLUC7WKGxU1xAAkCMtkKB5-QovCgVW5yye1goXEDTnzg/viewform"
-                target="_blank"
-              >
+              <Apply href="https://forms.gle/BfCZKou5hCRkxFUu6" target="_blank">
                 설문 참여하기
               </Apply>
             </ModalDiv>
