@@ -66,7 +66,7 @@ const NavList = () => {
         );
       })}
       <BlankLink to="https://forms.gle/5Fh5WeSV2ErDcF9k7" target="_blank">
-        견적 요청하기
+        수리 요청하기
       </BlankLink>
     </>
   );

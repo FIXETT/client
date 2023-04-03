@@ -133,6 +133,9 @@ const AssetItem = styled.p`
   text-align: center;
   padding: 10px 0;
   font-size: var(--heading4);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 const TotalNumber = styled.div`
   display: flex;

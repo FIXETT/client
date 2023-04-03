@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { modifyAssetTypeState } from '../../recoil/assets';
 
@@ -8,7 +8,9 @@ const ModifyAssetTypeList = () => {
   return (
     <ModifyTableWrap>
       {modifyAssetType.map((value, index) => (
-        <AssetType key={index}>{value.title}</AssetType>
+        <AssetType key={index} length={modifyAssetType?.length}>
+          {value.title}
+        </AssetType>
       ))}
     </ModifyTableWrap>
   );
@@ -19,8 +21,11 @@ const ModifyTableWrap = styled.div`
   width: 100%;
   display: flex;
 `;
-const AssetType = styled.p`
-  flex: 1;
+const AssetType = styled.p<{ length: number }>`
+  ${(props) =>
+    css`
+      width: calc(100% / ${props.length});
+    `}
   background-color: var(--primary);
   color: #fff;
   padding: 10px;
