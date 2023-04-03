@@ -28,6 +28,7 @@ const InputNumber = ({ assetType, index, handleChange }: inputParameterType) => 
       <AssetInput
         type={assetType.inputType}
         min={0}
+        max={99}
         id={String(index)}
         onChange={handleChange}
         name={assetType.type}

@@ -3,26 +3,32 @@ import styled from 'styled-components';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { assetlistState, showAddModalState } from './../../recoil/assets';
 
+interface Asset {
+  name: string;
+  quantity: number;
+  product: string;
+  category: string;
+  // 선택사항인 경우도 있으므로 필수입력사항 외에는 생략합니다.
+}
+
 const Header = () => {
   const setShowModal = useSetRecoilState(showAddModalState);
   const assetlist = useRecoilValue(assetlistState);
 
+  const handleAddButtonClick = () => {
+    for (const asset of assetlist) {
+      if (!asset.name || !asset.quantity || !asset.product || !asset.category) {
+        alert('빈칸을 입력해주세요');
+        return;
+      }
+    }
+    setShowModal(true);
+  };
+
   return (
     <HeaderContainer>
       <Title>제품 등록하기</Title>
-      <AddAssetBtn
-        onClick={() => {
-          assetlist.map((value) => {
-            if (value.name === '' || value.quantity === 0 || value.product === '' || value.category === '') {
-              alert('빈칸을 입력해주세요');
-            } else {
-              setShowModal(true);
-            }
-          });
-        }}
-      >
-        등록하기
-      </AddAssetBtn>
+      <AddAssetBtn onClick={handleAddButtonClick}>등록하기</AddAssetBtn>
     </HeaderContainer>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { modifyAssetlistState, modifyAssetTypeState, modifyState } from '../../recoil/assets';
@@ -38,25 +38,27 @@ const ModifyAssetInputList = () => {
     setModifyassetlist(modifyList);
   }, []);
 
-  const assetInput = (modifyAssetType: assetObjType) => {
-    switch (modifyAssetType.title) {
+  const assetInput = (type: assetObjType) => {
+    switch (type.title) {
       case '수량':
-        return <InputNumber modifyAssetType={modifyAssetType} handleChange={handleChange} />;
+        return <InputNumber modifyAssetType={type} handleChange={handleChange} />;
       case '품목':
-        return <SelectCategory modifyAssetType={modifyAssetType} handleChange={handleChange} />;
+        return <SelectCategory modifyAssetType={type} handleChange={handleChange} />;
       case '팀':
-        return <SelectDepartment modifyAssetType={modifyAssetType} handleChange={handleChange} />;
+        return <SelectDepartment modifyAssetType={type} handleChange={handleChange} />;
       case '상태':
-        return <SelectStatus modifyAssetType={modifyAssetType} handleChange={handleChange} />;
+        return <SelectStatus modifyAssetType={type} handleChange={handleChange} />;
       default:
-        return <InputAsset modifyAssetType={modifyAssetType} handleChange={handleChange} />;
+        return <InputAsset modifyAssetType={type} handleChange={handleChange} />;
     }
   };
 
   return (
     <AssetTypeContainer>
-      {modifyAssetType.map((modifyAssetType) => (
-        <AssetInputWrap key={modifyAssetType.type}>{assetInput(modifyAssetType)}</AssetInputWrap>
+      {modifyAssetType.map((type) => (
+        <AssetInputWrap key={type.type} length={modifyAssetType?.length}>
+          {assetInput(type)}
+        </AssetInputWrap>
       ))}
     </AssetTypeContainer>
   );
@@ -68,10 +70,13 @@ const AssetTypeContainer = styled.ul`
   display: flex;
 `;
 
-const AssetInputWrap = styled.li`
+const AssetInputWrap = styled.li<{ length: number }>`
   display: flex;
   flex-direction: column;
   border: 1px solid var(--sub);
-  flex: 1;
+  ${(props) =>
+    css`
+      width: calc(100% / ${props.length});
+    `}
   position: relative;
 `;

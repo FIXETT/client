@@ -9,7 +9,7 @@ const AddAssetButton = () => {
     navigate('/addasset');
   };
 
-  return <AddAssetButtonContainer onClick={onClicklink}>제품 무료로 등록하기</AddAssetButtonContainer>;
+  return <AddAssetButtonContainer onClick={onClicklink}>자산 등록하기</AddAssetButtonContainer>;
 };
 
 export default AddAssetButton;

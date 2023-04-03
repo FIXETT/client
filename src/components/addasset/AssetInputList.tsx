@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { assetlistState, postAssetTypeState } from '../../recoil/assets';
@@ -54,7 +54,9 @@ const AssetInputList = () => {
         return (
           <AssetTypeContainer key={index}>
             {postAssetType.map((assetType) => (
-              <AssetInputWrap key={assetType.title}>{assetInput(assetType, index)}</AssetInputWrap>
+              <AssetInputWrap key={assetType.title} length={postAssetType.length}>
+                {assetInput(assetType, index)}
+              </AssetInputWrap>
             ))}
           </AssetTypeContainer>
         );
@@ -69,10 +71,13 @@ const AssetTypeContainer = styled.ul`
   display: flex;
 `;
 
-const AssetInputWrap = styled.li`
+const AssetInputWrap = styled.li<{ length: number }>`
   display: flex;
   flex-direction: column;
   border: 1px solid var(--sub);
-  flex: 1;
+  ${(props) =>
+    css`
+      width: calc(100% / ${props.length});
+    `}
   position: relative;
 `;

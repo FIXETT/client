@@ -28,6 +28,7 @@ const InputAsset = ({ assetType, index, handleChange }: inputParameterType) => {
     <>
       <InputAssetContainer
         type={assetType.inputType}
+        maxLength={10}
         id={String(index)}
         onChange={handleChange}
         name={assetType.type}
