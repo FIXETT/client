@@ -32,6 +32,7 @@ const InputAsset = ({ modifyAssetType, handleChange }: any) => {
     <>
       <InputAssetContainer
         type={modifyAssetType.inputType}
+        maxLength={10}
         onChange={handleChange}
         name={modifyAssetType.type}
         onClick={() => {
