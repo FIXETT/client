@@ -44,9 +44,9 @@ const Signup = () => {
         <Logo src={landinglogo} alt=""></Logo>
 
         <UzzulText>
-          <span style={{ fontWeight: '700', fontSize: '24px', color: '#5A3092' }}>안녕하세요,관리어쩔입니다.</span>
+          <span style={{ fontWeight: '700', fontSize: '24px', color: '#5A3092' }}>안녕하세요, FIXET 입니다.</span>
           <span style={{ fontWeight: '700', fontSize: '13px', color: '#8F8F8F' }}>
-            이메일로 간단하게 가입하고 관리어쩔로 회사 자산을 관리해보세요.
+            이메일로 간단하게 가입하고 FIXET으로 회사 자산을 관리해보세요.
           </span>
         </UzzulText>
         <Email
