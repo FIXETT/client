@@ -33,7 +33,7 @@ const InputNumber = ({ modifyAssetType, handleChange }: any) => {
       <AssetInput
         type={modifyAssetType.inputType}
         min={0}
-        max={10}
+        max={99}
         onChange={handleChange}
         name={modifyAssetType.type}
         defaultValue={defaultValue}
