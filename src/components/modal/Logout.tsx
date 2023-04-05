@@ -62,7 +62,8 @@ const Modalback = styled.div`
   background-color: rgba(0, 0, 0, 0);
   width: 100vw;
   height: 100vh;
-  position: fixed;
+  position: absolute;
+  z-index: 1;
   bottom: 0;
   display: flex;
   justify-content: center;
