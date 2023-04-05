@@ -1,5 +1,5 @@
 import React from 'react';
-import Fix from '../../components/fix/Fix';
+import Fix from '../components/fix/Fix';
 const FixPage = () => {
   return <Fix />;
 };
