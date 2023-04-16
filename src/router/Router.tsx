@@ -11,6 +11,7 @@ import ConfirmPage from '../pages/Signup/ConfirmPage';
 import SignupPage from '../pages/Signup/SignupPage';
 import EnterInfoPage from './../pages/Signup/EnterInfoPage';
 import FixPage from '../pages/Fix/FixPage';
+import AssetList from '../pages/AssetList';
 
 function Router() {
   return (
@@ -22,9 +23,8 @@ function Router() {
         <Route path="/enter" element={<EnterInfoPage />} />
         <Route element={<Layout />}>
           <Route element={<Aside />}>
+            <Route path="/assetlist" element={<AssetList />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/addasset" element={<AddAsset />} />
-            <Route path="/modifyasset" element={<ModifyAsset />} />
             <Route path="/fix" element={<FixPage />} />
           </Route>
         </Route>

@@ -1,13 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
-import NavList from './NavList';
+
 import { useRecoilState } from 'recoil';
 import { useLogoutState } from '../../recoil/userList';
+
+import logo from '../../assets/logo.svg';
+import NavList from './NavList';
 
 const Aside = () => {
   const name = window.localStorage.getItem('name') as string;
   const [islogout, setIslogout] = useRecoilState(useLogoutState);
+
   const logoutHandler = () => {
     setIslogout(!islogout);
   };
@@ -15,14 +19,20 @@ const Aside = () => {
   return (
     <>
       <AsideContainer>
-        <WelcomTitle>
-          <LogoIcon>{name?.slice(0, 1)}</LogoIcon>
-          {name}(관리자)님
-        </WelcomTitle>
+        <LogoImg src={logo} alt="로고" />
+        <ProfileWrap>
+          <ImgWrap>
+            <img src="https://avatars.githubusercontent.com/u/88040809?v=4" alt="프로필" />
+          </ImgWrap>
+          <TextWrap>
+            <Name>{name}</Name>
+            <Company>비누랩스</Company>
+            <Job>PO</Job>
+          </TextWrap>
+        </ProfileWrap>
         <NavListContainer>
-          <AsideTitle>대시보드</AsideTitle>
           <NavList />
-          <LogoutBtn onClick={logoutHandler}>로그아웃</LogoutBtn>
+          {/* <LogoutBtn onClick={logoutHandler}>로그아웃</LogoutBtn> */}
         </NavListContainer>
       </AsideContainer>
       <Outlet />
@@ -33,38 +43,56 @@ const Aside = () => {
 export default Aside;
 
 const AsideContainer = styled.div`
-  width: 16%;
-  min-width: 260px;
+  min-width: 180px;
   height: 100%;
-  padding: 24px;
-  box-shadow: var(--box-shadow);
+  padding: 0 16px;
   background-color: #fff;
+  border-right: 1px solid #eee;
 `;
-const WelcomTitle = styled.div`
+const LogoImg = styled.img`
+  margin-top: 42px;
+  margin-bottom: 16px;
+`;
+const ProfileWrap = styled.div`
   display: flex;
   align-items: center;
-  font-size: var(--heading4);
-  padding: 20px 0;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #f4f7fe;
+  gap: 8px;
+  padding: 16px 0;
 `;
-const LogoIcon = styled.div`
-  width: 35px;
-  height: 35px;
-  border-radius: 8px;
-  background-color: var(--gray2);
-  color: #fff;
+
+const ImgWrap = styled.div`
+  width: 56px;
+  height: 56px;
+  border-radius: 100%;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+const TextWrap = styled.div`
+  height: 56px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 10px;
+  flex-direction: column;
+  justify-content: space-between;
 `;
-const AsideTitle = styled.p`
-  color: var(--primary);
-  font-size: var(--heading4);
-  margin: 10px 0;
-  font-weight: bold;
+
+const Company = styled.p`
+  font-weight: 500;
+  font-size: var(--heading6);
+  color: #999;
 `;
+const Job = styled.p`
+  font-weight: 500;
+  font-size: var(--heading6);
+  color: #999;
+`;
+const Name = styled.p`
+  font-weight: 700;
+  font-size: var(--heading5);
+`;
+
 const NavListContainer = styled.ul`
   display: flex;
   flex-direction: column;
@@ -76,5 +104,4 @@ const LogoutBtn = styled.button`
   font-weight: 700;
   font-size: 15px;
   height: 44px;
-  margin-top: 356px;
 `;

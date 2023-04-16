@@ -42,8 +42,8 @@ const globalStyle = createGlobalStyle`
     --heading2: 24px;
     --heading3: 20px;
     --heading4: 16px;
-    --heading5: 12px;
-    --heading6: 10px;
+    --heading5: 18px;
+    --heading6: 14px;
     --box-shadow: 0px 0px 21px 0px rgba(89, 102, 122, 0.1);
   }
 `;

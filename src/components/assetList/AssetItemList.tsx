@@ -10,7 +10,7 @@ import { assetListType } from '../../types/asset';
 import SearchList from './SearchList';
 import AssetRadioButton from './AssetRadioButton';
 
-const AssetList = () => {
+const AssetItemList = () => {
   const [assetList, setAssetList] = useState<assetListType[]>([]);
   const searchText = useRecoilValue(searchTextState);
 
@@ -112,7 +112,7 @@ const AssetList = () => {
   );
 };
 
-export default AssetList;
+export default AssetItemList;
 
 const AssetListContainer = styled.ul`
   display: flex;
