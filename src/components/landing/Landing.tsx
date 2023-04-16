@@ -69,7 +69,7 @@ const Landing = () => {
       if (userData) {
         window.localStorage.setItem('name', userData.user.name);
         window.localStorage.setItem('identifier', userData.user.identifier);
-        navigate('/dashboard');
+        navigate('/assetList');
       }
     } catch (error: any) {
       if (error.response) {
