@@ -1,6 +1,5 @@
 import React from 'react';
-import EnterInfo from '../../components/landing/EnterInfo';
-
+import EnterInfo from '../components/landing/EnterInfo';
 const EnterInfoPage = () => {
   return <EnterInfo />;
 };
