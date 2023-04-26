@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
-import AssetList from './AssetList';
+import AssetItemList from './AssetItemList';
 
 const AssetTypeList = () => {
   const AssetTypeNameList = [
@@ -35,7 +34,7 @@ const AssetTypeList = () => {
             <AssetTypeName key={value.id}>{value.title}</AssetTypeName>
           ))}
         </AssetTypeNameListContainer>
-        <AssetList />
+        <AssetItemList />
       </AssetTypeListWrap>
     </div>
   );

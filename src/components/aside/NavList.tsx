@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 
-import arrow from '../../assets/icon/arrow_right.svg';
-import dashboard from '../../assets/icon/dashboard.svg';
-import addsupply from '../../assets/icon/addsupply.svg';
-import search from '../../assets/icon/search.svg';
-import mypage from '../../assets/icon/mypage.svg';
+import { ReactComponent as AssetList } from '../../assets/icon/assetList.svg';
+import { ReactComponent as Dashboard } from '../../assets/icon/dashboard.svg';
+import { ReactComponent as Fix } from '../../assets/icon/fix.svg';
+import { ReactComponent as Mypage } from '../../assets/icon/mypage.svg';
 
 import { subNavListType } from '../../types/asset';
 import { Logout } from '../modal/Logout';
@@ -20,9 +19,9 @@ const NavList = () => {
   };
 
   const navList = [
-    { id: '1', link: 'dashboard', title: '자산 현황 리스트', img: dashboard },
-    { id: '2', link: 'addasset', title: '제품 등록하기', img: addsupply },
-    { id: '3', link: 'fix', title: '수리업체 찾기', img: search },
+    { id: '1', link: 'assetList', title: '자산 리스트', img: AssetList },
+    { id: '2', link: 'dashboard', title: '자산 대쉬보드', img: Dashboard },
+    { id: '3', link: 'fix', title: '자산 수리', img: Fix },
     // {
     //   id: '4',
     //   title: '마이페이지',
@@ -41,7 +40,7 @@ const NavList = () => {
           <ListItemContainer key={value.id}>
             {/* {!value?.subNavList ? ( */}
             <ListItemLink match={String(match === `/${value.link}`)} to={value.link}>
-              <ListItemImg src={value.img} alt="아이콘" />
+              <value.img stroke={String(match === `/${value.link}`) === 'true' ? '#000' : '#999'} />
               <p>{value.title}</p>
             </ListItemLink>
             {/* ) : (
@@ -65,9 +64,9 @@ const NavList = () => {
           </ListItemContainer>
         );
       })}
-      <BlankLink to="https://forms.gle/5Fh5WeSV2ErDcF9k7" target="_blank">
+      {/* <BlankLink to="https://forms.gle/5Fh5WeSV2ErDcF9k7" target="_blank">
         수리 요청하기
-      </BlankLink>
+      </BlankLink> */}
     </>
   );
 };
@@ -78,21 +77,18 @@ const ListItemContainer = styled.li`
   border-radius: 5px;
   overflow: hidden;
 `;
-const ListItemImg = styled.img`
-  height: 16px;
-`;
 const ListItemLink = styled(Link)<{ match?: string }>`
-  border-left: 8px solid transparent;
+  font-weight: 500;
+  color: #999;
+  display: flex;
+  gap: 4px;
+  padding: 10px 0;
   ${(props) =>
     props.match === 'true' &&
     css`
-      background-color: var(--gray);
-      border-left: 8px solid var(--primary);
+      font-weight: 700;
+      color: #333;
     `}
-  display: flex;
-  gap: 10px;
-  padding: 12px;
-  padding-left: 22px;
 `;
 
 const BlankLink = styled(Link)`
@@ -100,48 +96,8 @@ const BlankLink = styled(Link)`
   display: block;
   background-color: var(--primary);
   color: #fff;
-  padding: 10px;
+  padding: 9px 0;
   border-radius: 6px;
   text-align: center;
   font-size: 14px;
-`;
-
-const ListItem = styled.div`
-  display: flex;
-  gap: 10px;
-  padding: 10px;
-  cursor: pointer;
-`;
-
-const SubList = styled.ul<{ subToggleMeru: boolean }>`
-  display: ${(props) => (props.subToggleMeru ? 'flex' : 'none')};
-  animation: ${(props) => (props.subToggleMeru ? 'show 0.5s' : 'hide 0.5s')};
-  @keyframes show {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-  @keyframes hide {
-    0% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
-  transition: display 3s;
-  flex-direction: column;
-  padding-left: 20px;
-`;
-const LogoutBtn = styled.button`
-  background-color: var(--gray);
-  border-radius: 8px;
-  color: var(--black2);
-  font-weight: 700;
-  font-size: 15px;
-  height: 44px;
-  margin-top: 356px;
 `;

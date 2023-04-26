@@ -104,7 +104,7 @@ const AddModal = () => {
               e.preventDefault();
               addAssetMutation.mutate();
               setAddShowModal(false);
-              navigate('/dashboard');
+              navigate('/assetList');
             }}
           >
             네

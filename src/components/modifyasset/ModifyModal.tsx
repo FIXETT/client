@@ -143,7 +143,7 @@ const ModifyModal = () => {
                 },
               ]);
               setModifyShowModal(false);
-              navigate('/dashboard');
+              navigate('/assetList');
             }}
           >
             네

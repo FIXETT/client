@@ -5,12 +5,11 @@ import Aside from '../components/aside';
 import Layout from '../components/Layout';
 import Dashboard from '../pages/Dashboard';
 import LandingPage from '../pages/LandingPage';
-import AddAsset from '../pages/AddAsset';
-import ModifyAsset from '../pages/ModifyAsset';
 import ConfirmPage from '../pages/ConfirmPage';
 import FixPage from '../pages/FixPage';
 import SignupPage from '../pages/SignupPage';
 import EnterInfoPage from '../pages/EnterInfoPage';
+import AssetList from '../pages/AssetList';
 function Router() {
   return (
     <div>
@@ -21,9 +20,8 @@ function Router() {
         <Route path="/enter" element={<EnterInfoPage />} />
         <Route element={<Layout />}>
           <Route element={<Aside />}>
+            <Route path="/assetlist" element={<AssetList />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/addasset" element={<AddAsset />} />
-            <Route path="/modifyasset" element={<ModifyAsset />} />
             <Route path="/fix" element={<FixPage />} />
           </Route>
         </Route>
