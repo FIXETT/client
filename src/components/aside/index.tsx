@@ -5,6 +5,7 @@ import { Outlet } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { useLogoutState } from '../../recoil/userList';
 
+import profile from '../../assets/icon/profile.png';
 import logo from '../../assets/logo.svg';
 import NavList from './NavList';
 
@@ -22,12 +23,11 @@ const Aside = () => {
         <LogoImg src={logo} alt="로고" />
         <ProfileWrap>
           <ImgWrap>
-            <img src="https://avatars.githubusercontent.com/u/88040809?v=4" alt="프로필" />
+            <img src={profile} alt="프로필" />
           </ImgWrap>
           <TextWrap>
             <Name>{name}</Name>
             <Company>비누랩스</Company>
-            <Job>PO</Job>
           </TextWrap>
         </ProfileWrap>
         <NavListContainer>
@@ -65,17 +65,19 @@ const ImgWrap = styled.div`
   height: 56px;
   border-radius: 100%;
   overflow: hidden;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #066aff;
+  position: relative;
   img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 `;
 const TextWrap = styled.div`
-  height: 56px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 6px;
 `;
 
 const Company = styled.p`

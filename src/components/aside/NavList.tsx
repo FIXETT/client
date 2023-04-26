@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { ReactComponent as AssetList } from '../../assets/icon/assetList.svg';
 import { ReactComponent as Dashboard } from '../../assets/icon/dashboard.svg';
-import { ReactComponent as Search } from '../../assets/icon/search.svg';
+import { ReactComponent as Fix } from '../../assets/icon/fix.svg';
 import { ReactComponent as Mypage } from '../../assets/icon/mypage.svg';
 
 import { subNavListType } from '../../types/asset';
@@ -21,7 +21,7 @@ const NavList = () => {
   const navList = [
     { id: '1', link: 'assetList', title: '자산 리스트', img: AssetList },
     { id: '2', link: 'dashboard', title: '자산 대쉬보드', img: Dashboard },
-    { id: '3', link: 'fix', title: '자산 수리', img: Search },
+    { id: '3', link: 'fix', title: '자산 수리', img: Fix },
     // {
     //   id: '4',
     //   title: '마이페이지',
@@ -79,7 +79,6 @@ const ListItemContainer = styled.li`
 `;
 const ListItemLink = styled(Link)<{ match?: string }>`
   font-weight: 500;
-  font-size: 14px;
   color: #999;
   display: flex;
   gap: 4px;
