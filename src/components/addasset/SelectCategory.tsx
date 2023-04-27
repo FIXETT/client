@@ -1,65 +1,68 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
+
 import { assetlistState } from '../../recoil/assets';
 import { inputParameterType } from '../../types/asset';
-import ContextMenu from './ContextMenu';
 
-const SelectCategory = ({ assetType, index, handleChange }: inputParameterType) => {
-  const [showContextMenu, setShowContextMenu] = useState(false);
+import arrowBttom from '../../assets/icon/arrow-bottom.svg';
+
+const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
   const [showCategory, setShowCategory] = useState(false);
-  const [assetlist, setassetlist] = useRecoilState(assetlistState);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const assetlist = useRecoilValue(assetlistState);
 
-  const onclickDeleteText = () => {
-    const inputEl = inputRef.current;
-    if (inputEl) {
-      inputEl.value = '';
-    }
-    const deleteTable = [...assetlist];
-    deleteTable[index] = {
-      ...deleteTable[index],
-      [assetType.type]: '',
-    };
-    setassetlist(deleteTable);
-    setShowContextMenu(false);
-  };
   const icon = () => {
-    switch (assetlist[index]?.category) {
+    switch (assetlist[0]?.category) {
+      case '노트북/데스크탑/서버':
+        return <span>💻</span>;
       case '모니터':
         return <span>🖥️</span>;
-      case '노트북':
-        return <span>💻</span>;
-      case '데스크탑':
-        return <span>👨‍💻</span>;
+      case '모바일기기':
+        return <span>📱</span>;
+      case '사무기기':
+        return <span>🖨️</span>;
+      case '기타장비':
+        return <span>⌨️</span>;
+      case '소프트웨어':
+        return <span>🧑‍💻</span>;
       default:
-        return <span />;
+        return;
     }
   };
 
   return (
     <SelectContainer>
-      {showContextMenu && <ContextMenu assetType={assetType} index={index} onclickDeleteText={onclickDeleteText} />}
+      <h3>{assetType.title}</h3>
       <SelectBtn
         onClick={(e) => {
           e.preventDefault();
-          setShowContextMenu(false);
           setShowCategory(!showCategory);
         }}
         onContextMenu={(e) => {
           e.preventDefault();
-          setShowContextMenu(true);
         }}
       >
         {icon()}
-        {assetlist[index]?.category ? assetlist[index]?.category : '선택하기 🔽'}
+        {assetlist[0]?.category ? assetlist[0]?.category : '선택 '}
+        {!assetlist[0]?.category && <img src={arrowBttom} alt="화살표아이콘" />}
       </SelectBtn>
       {showCategory && (
         <SlectList>
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
+              name={assetType.type}
+              value="노트북/데스크탑/서버"
+              onChange={handleChange}
+              onClick={() => {
+                setShowCategory(false);
+              }}
+            />
+            💻 노트북/데스크탑/서버
+          </AssetLabel>
+          <AssetLabel>
+            <input
+              type="radio"
               name={assetType.type}
               value="모니터"
               onChange={handleChange}
@@ -72,28 +75,50 @@ const SelectCategory = ({ assetType, index, handleChange }: inputParameterType) 
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
               name={assetType.type}
-              value="노트북"
+              value="모바일기기"
               onChange={handleChange}
               onClick={() => {
                 setShowCategory(false);
               }}
             />
-            💻 노트북
+            📱 모바일기기
           </AssetLabel>
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
               name={assetType.type}
-              value="데스크탑"
+              value="사무기기"
               onChange={handleChange}
               onClick={() => {
                 setShowCategory(false);
               }}
             />
-            👨‍💻 데스크탑
+            🖨️ 사무기기
+          </AssetLabel>
+          <AssetLabel>
+            <input
+              type="radio"
+              name={assetType.type}
+              value="기타장비"
+              onChange={handleChange}
+              onClick={() => {
+                setShowCategory(false);
+              }}
+            />
+            ⌨️ 기타장비
+          </AssetLabel>
+          <AssetLabel>
+            <input
+              type="radio"
+              name={assetType.type}
+              value="소프트웨어"
+              onChange={handleChange}
+              onClick={() => {
+                setShowCategory(false);
+              }}
+            />
+            🧑‍💻 소프트웨어
           </AssetLabel>
         </SlectList>
       )}
@@ -102,34 +127,38 @@ const SelectCategory = ({ assetType, index, handleChange }: inputParameterType) 
 };
 
 export default SelectCategory;
+const SelectContainer = styled.div`
+  position: relative;
+  height: 100%;
+  width: 100%;
+`;
+
+const SelectBtn = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #333;
+  width: 100%;
+`;
 
 const AssetLabel = styled.label`
+  width: 100%;
   display: block;
-  padding: 10px 15px;
+  padding: 5px;
   cursor: pointer;
-  border-bottom: 1px solid var(--gray);
   border-radius: 5px;
   font-size: 12px;
-  text-align: center;
-  :hover {
-    background-color: var(--gray);
-  }
   input {
     display: none;
   }
 `;
-
-const SelectContainer = styled.div`
-  position: relative;
-  padding: 5px;
-`;
-
-const SelectBtn = styled.button`
-  width: 100%;
-`;
-
 const SlectList = styled.div`
-  width: 85%;
+  width: 100%;
   padding: 10px;
   position: absolute;
   left: 50%;
