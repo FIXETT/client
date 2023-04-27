@@ -10,6 +10,7 @@ import FixPage from '../pages/FixPage';
 import SignupPage from '../pages/SignupPage';
 import EnterInfoPage from '../pages/EnterInfoPage';
 import AssetList from '../pages/AssetList';
+import SearchList from '../pages/SearchList';
 function Router() {
   return (
     <div>
@@ -21,6 +22,7 @@ function Router() {
         <Route element={<Layout />}>
           <Route element={<Aside />}>
             <Route path="/assetlist" element={<AssetList />} />
+            <Route path="/searchlist" element={<SearchList />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/fix" element={<FixPage />} />
           </Route>
