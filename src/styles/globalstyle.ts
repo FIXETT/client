@@ -1,11 +1,29 @@
 import { createGlobalStyle } from 'styled-components';
 
 const globalStyle = createGlobalStyle`
-  body {
+  @font-face {
+    font-family: 'Pretendard-Bold';
+    src: url('../assets/fonts/Pretendard-Bold.woff2');
+    font-weight: 700;
+  }
+
+  @font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('../assets/fonts/Pretendard-Regular.woff2');
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: 'Pretendard-Light';
+    src: url('../assets/fonts/Pretendard-Light.woff2');
+    font-weight: 300;
+  }
+
+  html, body {
     padding: 0;
     margin: 0;
     line-height: 1;
-    font-family:  'Inter', sans-serif;
+    font-family: 'Pretendard', sans-serif;
   }
 
   * {
@@ -13,33 +31,32 @@ const globalStyle = createGlobalStyle`
     list-style: none;
     padding: 0;
     margin: 0;
-    font-size: 16px;
+    font-family: inherit;
+    font-size: inherit;
   }
 
-  a {
+  a, span {
     text-decoration: none;
     color: inherit;
+    font-size: inherit;
   }
+
   button{
-    margin: 0;
-    padding: 0;
     background-color: transparent;
     border: 0;
     cursor: pointer;
   }
+
   input {
-    
     outline: none;
+    border: inherit;
   }
   :root{
-    --primary:#5A3092;
-    --sub:#E4CCFF;
-    --black: #363630;
-    --black2:#4E4E4E;
-    --gray: #F2F2F2;
-    --gray2: #8f97b2;
+    --primary:#066AFF;
+    --green:#14AE5C;
+    --gray: #999;
     --heading1: 48px;
-    --heading2: 24px;
+    --heading2: 32px;
     --heading3: 20px;
     --heading4: 16px;
     --heading5: 18px;

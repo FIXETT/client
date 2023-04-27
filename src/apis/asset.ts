@@ -1,3 +1,4 @@
+import { assetListType } from '../types/asset';
 import { AxiosInstance } from './assetInstance';
 
 const token = window.localStorage.getItem('token');
@@ -10,11 +11,9 @@ const headers = {
 // Add request interceptor
 AxiosInstance.interceptors.request.use(
   function (config) {
-    // Do something before request is sent
     return config;
   },
   function (error) {
-    // Do something with request error
     return Promise.reject(error);
   },
 );
@@ -22,13 +21,9 @@ AxiosInstance.interceptors.request.use(
 // Add response interceptor
 AxiosInstance.interceptors.response.use(
   function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
     return response;
   },
   function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
     return Promise.reject(error);
   },
 );
@@ -49,8 +44,38 @@ export const deleteAsset = async (assetNumber: object[]) => {
   return response;
 };
 
-export const getAsset = async () => {
+type AssetResponse = {
+  asset: {
+    Assets: assetListType[];
+    nextCursor: string;
+  };
+};
+export const getAsset = async (cursor: number | null, direction: string) => {
   const identifier = Number(window.localStorage.getItem('identifier'));
-  const response = await AxiosInstance.get(`/asset/?cursor=${identifier}`, { headers });
-  return response;
+  const params = {
+    cursor: `${identifier},${cursor}`,
+    direction,
+  };
+  const response = await AxiosInstance.get<AssetResponse>('/asset', { params, headers });
+
+  return response.data;
+};
+export const searchAsset = async (category: string, value: string) => {
+  const identifier: string | null = window.localStorage.getItem('identifier');
+  const params = {
+    category,
+    identifier,
+    value,
+  };
+  const response = await AxiosInstance.get(`/asset/search`, { params, headers });
+
+  return response.data;
+};
+export const getDashboard = async () => {
+  const identifier = Number(window.localStorage.getItem('identifier'));
+  const params = {
+    identifier,
+  };
+  const response = await AxiosInstance.get('/asset/dashboard', { params, headers });
+  return response.data;
 };

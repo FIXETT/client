@@ -1,26 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import styled from 'styled-components';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { handleChangeType, patchAssetDataType } from '../../types/asset';
-import {
-  assetNumberListState,
-  modifyState,
-  modifyAssetTypeState,
-  modifyselectAssetTypeState,
-  modifyAssetlistState,
-} from './../../recoil/assets';
+import { assetNumberListState, modifyState } from './../../recoil/assets';
 
-import department from '../../assets/icon/team.svg';
-import manufacturer from '../../assets/icon/manufacturer.svg';
-import acquisitionDate from '../../assets/icon/date.svg';
-import status from '../../assets/icon/status.svg';
-import note from '../../assets/icon/text.svg';
+import check from '../../assets/icon/check.png';
 
 const AssetRadioButton = ({ assetList, value }: any) => {
   const [assetNumberList, setAssetNumberList] = useRecoilState(assetNumberListState);
-  const setModifyassetlist = useSetRecoilState(modifyAssetlistState);
   const setModify = useSetRecoilState(modifyState);
-  const setModifyPostAssetType = useSetRecoilState(modifyAssetTypeState);
-  const setModifySelectAssetType = useSetRecoilState(modifyselectAssetTypeState);
 
   const checkedInput: handleChangeType = (e) => {
     e.stopPropagation();
@@ -35,38 +23,60 @@ const AssetRadioButton = ({ assetList, value }: any) => {
       setAssetNumberList(filtered);
     }
   };
-  useEffect(() => {
-    setModifyPostAssetType([
-      { title: '실사용자', type: 'name', inputType: 'text' },
-      { title: '제품명', type: 'product', inputType: 'text' },
-      { title: '품목', type: 'category', inputType: 'select' },
-      { title: '수량', type: 'quantity', inputType: 'number' },
-    ]);
-    setModifySelectAssetType([
-      { title: '팀', type: 'department', inputType: 'select', img: department },
-      { title: '제조사', type: 'manufacturer', inputType: 'text', img: manufacturer },
-      { title: '취득일자', type: 'acquisitionDate', inputType: 'date', img: acquisitionDate },
-      { title: '상태', type: 'status', inputType: 'select', img: status },
-      { title: '비고', type: 'note', inputType: 'text', img: note },
-    ]);
-    setModifyassetlist([
-      {
-        assetId: 0,
-        status: 0,
-        department: 0,
-        category: 0,
-        quantity: 0,
-        identifier: 0,
-        assetNumber: 0,
-        name: '',
-        product: '',
-        manufacturer: '',
-        acquisitionDate: '',
-        note: '',
-      },
-    ]);
-  }, []);
-  return <input type="checkbox" id={String(value.assetNumber)} onChange={checkedInput} />;
+  return (
+    <CheckboxInputContainer>
+      <CheckboxLabel>
+        <CheckboxInput type="checkbox" id={String(value.assetNumber)} onChange={checkedInput} />
+        <span />
+      </CheckboxLabel>
+    </CheckboxInputContainer>
+  );
 };
 
 export default AssetRadioButton;
+const CheckboxInputContainer = styled.td`
+  width: 36px;
+  padding: 10px 8px;
+`;
+
+const CheckboxInput = styled.input`
+  display: block;
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  &:checked + span {
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      background-image: url(${check});
+    }
+  }
+
+  &:not(:checked) + span {
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      background-color: #f4f4f4;
+      border-radius: 4px;
+    }
+  }
+`;
+
+const CheckboxLabel = styled.label`
+  position: relative;
+  display: block;
+  cursor: pointer;
+`;

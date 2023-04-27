@@ -1,50 +1,57 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-
-import { searchTextState } from './../../recoil/assets';
-
-import search from '../../assets/icon/search.svg';
 
 import AssetButton from './AssetButton';
+import Search from './../Search';
 
-const Header = () => {
-  const [text, setText] = useState('');
-  const searchText = useRecoilValue(searchTextState);
-
-  const setSearchText = useSetRecoilState(searchTextState);
-
-  const searchOnchange = (e: any) => {
-    e.preventDefault();
-    setText(e.target.value);
-  };
-
-  const handleOnKeyPress = (e: any) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      if (text === '') {
-        alert('검색어를 입력해주세요');
-      }
-      setSearchText(text);
+const Header = ({ assetList }: any) => {
+  const categoryIcon = (value: string) => {
+    switch (value) {
+      case '노트북/데스크탑/서버':
+        return <span>💻</span>;
+      case '모니터':
+        return <span>🖥️</span>;
+      case '모바일기기':
+        return <span>📱</span>;
+      case '사무기기':
+        return <span>🖨️</span>;
+      case '기타장비':
+        return <span>⌨️</span>;
+      case '소프트웨어':
+        return <span>🧑‍💻</span>;
+      default:
+        return;
     }
   };
+  const equipmentCounts = [
+    { name: '노트북/데스크탑/서버', count: assetList?.ldsTotalCount },
+    { name: '모바일기기', count: assetList?.mobileTotalCount },
+    { name: '모니터', count: assetList?.monitorTotalCount },
+    { name: '사무기기', count: assetList?.officeequipmentTotalCount },
+    { name: '기타장비', count: assetList?.otherequipmentTotalCount },
+    { name: '소프트웨어', count: assetList?.softwareTotalCount },
+  ];
+
   return (
     <>
       <AssetWrap>
-        <AssetSearch>
-          <img src={search} alt="돋보기" />
-          <AssetSearchInput
-            id="search"
-            type="text"
-            maxLength={10}
-            placeholder="등록된 업무용 자산 / 팀명 / 사용자명 / 제품명 등을 조회해 보세요"
-            onChange={searchOnchange}
-            onKeyDown={handleOnKeyPress}
-          />
-        </AssetSearch>
+        <div>
+          <AssetNumber>
+            비누랩스의 <span>{assetList?.totalCount ? String(assetList?.totalCount).padStart(2, '0') : '00'}</span>개
+            자산
+          </AssetNumber>
+          <CategoryCountList>
+            {equipmentCounts.map((equipment, index) => (
+              <CategoryCount key={index}>
+                {categoryIcon(equipment?.name)}
+                {`${equipment?.name} ${equipment?.count ? equipment?.count : 0}대`}
+              </CategoryCount>
+            ))}
+          </CategoryCountList>
+        </div>
+        <Search />
       </AssetWrap>
       <AssetButton />
-      {searchText && <p>&#39;{searchText}&#39; 검색 결과</p>}
     </>
   );
 };
@@ -53,30 +60,26 @@ export default Header;
 
 const AssetWrap = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0 8px;
 `;
-
-const AssetSearch = styled.div`
-  width: 470px;
-  background: #f4f4f4;
-  border-radius: 12px;
-  padding: 15px 16px;
+const AssetNumber = styled.h2`
+  font-size: var(--heading2);
+  span {
+    color: var(--primary);
+  }
+  margin-bottom: 16px;
+`;
+const CategoryCountList = styled.ul`
   display: flex;
   align-items: center;
   gap: 8px;
-  img {
-    height: 20px;
-  }
 `;
-const AssetSearchInput = styled.input`
-  background-color: transparent;
-  width: 100%;
-  font-weight: 500;
-  font-size: 14px;
-  ::placeholder {
-    width: 100%;
-    font-weight: 500;
-    font-size: 14px;
-  }
+const CategoryCount = styled.li`
+  background: #f4f4f4;
+  border-radius: 8px;
+  padding: 8px;
+  font-weight: bold;
+  color: var(--gray);
 `;

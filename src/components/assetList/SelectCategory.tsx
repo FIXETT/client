@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { assetListType } from '../../types/asset';
 
-import { modifyState } from '../../recoil/assets';
-import { inputParameterType } from '../../types/asset';
-
-import arrowBttom from '../../assets/icon/arrow-bottom.svg';
-
-const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
+const SelectCategory = ({ index, value, handleInputChange, assetListState }: any) => {
   const [showCategory, setShowCategory] = useState(false);
-  const modifyList = useRecoilValue(modifyState);
 
-  const icon = () => {
-    switch (modifyList[0]?.category) {
+  const categoryIcon = (value: assetListType) => {
+    switch (value?.category) {
       case '노트북/데스크탑/서버':
         return <span>💻</span>;
       case '모니터':
@@ -32,7 +26,6 @@ const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
 
   return (
     <SelectContainer>
-      <h3>{assetType.title}</h3>
       <SelectBtn
         onClick={(e) => {
           e.preventDefault();
@@ -42,18 +35,18 @@ const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
           e.preventDefault();
         }}
       >
-        {icon()}
-        {modifyList[0]?.category ? modifyList[0]?.category : '선택 '}
-        {!modifyList[0]?.category && <img src={arrowBttom} alt="화살표아이콘" />}
+        {categoryIcon(value)}
+
+        {assetListState[index]?.category ?? value?.category ?? ''}
       </SelectBtn>
       {showCategory && (
         <SlectList>
           <AssetLabel>
             <input
               type="radio"
-              name={assetType.type}
+              name="category"
               value="노트북/데스크탑/서버"
-              onChange={handleChange}
+              onChange={(e) => handleInputChange(e, index, value.assetId, 'category')}
               onClick={() => {
                 setShowCategory(false);
               }}
@@ -63,9 +56,9 @@ const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
           <AssetLabel>
             <input
               type="radio"
-              name={assetType.type}
+              name="category"
               value="모니터"
-              onChange={handleChange}
+              onChange={(e) => handleInputChange(e, index, value.assetId, 'category')}
               onClick={() => {
                 setShowCategory(false);
               }}
@@ -75,9 +68,9 @@ const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
           <AssetLabel>
             <input
               type="radio"
-              name={assetType.type}
+              name="category"
               value="모바일기기"
-              onChange={handleChange}
+              onChange={(e) => handleInputChange(e, index, value.assetId, 'category')}
               onClick={() => {
                 setShowCategory(false);
               }}
@@ -87,9 +80,9 @@ const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
           <AssetLabel>
             <input
               type="radio"
-              name={assetType.type}
+              name="category"
               value="사무기기"
-              onChange={handleChange}
+              onChange={(e) => handleInputChange(e, index, value.assetId, 'category')}
               onClick={() => {
                 setShowCategory(false);
               }}
@@ -99,9 +92,9 @@ const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
           <AssetLabel>
             <input
               type="radio"
-              name={assetType.type}
+              name="category"
               value="기타장비"
-              onChange={handleChange}
+              onChange={(e) => handleInputChange(e, index, value.assetId, 'category')}
               onClick={() => {
                 setShowCategory(false);
               }}
@@ -111,9 +104,9 @@ const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
           <AssetLabel>
             <input
               type="radio"
-              name={assetType.type}
+              name="category"
               value="소프트웨어"
-              onChange={handleChange}
+              onChange={(e) => handleInputChange(e, index, value.assetId, 'category')}
               onClick={() => {
                 setShowCategory(false);
               }}
@@ -127,33 +120,30 @@ const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
 };
 
 export default SelectCategory;
-const SelectContainer = styled.div`
+
+const SelectContainer = styled.td`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #999999;
   position: relative;
   height: 100%;
-  width: 100%;
 `;
 
 const SelectBtn = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 8px;
-  border: 1px solid #cccccc;
   border-radius: 4px;
   font-weight: 500;
+  color: #999;
+  padding: 8px;
   font-size: 14px;
-  color: #333;
-  width: 100%;
 `;
 
 const AssetLabel = styled.label`
-  width: 100%;
   display: block;
-  padding: 5px;
+  padding: 10px 15px;
   cursor: pointer;
   border-radius: 5px;
   font-size: 12px;
-  input {
+  > input {
     display: none;
   }
 `;
