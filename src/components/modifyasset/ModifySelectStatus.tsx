@@ -7,133 +7,116 @@ import { inputParameterType } from '../../types/asset';
 
 import arrowBttom from '../../assets/icon/arrow-bottom.svg';
 
-const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
-  const [showCategory, setShowCategory] = useState(false);
+const ModifySelectStatus = ({ assetType, handleChange }: inputParameterType) => {
+  const [showStatus, setShowStatus] = useState(false);
   const modifyList = useRecoilValue(modifyState);
 
   const icon = () => {
-    switch (modifyList[0]?.category) {
-      case '노트북/데스크탑/서버':
-        return <span>💻</span>;
-      case '모니터':
-        return <span>🖥️</span>;
-      case '모바일기기':
-        return <span>📱</span>;
-      case '사무기기':
-        return <span>🖨️</span>;
-      case '기타장비':
-        return <span>⌨️</span>;
-      case '소프트웨어':
-        return <span>🧑‍💻</span>;
+    switch (modifyList[0]?.status) {
+      case '정상':
+        return <span>🟢</span>;
+      case '분실':
+        return <span>🔴</span>;
+      case '수리중':
+        return <span>🟡</span>;
+      case '수리완료':
+        return <span>🔵</span>;
+      case '수리필요':
+        return <span>🟠</span>;
       default:
         return;
     }
   };
-
   return (
-    <SelectContainer>
+    <ModifySelectContainer>
       <h3>{assetType.title}</h3>
-      <SelectBtn
+      <ModifySelectBtn
         onClick={(e) => {
           e.preventDefault();
-          setShowCategory(!showCategory);
+          setShowStatus(!showStatus);
         }}
         onContextMenu={(e) => {
           e.preventDefault();
         }}
       >
         {icon()}
-        {modifyList[0]?.category ? modifyList[0]?.category : '선택 '}
+        {modifyList[0]?.status ? modifyList[0]?.status : ' 선택'}
         {!modifyList[0]?.category && <img src={arrowBttom} alt="화살표아이콘" />}
-      </SelectBtn>
-      {showCategory && (
-        <SlectList>
-          <AssetLabel>
+      </ModifySelectBtn>
+      {showStatus && (
+        <ModifySlectList>
+          <ModifyAssetLabel>
             <input
               type="radio"
               name={assetType.type}
-              value="노트북/데스크탑/서버"
+              value="정상"
               onChange={handleChange}
               onClick={() => {
-                setShowCategory(false);
+                setShowStatus(false);
               }}
             />
-            💻 노트북/데스크탑/서버
-          </AssetLabel>
-          <AssetLabel>
+            🟢 정상
+          </ModifyAssetLabel>
+          <ModifyAssetLabel>
             <input
               type="radio"
               name={assetType.type}
-              value="모니터"
+              value="분실"
               onChange={handleChange}
               onClick={() => {
-                setShowCategory(false);
+                setShowStatus(false);
               }}
             />
-            🖥️ 모니터
-          </AssetLabel>
-          <AssetLabel>
+            🔴 분실
+          </ModifyAssetLabel>
+          <ModifyAssetLabel>
             <input
               type="radio"
               name={assetType.type}
-              value="모바일기기"
+              value="수리중"
               onChange={handleChange}
               onClick={() => {
-                setShowCategory(false);
+                setShowStatus(false);
               }}
             />
-            📱 모바일기기
-          </AssetLabel>
-          <AssetLabel>
+            🟡 수리중
+          </ModifyAssetLabel>
+          <ModifyAssetLabel>
             <input
               type="radio"
               name={assetType.type}
-              value="사무기기"
+              value="수리완료"
               onChange={handleChange}
               onClick={() => {
-                setShowCategory(false);
+                setShowStatus(false);
               }}
             />
-            🖨️ 사무기기
-          </AssetLabel>
-          <AssetLabel>
+            🔵 수리완료
+          </ModifyAssetLabel>
+          <ModifyAssetLabel>
             <input
               type="radio"
               name={assetType.type}
-              value="기타장비"
+              value="수리필요"
               onChange={handleChange}
               onClick={() => {
-                setShowCategory(false);
+                setShowStatus(false);
               }}
             />
-            ⌨️ 기타장비
-          </AssetLabel>
-          <AssetLabel>
-            <input
-              type="radio"
-              name={assetType.type}
-              value="소프트웨어"
-              onChange={handleChange}
-              onClick={() => {
-                setShowCategory(false);
-              }}
-            />
-            🧑‍💻 소프트웨어
-          </AssetLabel>
-        </SlectList>
+            🟠 수리필요
+          </ModifyAssetLabel>
+        </ModifySlectList>
       )}
-    </SelectContainer>
+    </ModifySelectContainer>
   );
 };
 
-export default SelectCategory;
-const SelectContainer = styled.div`
+export default ModifySelectStatus;
+const ModifySelectContainer = styled.div`
   position: relative;
-  height: 100%;
-  width: 100%;
 `;
 
-const SelectBtn = styled.button`
+const ModifySelectBtn = styled.button`
   display: flex;
   align-items: center;
   gap: 4px;
@@ -145,8 +128,7 @@ const SelectBtn = styled.button`
   color: #333;
   width: 100%;
 `;
-
-const AssetLabel = styled.label`
+const ModifyAssetLabel = styled.label`
   width: 100%;
   display: block;
   padding: 5px;
@@ -157,7 +139,8 @@ const AssetLabel = styled.label`
     display: none;
   }
 `;
-const SlectList = styled.div`
+
+const ModifySlectList = styled.div`
   width: 100%;
   padding: 10px;
   position: absolute;

@@ -1,29 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState, useRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { patchAsset } from '../../apis/asset';
-import { modifyAssetlistState, modifyselectAssetTypeState, showModifyModalState } from '../../recoil/assets';
-import { useNavigate } from 'react-router-dom';
-import { assetNumberListState, modifyAssetTypeState } from '../../recoil/assets';
-
-import department from '../../assets/icon/team.svg';
-import manufacturer from '../../assets/icon/manufacturer.svg';
-import acquisitionDate from '../../assets/icon/date.svg';
-import status from '../../assets/icon/status.svg';
-import note from '../../assets/icon/text.svg';
+import { modifyState, showModifyModalState } from '../../recoil/assets';
 
 const ModifyModal = () => {
-  const navigate = useNavigate();
-  const [modifyassetlist, setModifyassetlist] = useRecoilState(modifyAssetlistState);
-  const setModifyShowModal = useSetRecoilState(showModifyModalState);
-  const setAssetNumber = useSetRecoilState(assetNumberListState);
-  const setModifyPostAssetType = useSetRecoilState(modifyAssetTypeState);
-  const setModifySelectAssetType = useSetRecoilState(modifyselectAssetTypeState);
   const queryClient = useQueryClient();
+  const setshowModifyModal = useSetRecoilState(showModifyModalState);
+  const modifyList = useRecoilValue(modifyState);
+  const newList = [...modifyList];
 
-  const newList = [...modifyassetlist];
   const updatedAssetList = newList.map((asset) => {
     const cleanedAsset = Object.fromEntries(
       Object.entries(asset)
@@ -32,36 +20,27 @@ const ModifyModal = () => {
     );
 
     let updatedCategory = cleanedAsset?.category;
-    let updatedDepartment = cleanedAsset?.department;
     let updatedStatus = cleanedAsset?.status;
 
     if (cleanedAsset?.category !== '') {
       switch (cleanedAsset?.category) {
-        case '모니터':
+        case '노트북/데스크탑/서버':
           updatedCategory = 1;
           break;
-        case '노트북':
+        case '모니터':
           updatedCategory = 2;
           break;
-        case '데스크탑':
+        case '모바일기기':
           updatedCategory = 3;
           break;
-      }
-    }
-
-    if (cleanedAsset?.department !== '') {
-      switch (cleanedAsset?.department) {
-        case '마케팅':
-          updatedDepartment = 1;
+        case '사무기기':
+          updatedCategory = 4;
           break;
-        case '세일즈':
-          updatedDepartment = 2;
+        case '기타장비':
+          updatedCategory = 5;
           break;
-        case '경영지원':
-          updatedDepartment = 3;
-          break;
-        case '개발':
-          updatedDepartment = 4;
+        case '소프트웨어':
+          updatedCategory = 6;
           break;
       }
     }
@@ -86,95 +65,72 @@ const ModifyModal = () => {
     return {
       ...cleanedAsset,
       category: updatedCategory,
-      department: updatedDepartment,
       status: updatedStatus,
     };
   });
-  const ModifyAssetMutation = useMutation(() => patchAsset(updatedAssetList), {
+
+  const modifyAssetMutation = useMutation(() => patchAsset(updatedAssetList), {
     onSuccess: () => {
       queryClient.invalidateQueries(['getAsset']);
     },
   });
+
   return (
-    <ModifyModalContainer>
-      <div>
-        <ModifyModalText>등록하시겠습니까?</ModifyModalText>
+    <AssetContainer>
+      <AssetWrap>
+        <Title>수정하시겠습니까?</Title>
         <Row>
           <CancelBtn
             onClick={() => {
-              setModifyShowModal(false);
+              setshowModifyModal(false);
             }}
           >
             돌아가기
           </CancelBtn>
           <CheckBtn
             onClick={(e) => {
-              e.stopPropagation();
-              ModifyAssetMutation.mutate();
-              const identifier = Number(window.localStorage.getItem('identifier'));
-              setAssetNumber([{ assetNumber: 0, identifier }]);
-              setModifyPostAssetType([
-                { title: '실사용자', type: 'name', inputType: 'text' },
-                { title: '제품명', type: 'product', inputType: 'text' },
-                { title: '품목', type: 'category', inputType: 'select' },
-                { title: '수량', type: 'quantity', inputType: 'number' },
-              ]);
-              setModifySelectAssetType([
-                { title: '팀', type: 'department', inputType: 'select', img: department },
-                { title: '제조사', type: 'manufacturer', inputType: 'text', img: manufacturer },
-                { title: '취득일자', type: 'acquisitionDate', inputType: 'date', img: acquisitionDate },
-                { title: '상태', type: 'status', inputType: 'select', img: status },
-                { title: '비고', type: 'note', inputType: 'text', img: note },
-              ]);
-              setModifyassetlist([
-                {
-                  assetId: 0,
-                  status: '',
-                  department: '',
-                  category: '',
-                  quantity: 0,
-                  identifier: 0,
-                  assetNumber: 0,
-                  name: '',
-                  product: '',
-                  manufacturer: '',
-                  acquisitionDate: '',
-                  note: '',
-                },
-              ]);
-              setModifyShowModal(false);
-              navigate('/assetList');
+              e.preventDefault();
+              modifyAssetMutation.mutate();
+              setshowModifyModal(false);
             }}
           >
             네
           </CheckBtn>
         </Row>
-      </div>
-    </ModifyModalContainer>
+      </AssetWrap>
+    </AssetContainer>
   );
 };
 
 export default ModifyModal;
 
-const ModifyModalContainer = styled.div`
-  text-align: center;
+const AssetContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+`;
+const Title = styled.h2`
+  font-size: 24px;
+  margin-bottom: 20px;
+`;
+const AssetWrap = styled.div`
+  width: 700px;
+  padding: 40px;
+  border-radius: 8px;
   position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  top: 40%;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-  width: 25%;
-  height: 25%;
-  padding: 50px;
-  z-index: 9999;
-  border: 1px solid var(--gray);
-  box-shadow: var(--box-shadow);
-`;
-const ModifyModalText = styled.p`
-  margin-bottom: 20px;
+  h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
 `;
 const Row = styled.div`
   width: 100%;
@@ -183,13 +139,24 @@ const Row = styled.div`
   gap: 10px;
 `;
 const CheckBtn = styled.button`
-  background-color: var(--primary);
-  padding: 5px 10px;
-  color: #fff;
-  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 12px;
+  background: #066aff;
+  border-radius: 8px;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 16px;
 `;
 const CancelBtn = styled.button`
-  border: 1px solid var(--sub);
-  padding: 5px 10px;
-  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 12px;
+  background: #f4f4f4;
+  color: #999999;
+  font-weight: 700;
+  border-radius: 8px;
+  font-size: 16px;
 `;
