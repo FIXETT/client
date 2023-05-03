@@ -20,4 +20,6 @@ export const UserApi = {
   authmail: (email: string) => instance.post('/user/authmail', { email: email }),
   authcode: (info: User[], code: string) => instance.post('/user/authcode', { email: info, code: code }),
   replymail: (info: User[]) => instance.post('/user/authmail', { email: info }),
+  editprofile: (name: string, phone: string, company: string, job: string, email: string) =>
+    instance.patch('/user/', { email: email, name: name, phone: phone, company: company, job: job }),
 };
