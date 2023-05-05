@@ -120,17 +120,20 @@ const AssetContainer = styled.div`
   z-index: 999;
 `;
 const Title = styled.h2`
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 32px;
+  color: #333;
+  margin-bottom: 32px;
 `;
 const AssetWrap = styled.div`
   width: 700px;
-  padding: 40px;
-  border-radius: 8px;
+  padding: 32px;
+  border-radius: 24px;
   position: absolute;
   top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
+  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.15);
   background-color: #fff;
   h3 {
     font-size: 16px;

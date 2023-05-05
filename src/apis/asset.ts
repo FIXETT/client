@@ -48,12 +48,19 @@ type AssetResponse = {
   asset: {
     Assets: assetListType[];
     nextCursor: string;
+    ldsTotalCount: number;
+    mobileTotalCount: number;
+    monitorTotalCount: number;
+    officeequipmentTotalCount: number;
+    otherequipmentTotalCount: number;
+    softwareTotalCount: number;
+    totalCount: number;
   };
 };
-export const getAsset = async (cursor: number | null, direction: string) => {
+export const getAsset = async (cursor: number | string, direction: string) => {
   const identifier = Number(window.localStorage.getItem('identifier'));
   const params = {
-    cursor: `${identifier},${cursor}`,
+    cursor: cursor ? `${identifier},${cursor}` : `${identifier}`,
     direction,
   };
   const response = await AxiosInstance.get<AssetResponse>('/asset', { params, headers });

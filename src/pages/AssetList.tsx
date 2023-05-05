@@ -35,9 +35,9 @@ const AssetList = () => {
   useAuth();
 
   const [assetList, setAssetList] = useState<assetListType[]>([]);
-  const [cursor, setCursor] = useState<number | null>(null);
+  const [cursor, setCursor] = useState<number | string>(0);
   const [page, setPage] = useState<string>('');
-
+  const [currentPage, setCurrentPage] = useState(1);
   const { data, status } = useQuery(['getAsset', cursor, page], () => getAsset(cursor, page));
 
   useEffect(() => {
@@ -50,42 +50,68 @@ const AssetList = () => {
   const handleVeryPrevClick = () => {
     setPage('');
     setAssetList([]);
+    setCurrentPage(1);
+    setCursor('');
   };
   const handlePrevClick = () => {
     if (data) {
-      const cursor = Number(String(data.asset.nextCursor).split(',')[1]) - 20;
-      setCursor(cursor);
+      const newCursor = Number(String(data.asset.nextCursor).split(',')[1]) - 20;
+      setCursor(newCursor);
       setAssetList([]);
     }
+    setCurrentPage(currentPage - 1);
   };
 
   const handleVeryNextClick = () => {
     setPage('backward');
     setAssetList([]);
+    if (data) {
+      setCurrentPage(data.asset.totalCount / 10);
+    }
+    setCursor('');
   };
 
   const handleNextClick = () => {
     if (data) {
-      const cursor = Number(String(data.asset.nextCursor).split(',')[1]);
-      setCursor(cursor);
+      const newCursor = Number(String(data.asset.nextCursor).split(',')[1]);
+      setCursor(newCursor);
       setAssetList([]);
     }
+    setCurrentPage(currentPage + 1);
   };
-
   const renderPagination = () => {
     return (
-      <div>
-        <button onClick={handleVeryPrevClick} disabled={page === 'forward'}>
-          &lt;&lt;
-        </button>
-        <button onClick={handlePrevClick} disabled={data && Number(String(data.asset.nextCursor).split(',')[1]) < 11}>
-          이전
-        </button>
-        <button onClick={handleNextClick}>다음</button>
-        <button onClick={handleVeryNextClick} disabled={page === 'backward'}>
-          &gt;&gt;
-        </button>
-      </div>
+      <PagenationContainer>
+        {currentPage > 1 && (
+          <>
+            <PagenationBtn onClick={handleVeryPrevClick} disabled={page === 'forward'}>
+              &lt;&lt;
+            </PagenationBtn>
+            <PagenationBtn
+              onClick={handlePrevClick}
+              disabled={data && Number(String(data.asset.nextCursor).split(',')[1]) < 11}
+            >
+              &lt;
+            </PagenationBtn>
+            <PagenationBtn
+              onClick={handlePrevClick}
+              disabled={data && Number(String(data.asset.nextCursor).split(',')[1]) < 11}
+            >
+              {currentPage - 1}
+            </PagenationBtn>
+          </>
+        )}
+        <CurrentPage>{currentPage}</CurrentPage>
+        {data?.asset.totalCount && data?.asset.totalCount / 10 > currentPage && (
+          <>
+            <PagenationBtn onClick={handleNextClick}>{currentPage + 1}</PagenationBtn>
+            <PagenationBtn onClick={handleNextClick}>&gt;</PagenationBtn>
+            <PagenationBtn onClick={handleVeryNextClick} disabled={page === 'backward'}>
+              &gt;&gt;
+            </PagenationBtn>
+          </>
+        )}
+      </PagenationContainer>
     );
   };
   return (
@@ -138,4 +164,27 @@ const AssetListContainer = styled.div`
       padding: 8px 16px;
     }
   }
+`;
+const PagenationContainer = styled.div`
+  display: flex;
+`;
+const CurrentPage = styled.p`
+  background-color: #f4f4f4;
+  width: 38px;
+  height: 38px;
+  font-size: 14px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #999;
+`;
+const PagenationBtn = styled.button`
+  color: #ccc;
+  width: 38px;
+  height: 38px;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
