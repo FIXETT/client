@@ -32,8 +32,12 @@ const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
 
   return (
     <SelectContainer>
-      <h3>{assetType.title}</h3>
+      <TitleWrap>
+        {assetType.title}
+        {assetType.essential && <EssentialCircle />}
+      </TitleWrap>
       <SelectBtn
+        checked={!!assetlist[0]?.category}
         onClick={(e) => {
           e.preventDefault();
           setShowCategory(!showCategory);
@@ -133,16 +137,30 @@ const SelectContainer = styled.div`
   width: 100%;
 `;
 
-const SelectBtn = styled.button`
+const TitleWrap = styled.h3`
+  display: flex;
+  align-items: center;
+  gap: 3px;
+`;
+
+const EssentialCircle = styled.p`
+  width: 6px;
+  height: 6px;
+  background: #eb5757;
+  border-radius: 100%;
+`;
+
+const SelectBtn = styled.button<{ checked: boolean }>`
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 8px;
+  padding: 13px;
   border: 1px solid #cccccc;
-  border-radius: 4px;
+  background: #f4f4f4;
+  border-radius: 8px;
   font-weight: 500;
   font-size: 14px;
-  color: #333;
+  color: ${(props) => (props.checked ? '#333' : '#999')};
   width: 100%;
 `;
 
@@ -157,6 +175,7 @@ const AssetLabel = styled.label`
     display: none;
   }
 `;
+
 const SlectList = styled.div`
   width: 100%;
   padding: 10px;
