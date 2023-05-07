@@ -29,7 +29,11 @@ const SearchList = () => {
       <AssetWrap>
         <Search />
       </AssetWrap>
-      {searchText && <p>&#39;{searchText}&#39; 검색 결과</p>}
+      {searchText && (
+        <SerchText>
+          <span>&#39;{searchText}&#39;</span> 검색 결과 ({searchList.length?.toString().padStart(2, '0')})
+        </SerchText>
+      )}
 
       <AssetListContainer>
         <table>
@@ -69,7 +73,15 @@ export default SearchList;
 const AssetContainer = styled.div`
   width: 100%;
   height: 100%;
-  padding: 32px;
+  padding: 40px;
+`;
+const SerchText = styled.p`
+  font-weight: 700;
+  font-size: 32px;
+  span {
+    color: #066aff;
+  }
+  margin-bottom: 30px;
 `;
 const AssetListContainer = styled.div`
   margin-top: 8px;
