@@ -3,31 +3,22 @@ import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 
 import { useRecoilValue } from 'recoil';
-import {
-  showAddComponentState,
-  showAddModalState,
-  showDeleteModalState,
-  showModifyComponentState,
-  showModifyModalState,
-} from '../recoil/assets';
+import { showAddComponentState, showDeleteModalState, showModifyComponentState } from '../recoil/assets';
 import { getAsset } from '../apis/asset';
 import { assetListType } from '../types/asset';
 
 import Header from '../components/assetList/Header';
 import DeleteModal from '../components/assetList/DeleteModal';
-import AddModal from '../components/addasset/AddModal';
 import useAuth from '../hooks/isLogin';
 import AddAsset from '../components/addasset';
 import ModifyAsset from '../components/modifyasset';
 import TableHead from '../components/TableHead';
 import TableItemList from '../components/assetList/TableItemList';
-import ModifyModal from '../components/modifyasset/ModifyModal';
+import Loading from '../components/Loading';
+import NotData from '../components/NotData';
 
 const AssetList = () => {
-  const showAddModal = useRecoilValue(showAddModalState);
-  const showModifyModal = useRecoilValue(showModifyModalState);
   const deleteShowModal = useRecoilValue(showDeleteModalState);
-
   const showAddComponent = useRecoilValue(showAddComponentState);
   const showModifyComponent = useRecoilValue(showModifyComponentState);
 
@@ -102,15 +93,27 @@ const AssetList = () => {
           </>
         )}
         <CurrentPage>{currentPage}</CurrentPage>
-        {data?.asset.totalCount && data?.asset.totalCount / 10 > currentPage && (
-          <>
-            <PagenationBtn onClick={handleNextClick}>{currentPage + 1}</PagenationBtn>
-            <PagenationBtn onClick={handleNextClick}>&gt;</PagenationBtn>
-            <PagenationBtn onClick={handleVeryNextClick} disabled={page === 'backward'}>
-              &gt;&gt;
-            </PagenationBtn>
-          </>
+
+        {data?.asset.totalCount / 10 > currentPage && (
+          <PagenationBtn
+            onClick={handleNextClick}
+            disabled={data?.asset.totalCount && data?.asset.totalCount / 10 < currentPage}
+          >
+            {currentPage + 1}
+          </PagenationBtn>
         )}
+        <PagenationBtn
+          onClick={handleNextClick}
+          disabled={data?.asset.totalCount && data?.asset.totalCount / 10 < currentPage}
+        >
+          &gt;
+        </PagenationBtn>
+        <PagenationBtn
+          onClick={handleVeryNextClick}
+          disabled={page === 'backward' || (data?.asset.totalCount && data?.asset.totalCount / 10 < currentPage)}
+        >
+          &gt;&gt;
+        </PagenationBtn>
       </PagenationContainer>
     );
   };
@@ -119,17 +122,17 @@ const AssetList = () => {
       <Header assetList={data?.asset} />
       <AssetListContainer>
         <table>
-          <TableHead />
+          <TableHead assetList={assetList} />
           <tbody>
             <TableItemList assetList={assetList} status={status} data={data} />
+            {status === 'loading' && <Loading />}
+            {data && data.asset === 'does not exist asset' && <NotData />}
           </tbody>
         </table>
         {renderPagination()}
       </AssetListContainer>
       {showAddComponent && <AddAsset />}
       {showModifyComponent && <ModifyAsset />}
-      {showAddModal && <AddModal />}
-      {showModifyModal && <ModifyModal />}
       {deleteShowModal && <DeleteModal />}
     </AssetContainer>
   );
@@ -166,6 +169,7 @@ const AssetListContainer = styled.div`
   }
 `;
 const PagenationContainer = styled.div`
+  margin-top: 16px;
   display: flex;
 `;
 const CurrentPage = styled.p`
@@ -179,7 +183,7 @@ const CurrentPage = styled.p`
   align-items: center;
   color: #999;
 `;
-const PagenationBtn = styled.button`
+const PagenationBtn = styled.button<{ disabled: boolean }>`
   color: #ccc;
   width: 38px;
   height: 38px;
@@ -187,4 +191,5 @@ const PagenationBtn = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: ${(props) => (props.disabled ? 'default' : 'cursor')};
 `;
