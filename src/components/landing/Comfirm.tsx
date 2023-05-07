@@ -50,7 +50,7 @@ const Comfirm = () => {
   return (
     <>
       <Wrap>
-        <img src={confirm} alt={''}></img>
+        <img src={confirm} alt="" />
         <ConfirmText>본인 인증 메일 확인해 주세요.</ConfirmText>
         <Email>{`인증 메일을 ${info} 로 발송했습니다.`}</Email>
         <Email>본인 인증 완료 후 가입 절차를 진행해 주세요.</Email>
@@ -60,7 +60,7 @@ const Comfirm = () => {
           스팸메일로 분류된 경우, 메일을 받지 못할 수 있으니 <br />
           스팸함을 확인해 보세요.
         </Reply>
-        <CodeInput type="text" name="code" value={code} onChange={onChange}></CodeInput>
+        <CodeInput type="text" name="code" value={code} onChange={onChange} />
         <ConfirmBtn onClick={confirmHandler}>본인 이메일 인증하기</ConfirmBtn>
         <button onClick={replyHandler}>재 요청 보내기</button>
       </Wrap>

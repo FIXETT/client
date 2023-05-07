@@ -88,8 +88,8 @@ const Landing = () => {
     <Wrap>
       <ImageContainer>
         <SpanBox>
-          <Text>{'김대리, 컴퓨터 이거 또 안되는데..'}</Text>
-          <Text>{'하..내 업무는 컴퓨터 수리가 아닌데..'}</Text>
+          <Text>김대리, 컴퓨터 이거 또 안되는데..</Text>
+          <Text>하..내 업무는 컴퓨터 수리가 아닌데..</Text>
         </SpanBox>
         <LandingImage src={landingimage} />
       </ImageContainer>

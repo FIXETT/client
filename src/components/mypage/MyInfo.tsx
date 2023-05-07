@@ -112,18 +112,18 @@ const MyInfo = () => {
               <ProfileBox>
                 <img src={profileImg} alt="fixet" />
                 <Profile>
-                  <input placeholder="이름" {...register('name')}></input>
-                  <input placeholder="회사" {...register('company')}></input>
-                  <input placeholder="파트" {...register('job')}></input>
+                  <input placeholder="이름" {...register('name')} />
+                  <input placeholder="회사" {...register('company')} />
+                  <input placeholder="파트" {...register('job')} />
                 </Profile>
               </ProfileBox>
               <EmailBox>
                 <EmailImg src={email} alt="email" />
-                <input placeholder="이메일" {...register('email')}></input>
+                <input placeholder="이메일" {...register('email')} />
               </EmailBox>
               <PhoneBox>
                 <PhoneImg src={phone} alt="phone" />
-                <input placeholder="전화번호" {...register('phone')}></input>
+                <input placeholder="전화번호" {...register('phone')} />
               </PhoneBox>
               <button ref={buttonRef} type="submit" />
             </form>

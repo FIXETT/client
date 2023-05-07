@@ -68,7 +68,7 @@ const EnterInfo = () => {
 
   return (
     <Wrap>
-      <Img src={enter} alt={''}></Img>
+      <Img src={enter} alt="" />
       <InfoBox onSubmit={onSubmit(signupHandler)}>
         <Text>마지막으로,이름과 비밀번호를 입력해주세요.</Text>
 
@@ -91,7 +91,7 @@ const EnterInfo = () => {
         <Errormessage>{errors.password?.message}</Errormessage>
 
         <Info>
-          <CheckBox checked={agreePi} onClick={() => setAgreePi(!agreePi)} type="checkbox"></CheckBox>
+          <CheckBox checked={agreePi} onClick={() => setAgreePi(!agreePi)} type="checkbox" />
           <Service>서비스 약관 </Service>
           <Normal>및 </Normal>
           <Personal>개인정보 처리 방침</Personal>
