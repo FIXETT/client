@@ -5,16 +5,16 @@ import { modifyListType } from '../types/asset';
 export const postAssetTypeState = atom({
   key: 'postAssetType',
   default: [
-    { title: '실사용자', type: 'name', inputType: 'text' },
-    { title: '제품명', type: 'product', inputType: 'text' },
-    { title: '품목', type: 'category', inputType: 'select' },
-    { title: '시리얼번호', type: 'serialNumber', inputType: 'text' },
-    { title: '팀', type: 'team', inputType: 'select' },
-    { title: '제조사', type: 'manufacturer', inputType: 'text' },
-    { title: '취득일자', type: 'acquisitionDate', inputType: 'date' },
-    { title: '자산위치', type: 'location', inputType: 'text' },
-    { title: '상태', type: 'status', inputType: 'select' },
-    { title: '비고', type: 'note', inputType: 'text' },
+    { title: '실사용자', type: 'name', inputType: 'text', essential: true },
+    { title: '제품명', type: 'product', inputType: 'text', essential: true },
+    { title: '품목', type: 'category', inputType: 'select', essential: true },
+    { title: '시리얼번호', type: 'serialNumber', inputType: 'text', essential: false },
+    { title: '팀', type: 'team', inputType: 'select', essential: false },
+    { title: '제조사', type: 'manufacturer', inputType: 'text', essential: false },
+    { title: '취득일자', type: 'acquisitionDate', inputType: 'text', essential: false },
+    { title: '자산위치', type: 'location', inputType: 'text', essential: false },
+    { title: '상태', type: 'status', inputType: 'select', essential: false },
+    { title: '비고', type: 'note', inputType: 'text', essential: false },
   ],
 });
 export const assetlistState = atom({
@@ -60,8 +60,8 @@ export const categoryState = atom({
   default: '',
 });
 export const assetNumberListState = atom({
-  key: 'assetNumber',
-  default: [{ assetNumber: 0, identifier: 0 }],
+  key: 'assetNumberList',
+  default: [],
 });
 export const showContextMenuState = atom({
   key: 'showContextMenu',
@@ -79,14 +79,6 @@ export const isDisabledState = atom({
   key: 'isDisabled',
   default: false,
 });
-export const showAddModalState = atom({
-  key: 'showAddModal',
-  default: false,
-});
-export const showModifyModalState = atom({
-  key: 'showModifyModal',
-  default: false,
-});
 export const showDeleteModalState = atom({
   key: 'showDeleteModal',
   default: false,
@@ -99,4 +91,8 @@ export const searchTextState = atom({
 export const modifyState = atom<modifyListType[]>({
   key: 'modify',
   default: [],
+});
+export const allCheckedState = atom({
+  key: 'allChecked',
+  default: false,
 });

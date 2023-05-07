@@ -1,5 +1,5 @@
 import React from 'react';
-export type assetObjType = { title: string; type: string; inputType: string; img?: string };
+export type assetObjType = { title: string; type: string; inputType: string; img?: string; essential: boolean };
 export type handleChangeType = (e: React.ChangeEvent<HTMLInputElement>) => void;
 export type inputParameterType = {
   assetType: assetObjType;
