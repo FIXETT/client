@@ -3,31 +3,22 @@ import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 
 import { useRecoilValue } from 'recoil';
-import {
-  showAddComponentState,
-  showAddModalState,
-  showDeleteModalState,
-  showModifyComponentState,
-  showModifyModalState,
-} from '../recoil/assets';
+import { showAddComponentState, showDeleteModalState, showModifyComponentState } from '../recoil/assets';
 import { getAsset } from '../apis/asset';
 import { assetListType } from '../types/asset';
 
 import Header from '../components/assetList/Header';
 import DeleteModal from '../components/assetList/DeleteModal';
-import AddModal from '../components/addasset/AddModal';
 import useAuth from '../hooks/isLogin';
 import AddAsset from '../components/addasset';
 import ModifyAsset from '../components/modifyasset';
 import TableHead from '../components/TableHead';
 import TableItemList from '../components/assetList/TableItemList';
-import ModifyModal from '../components/modifyasset/ModifyModal';
+import Loading from '../components/Loading';
+import NotData from '../components/NotData';
 
 const AssetList = () => {
-  const showAddModal = useRecoilValue(showAddModalState);
-  const showModifyModal = useRecoilValue(showModifyModalState);
   const deleteShowModal = useRecoilValue(showDeleteModalState);
-
   const showAddComponent = useRecoilValue(showAddComponentState);
   const showModifyComponent = useRecoilValue(showModifyComponentState);
 
@@ -35,9 +26,9 @@ const AssetList = () => {
   useAuth();
 
   const [assetList, setAssetList] = useState<assetListType[]>([]);
-  const [cursor, setCursor] = useState<number | null>(null);
+  const [cursor, setCursor] = useState<number | string>(0);
   const [page, setPage] = useState<string>('');
-
+  const [currentPage, setCurrentPage] = useState(1);
   const { data, status } = useQuery(['getAsset', cursor, page], () => getAsset(cursor, page));
 
   useEffect(() => {
@@ -50,42 +41,80 @@ const AssetList = () => {
   const handleVeryPrevClick = () => {
     setPage('');
     setAssetList([]);
+    setCurrentPage(1);
+    setCursor('');
   };
   const handlePrevClick = () => {
     if (data) {
-      const cursor = Number(String(data.asset.nextCursor).split(',')[1]) - 20;
-      setCursor(cursor);
+      const newCursor = Number(String(data.asset.nextCursor).split(',')[1]) - 20;
+      setCursor(newCursor);
       setAssetList([]);
     }
+    setCurrentPage(currentPage - 1);
   };
 
   const handleVeryNextClick = () => {
     setPage('backward');
     setAssetList([]);
+    if (data) {
+      setCurrentPage(data.asset.totalCount / 10);
+    }
+    setCursor('');
   };
 
   const handleNextClick = () => {
     if (data) {
-      const cursor = Number(String(data.asset.nextCursor).split(',')[1]);
-      setCursor(cursor);
+      const newCursor = Number(String(data.asset.nextCursor).split(',')[1]);
+      setCursor(newCursor);
       setAssetList([]);
     }
+    setCurrentPage(currentPage + 1);
   };
-
   const renderPagination = () => {
     return (
-      <div>
-        <button onClick={handleVeryPrevClick} disabled={page === 'forward'}>
-          &lt;&lt;
-        </button>
-        <button onClick={handlePrevClick} disabled={data && Number(String(data.asset.nextCursor).split(',')[1]) < 11}>
-          이전
-        </button>
-        <button onClick={handleNextClick}>다음</button>
-        <button onClick={handleVeryNextClick} disabled={page === 'backward'}>
+      <PagenationContainer>
+        {currentPage > 1 && (
+          <>
+            <PagenationBtn onClick={handleVeryPrevClick} disabled={page === 'forward'}>
+              &lt;&lt;
+            </PagenationBtn>
+            <PagenationBtn
+              onClick={handlePrevClick}
+              disabled={data && Number(String(data.asset.nextCursor).split(',')[1]) < 11}
+            >
+              &lt;
+            </PagenationBtn>
+            <PagenationBtn
+              onClick={handlePrevClick}
+              disabled={data && Number(String(data.asset.nextCursor).split(',')[1]) < 11}
+            >
+              {currentPage - 1}
+            </PagenationBtn>
+          </>
+        )}
+        <CurrentPage>{currentPage}</CurrentPage>
+
+        {data?.asset.totalCount / 10 > currentPage && (
+          <PagenationBtn
+            onClick={handleNextClick}
+            disabled={data?.asset.totalCount && data?.asset.totalCount / 10 < currentPage}
+          >
+            {currentPage + 1}
+          </PagenationBtn>
+        )}
+        <PagenationBtn
+          onClick={handleNextClick}
+          disabled={data?.asset.totalCount && data?.asset.totalCount / 10 < currentPage}
+        >
+          &gt;
+        </PagenationBtn>
+        <PagenationBtn
+          onClick={handleVeryNextClick}
+          disabled={page === 'backward' || (data?.asset.totalCount && data?.asset.totalCount / 10 < currentPage)}
+        >
           &gt;&gt;
-        </button>
-      </div>
+        </PagenationBtn>
+      </PagenationContainer>
     );
   };
   return (
@@ -93,17 +122,17 @@ const AssetList = () => {
       <Header assetList={data?.asset} />
       <AssetListContainer>
         <table>
-          <TableHead />
+          <TableHead assetList={assetList} />
           <tbody>
             <TableItemList assetList={assetList} status={status} data={data} />
+            {status === 'loading' && <Loading />}
+            {data && data.asset === 'does not exist asset' && <NotData />}
           </tbody>
         </table>
         {renderPagination()}
       </AssetListContainer>
       {showAddComponent && <AddAsset />}
       {showModifyComponent && <ModifyAsset />}
-      {showAddModal && <AddModal />}
-      {showModifyModal && <ModifyModal />}
       {deleteShowModal && <DeleteModal />}
     </AssetContainer>
   );
@@ -138,4 +167,29 @@ const AssetListContainer = styled.div`
       padding: 8px 16px;
     }
   }
+`;
+const PagenationContainer = styled.div`
+  margin-top: 16px;
+  display: flex;
+`;
+const CurrentPage = styled.p`
+  background-color: #f4f4f4;
+  width: 38px;
+  height: 38px;
+  font-size: 14px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #999;
+`;
+const PagenationBtn = styled.button<{ disabled: boolean }>`
+  color: #ccc;
+  width: 38px;
+  height: 38px;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: ${(props) => (props.disabled ? 'default' : 'cursor')};
 `;

@@ -1,24 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 
 import { ReactComponent as AssetList } from '../../assets/icon/assetList.svg';
 import { ReactComponent as Dashboard } from '../../assets/icon/dashboard.svg';
 import { ReactComponent as Fix } from '../../assets/icon/fix.svg';
-import { ReactComponent as Mypage } from '../../assets/icon/mypage.svg';
-
-import { subNavListType } from '../../types/asset';
-import { Logout } from '../modal/Logout';
 
 const NavList = () => {
   const match = useLocation().pathname;
-  const [subToggleMeru, setToggleMenu] = useState(false);
 
   const navList = [
     { id: '1', link: 'assetList', title: '자산 리스트', img: AssetList },
     { id: '2', link: 'dashboard', title: '자산 대쉬보드', img: Dashboard },
     { id: '3', link: 'fix', title: '자산 수리', img: Fix },
-    { id: '4', link: 'mypage', title: '마이페이지', img: Mypage },
   ];
 
   return (
@@ -55,15 +49,4 @@ const ListItemLink = styled(Link)<{ match?: string }>`
       font-weight: 700;
       color: #333;
     `}
-`;
-
-const BlankLink = styled(Link)`
-  margin-top: 5px;
-  display: block;
-  background-color: var(--primary);
-  color: #fff;
-  padding: 9px 0;
-  border-radius: 6px;
-  text-align: center;
-  font-size: 14px;
 `;

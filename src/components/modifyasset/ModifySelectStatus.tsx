@@ -29,8 +29,12 @@ const ModifySelectStatus = ({ assetType, handleChange }: inputParameterType) => 
   };
   return (
     <ModifySelectContainer>
-      <h3>{assetType.title}</h3>
+      <TitleWrap>
+        {assetType.title}
+        {assetType.essential && <EssentialCircle />}
+      </TitleWrap>
       <ModifySelectBtn
+        checked={!!modifyList[0]?.status}
         onClick={(e) => {
           e.preventDefault();
           setShowStatus(!showStatus);
@@ -115,17 +119,29 @@ export default ModifySelectStatus;
 const ModifySelectContainer = styled.div`
   position: relative;
 `;
+const TitleWrap = styled.h3`
+  display: flex;
+  align-items: center;
+  gap: 3px;
+`;
+const EssentialCircle = styled.p`
+  width: 6px;
+  height: 6px;
+  background: #eb5757;
+  border-radius: 100%;
+`;
 
-const ModifySelectBtn = styled.button`
+const ModifySelectBtn = styled.button<{ checked: boolean }>`
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 8px;
+  padding: 13px;
   border: 1px solid #cccccc;
-  border-radius: 4px;
+  background: #f4f4f4;
+  border-radius: 8px;
   font-weight: 500;
   font-size: 14px;
-  color: #333;
+  color: ${(props) => (props.checked ? '#333' : '#999')};
   width: 100%;
 `;
 const ModifyAssetLabel = styled.label`

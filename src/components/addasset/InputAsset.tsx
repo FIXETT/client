@@ -18,7 +18,7 @@ const InputAsset = ({ assetType, handleChange }: inputParameterType) => {
       case 'manufacturer':
         return 'ex)Apple';
       case 'acquisitionDate':
-        return '날짜선택';
+        return 'YYYY-MM-DD';
       case 'location':
         return '31층';
       case 'note':
@@ -27,7 +27,10 @@ const InputAsset = ({ assetType, handleChange }: inputParameterType) => {
   };
   return (
     <div>
-      <h3>{assetType.title}</h3>
+      <TitleWrap>
+        {assetType.title}
+        {assetType.essential && <EssentialCircle />}
+      </TitleWrap>
       <InputAssetContainer
         type={assetType.inputType}
         maxLength={10}
@@ -46,10 +49,11 @@ const InputAsset = ({ assetType, handleChange }: inputParameterType) => {
 export default InputAsset;
 
 const InputAssetContainer = styled.input`
+  background: #f4f4f4;
   width: 100%;
-  padding: 8px;
+  padding: 13px;
   border: 1px solid #cccccc;
-  border-radius: 4px;
+  border-radius: 8px;
   font-weight: 500;
   font-size: 14px;
   color: #333;
@@ -58,4 +62,15 @@ const InputAssetContainer = styled.input`
     font-size: 14px;
     color: #cccccc;
   }
+`;
+const TitleWrap = styled.h3`
+  display: flex;
+  align-items: center;
+  gap: 3px;
+`;
+const EssentialCircle = styled.p`
+  width: 6px;
+  height: 6px;
+  background: #eb5757;
+  border-radius: 100%;
 `;

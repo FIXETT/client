@@ -8,7 +8,7 @@ import { assetNumberListState, showDeleteModalState } from '../../recoil/assets'
 
 const DeleteModal = () => {
   const setDeleteShowModal = useSetRecoilState(showDeleteModalState);
-  const [assetNumber, setAssetNumber] = useRecoilState(assetNumberListState);
+  const [assetNumber, setAssetNumber] = useRecoilState<any>(assetNumberListState);
   const queryClient = useQueryClient();
 
   const deleteAssetMutation = useMutation(() => deleteAsset(assetNumber.slice(1)), {

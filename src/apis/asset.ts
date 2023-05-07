@@ -43,20 +43,27 @@ export const deleteAsset = async (assetNumber: object[]) => {
   const response = await AxiosInstance.delete('/asset', { data, headers });
   return response;
 };
-
-type AssetResponse = {
-  asset: {
-    Assets: assetListType[];
-    nextCursor: string;
-  };
+type assetType = {
+  Assets: assetListType[];
+  nextCursor: string;
+  ldsTotalCount: number;
+  mobileTotalCount: number;
+  monitorTotalCount: number;
+  officeequipmentTotalCount: number;
+  otherequipmentTotalCount: number;
+  softwareTotalCount: number;
+  totalCount: number;
 };
-export const getAsset = async (cursor: number | null, direction: string) => {
+interface AssetResponse {
+  asset: assetType | string;
+}
+export const getAsset = async (cursor: number | string, direction: string) => {
   const identifier = Number(window.localStorage.getItem('identifier'));
   const params = {
-    cursor: `${identifier},${cursor}`,
+    cursor: cursor ? `${identifier},${cursor}` : `${identifier}`,
     direction,
   };
-  const response = await AxiosInstance.get<AssetResponse>('/asset', { params, headers });
+  const response = await AxiosInstance.get('/asset', { params, headers });
 
   return response.data;
 };
@@ -71,10 +78,11 @@ export const searchAsset = async (category: string, value: string) => {
 
   return response.data;
 };
-export const getDashboard = async () => {
+export const getDashboard = async (cursor: number | string, direction: string) => {
   const identifier = Number(window.localStorage.getItem('identifier'));
   const params = {
-    identifier,
+    cursor: cursor ? `${identifier},${cursor}` : `${identifier}`,
+    direction,
   };
   const response = await AxiosInstance.get('/asset/dashboard', { params, headers });
   return response.data;

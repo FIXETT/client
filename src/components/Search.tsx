@@ -1,21 +1,23 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
+import React, { useEffect, ChangeEvent, KeyboardEvent, useState } from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState } from 'recoil';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState, useRecoilState } from 'recoil';
 
 import { categoryState, searchTextState } from '../recoil/assets';
 
 import { ReactComponent as SearchImg } from '../assets/icon/search.svg';
-import arrw from '../assets/icon/arrow-bottom-w.png';
-import { useNavigate } from 'react-router-dom';
+import { ReactComponent as ArrwImg } from '../assets/icon/arrow-bottom.svg';
 
 const Search = () => {
   const navigate = useNavigate();
   const [showCategory, setShowCategory] = useState(false);
   const [categoryId, setCategoryId] = useState('');
   const [text, setText] = useState('');
-  const setSearchText = useSetRecoilState(searchTextState);
-  const setCategory = useSetRecoilState(categoryState);
-
+  const [searchText, setSearchText] = useRecoilState(searchTextState);
+  const [category, setCategory] = useRecoilState(categoryState);
+  useEffect(() => {
+    setText(searchText);
+  }, [searchText]);
   const searchOnchange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setText(e.target.value);
@@ -24,6 +26,9 @@ const Search = () => {
   const handleOnKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
+      if (category === '') {
+        alert('카테고리를 선택해주세요');
+      }
       if (text === '') {
         alert('검색어를 입력해주세요');
       }
@@ -32,8 +37,8 @@ const Search = () => {
     }
   };
   return (
-    <AssetSearch>
-      <SearchImg />
+    <AssetSearchContainer>
+      <SearchImg width={20} hanging={20} />
       <SelectContainer>
         <SelectBtn
           onClick={() => {
@@ -41,10 +46,18 @@ const Search = () => {
           }}
         >
           <p>{categoryId ? categoryId : '선택'}</p>
-          {!categoryId && <img src={arrw} alt="화살표" />}
+          {!categoryId && <ArrwImg />}
         </SelectBtn>
         {showCategory && (
           <SlectList>
+            <ChooseText
+              onClick={() => {
+                setShowCategory(!showCategory);
+              }}
+            >
+              <p>{categoryId ? categoryId : '선택'}</p>
+              {!categoryId && <ArrwImg />}
+            </ChooseText>
             <AssetLabel>
               <input
                 type="radio"
@@ -211,21 +224,22 @@ const Search = () => {
         onChange={searchOnchange}
         onKeyDown={handleOnKeyPress}
       />
-    </AssetSearch>
+    </AssetSearchContainer>
   );
 };
 
 export default Search;
 
-const AssetSearch = styled.div`
-  width: 510px;
-  background-color: #f4f4f4;
+const AssetSearchContainer = styled.div`
+  width: 500px;
+  height: 44px;
   border-radius: 12px;
-  padding: 15px 16px;
+  padding: 7px 16px;
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: var(--heading6);
+  border: 1px solid #cccccc;
 `;
 const AssetSearchInput = styled.input`
   width: 100%;
@@ -233,14 +247,15 @@ const AssetSearchInput = styled.input`
   font-weight: 500;
   font-size: var(--heading6);
   border: 0;
+  padding-left: 26px;
   ::placeholder {
     font-weight: 500;
-    font-size: var(--heading6);
+    font-size: 14px;
     color: #999999;
   }
 `;
 const SelectContainer = styled.div`
-  width: 114px;
+  width: 51px;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #999999;
@@ -249,24 +264,35 @@ const SelectContainer = styled.div`
 `;
 
 const SelectBtn = styled.button`
-  width: 87px;
-  font-weight: 500;
+  height: 100%;
   color: #999;
   padding: 8px;
+  font-weight: 500;
   font-size: 14px;
   display: flex;
   align-items: center;
   gap: 4px;
-  background: #cccccc;
-  border-radius: 6px;
-  color: #fff;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
 `;
 
+const ChooseText = styled.button`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 5px;
+  font-weight: 500;
+  font-size: 12px;
+  color: #999;
+`;
 const AssetLabel = styled.label`
   display: block;
-  padding: 10px;
+  padding: 8px;
   cursor: pointer;
   border-radius: 5px;
+  font-weight: 500;
   font-size: 12px;
   :hover {
     background: #cccccc;
@@ -277,14 +303,13 @@ const AssetLabel = styled.label`
   }
 `;
 const SlectList = styled.div`
-  width: 100%;
-  padding: 10px;
+  width: 79px;
+  padding: 4px;
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 100%;
+  left: 0;
+  top: 0;
   z-index: 999;
   background-color: #fff;
-  box-shadow: var(--box-shadow);
+  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.15);
   border-radius: 6px;
 `;

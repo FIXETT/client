@@ -15,7 +15,7 @@ const EditInfo = ({ modal, EditModal }: any) => {
             <ModalText>입력해주세요!</ModalText>
           </SpanBox>
 
-          <Password type="password" placeholder="비밀번호"></Password>
+          <Password type="password" placeholder="비밀번호" />
           <ButtonBox>
             <OK>확인</OK>
             <Cancel onClick={cancelHandler}>취소</Cancel>

@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import { assetListType } from '../../types/asset';
 import AssetRadioButton from './AssetRadioButton';
 
-import Loading from '../NotData';
+import NotData from '../NotData';
+import Loading from '../Loading';
 
 type propsType = {
   assetList: assetListType[] | [];
@@ -75,7 +76,7 @@ const TableItemList = ({ assetList, status, data }: propsType) => {
       })}
       <tr>
         {status === 'loading' && <Loading />}
-        {data?.Assets === 'does not exist asset' && <td>등록된 자산이 없습니다.</td>}
+        {data?.Assets === 'does not exist asset' && <NotData />}
       </tr>
     </Fragment>
   );
