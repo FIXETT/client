@@ -63,7 +63,7 @@ const Search = () => {
                 type="radio"
                 name="search"
                 id="번호"
-                value="assetId"
+                value="assetNumber"
                 onChange={(e) => {
                   setCategory(e.target.value);
                   setCategoryId(e.target.id);
