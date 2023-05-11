@@ -19,7 +19,7 @@ const SearchList = () => {
 
   useEffect(() => {
     if (data) {
-      const newList = data;
+      const newList = data.result;
       setSearList(newList);
     }
   }, [data]);
@@ -39,24 +39,25 @@ const SearchList = () => {
         <table>
           <TableHead />
           <tbody>
-            {searchList?.map((value) => {
-              return (
-                <tr key={value?.assetNumber}>
-                  <AssetRadioButton assetList={searchList} value={value} />
-                  <AssetItem>{value?.assetNumber}</AssetItem>
-                  <AssetItem>{value?.name}</AssetItem> {/* 실사용자 */}
-                  <AssetItem>{value?.product}</AssetItem> {/* 제품명 */}
-                  <AssetItem>{value?.category}</AssetItem> {/* 품목 */}
-                  <AssetItem>{value?.serialNumber}</AssetItem> {/* 시리얼번호 */}
-                  <AssetItem>{value?.team}</AssetItem> {/* 팀 */}
-                  <AssetItem>{value?.manufacturer}</AssetItem> {/* 제조사 */}
-                  <AssetItem>{value?.acquisitionDate}</AssetItem> {/* 취득일자 */}
-                  <AssetItem>{value?.location}</AssetItem> {/* 자산위치 */}
-                  <AssetItem>{value?.status}</AssetItem> {/* 상태 */}
-                  <AssetItem>{value?.note}</AssetItem> {/* 비고 */}
-                </tr>
-              );
-            })}
+            {searchList &&
+              searchList?.map((value) => {
+                return (
+                  <tr key={value?.assetNumber}>
+                    <AssetRadioButton assetList={searchList} value={value} />
+                    <AssetItem>{value?.assetNumber}</AssetItem>
+                    <AssetItem>{value?.name}</AssetItem> {/* 실사용자 */}
+                    <AssetItem>{value?.product}</AssetItem> {/* 제품명 */}
+                    <AssetItem>{value?.category}</AssetItem> {/* 품목 */}
+                    <AssetItem>{value?.serialNumber}</AssetItem> {/* 시리얼번호 */}
+                    <AssetItem>{value?.team}</AssetItem> {/* 팀 */}
+                    <AssetItem>{value?.manufacturer}</AssetItem> {/* 제조사 */}
+                    <AssetItem>{value?.acquisitionDate}</AssetItem> {/* 취득일자 */}
+                    <AssetItem>{value?.location}</AssetItem> {/* 자산위치 */}
+                    <AssetItem>{value?.status}</AssetItem> {/* 상태 */}
+                    <AssetItem>{value?.note}</AssetItem> {/* 비고 */}
+                  </tr>
+                );
+              })}
             <tr>
               {status === 'loading' && <Loading />}
               {data?.Assets === 'does not exist asset' && <NotData />}
