@@ -18,6 +18,10 @@ const Search = () => {
   useEffect(() => {
     setText(searchText);
   }, [searchText]);
+  useEffect(() => {
+    setCategory('');
+    setText('');
+  }, []);
   const searchOnchange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setText(e.target.value);

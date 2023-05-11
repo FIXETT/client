@@ -58,10 +58,7 @@ const SearchList = () => {
                   </tr>
                 );
               })}
-            <tr>
-              {status === 'loading' && <Loading />}
-              {data?.Assets === 'does not exist asset' && <NotData />}
-            </tr>
+            <tr>{data?.Assets === 'does not exist asset' && <NotData />}</tr>
           </tbody>
         </table>
       </AssetListContainer>
