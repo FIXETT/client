@@ -11,7 +11,7 @@ const DeleteModal = () => {
   const [assetNumber, setAssetNumber] = useRecoilState<any>(assetNumberListState);
   const queryClient = useQueryClient();
 
-  const deleteAssetMutation = useMutation(() => deleteAsset(assetNumber.slice(1)), {
+  const deleteAssetMutation = useMutation(() => deleteAsset(assetNumber), {
     onSuccess: () => {
       queryClient.invalidateQueries(['getAsset']);
     },

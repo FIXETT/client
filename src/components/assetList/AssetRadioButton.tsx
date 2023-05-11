@@ -9,19 +9,6 @@ import check from '../../assets/icon/check.png';
 const AssetRadioButton = ({ assetList, value }: any) => {
   const [assetNumberList, setAssetNumberList] = useRecoilState<any>(assetNumberListState);
   const setModify = useSetRecoilState(modifyState);
-  const [allSelected, setAllSelected] = useRecoilState(allCheckedState);
-
-  console.log(assetNumberList);
-  useEffect(() => {
-    if (allSelected) {
-      const identifier = Number(window.localStorage.getItem('identifier'));
-      const newAssetList = assetList?.map((value: any) => ({
-        assetNumber: value.assetNumber,
-        identifier,
-      }));
-      setAssetNumberList([...newAssetList]);
-    }
-  }, [allSelected]);
 
   const checkedInput: handleChangeType = (e) => {
     e.stopPropagation();
@@ -39,7 +26,6 @@ const AssetRadioButton = ({ assetList, value }: any) => {
       setAssetNumberList((prevList: any) => prevList.filter((element: any) => element.assetNumber !== assetNumber));
     }
   };
-
   return (
     <CheckboxInputContainer>
       <CheckboxLabel>

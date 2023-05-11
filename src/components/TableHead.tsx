@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import check from '../assets/icon/check.png';
 import { useRecoilState } from 'recoil';
@@ -12,7 +12,11 @@ const TableHead = ({ assetList }: any) => {
     assetList?.every((item: any) =>
       assetNumberList.some((selectedItem: any) => selectedItem.assetNumber === item.assetNumber),
     );
-
+  console.log(assetNumberList);
+  useEffect(() => {
+    setSelected(false);
+    setAssetNumberList([]);
+  }, []);
   const handleChangeAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
     setSelected(checked);
@@ -28,7 +32,6 @@ const TableHead = ({ assetList }: any) => {
       setAssetNumberList([]);
     }
   };
-
   return (
     <thead>
       <tr>
