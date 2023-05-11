@@ -36,7 +36,6 @@ const AssetButton = () => {
   const deleteAsset = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setDeleteShowModal(true);
-    setAssetNumberList([]);
   };
 
   const downloadExcel = () => {
