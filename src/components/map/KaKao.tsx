@@ -103,7 +103,7 @@ const KaKao = (props: propsType) => {
       const options = {
         location: currentLocation,
         radius: 10000,
-        size: 6,
+        size: 5,
         sort: kakao.maps.services.SortBy.DISTANCE,
       };
       const keyword = props.searchKeyword;
@@ -192,17 +192,17 @@ const KaKao = (props: propsType) => {
       const el = document.createElement('li');
       const itemStr = `
       
-          <div style="padding:5px;
+          <div style="padding:16px 20px;
           z-index:1;
-          border: 1px solid #E4CCFF;
+          border: 1px solid #DDDDDD;
           box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-          border-radius: 3px; 
-          margin-top:2%;
+          border-radius: 16px; 
+          margin-top:12px;
           margin-left:-10%;
           width: 100%;
-          max-width: 610px;
-          min-width:610px;
-          height:70px;
+          max-width: 624px;
+          min-width:624px;
+          height:106px;
           display:flex;
           align-items: center;
           justify-content: space-between;
@@ -216,19 +216,19 @@ const KaKao = (props: propsType) => {
             margin-left:4px;gap:4px;">
             
            
-              <h5 style="font-size:11px" class="info-item place-name">${places.place_name}</h5>
+              <h5 style="font-size:16px;color:#333333;" class="info-item place-name">${places.place_name}</h5>
               ${
                 places.road_address_name
-                  ? `<span style="font-size:9px;font-weight:400;" class="info-item road-address-name">
+                  ? `<span style="font-size:14px;font-weight:500;color:#999999;" class="info-item road-address-name">
                     ${places.road_address_name}
                    </span>
                   `
-                  : `<span style="font-size:9px;" class="info-item address-name">
+                  : `<span style="font-size:14px;font-weight:500;color:#999999;" class="info-item address-name">
              	     ${places.address_name}
                   </span>`
               }
              
-              <span style="font-size:9px;" class="info-item tel">
+              <span style="font-size:14px;color:#999999;" class="info-item tel">
                 ${places.phone}
               </span>
             </a>
@@ -258,7 +258,7 @@ const KaKao = (props: propsType) => {
     // 마커를 생성하고 지도 위에 마커를 표시하는 함수
     function addMarker(position: any, idx: number, title: undefined) {
       const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지
-        imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
+        imageSize = new kakao.maps.Size(32, 45), // 마커 이미지의 크기
         imgOptions = {
           spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
           spriteOrigin: new kakao.maps.Point(0, idx * 46 + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
@@ -390,8 +390,9 @@ const KaKao = (props: propsType) => {
           id="map"
           className="map"
           style={{
-            width: '400px',
-            height: '500px',
+            width: '1012px',
+            height: '562px',
+            borderRadius: '10px',
           }}
         />
       </MapDiv>
@@ -422,6 +423,7 @@ const PlaceList = styled.ul`
 const MapDiv = styled.div`
   margin-left: -3%;
   margin-top: 1%;
+  border-radius: 10px;
 `;
 const Pagenation = styled.div`
   display: flex;
