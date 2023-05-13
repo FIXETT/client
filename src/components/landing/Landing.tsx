@@ -10,6 +10,8 @@ import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { readuser } from '../../apis/auth';
+import { useRecoilState } from 'recoil';
+import { useProfileState } from '../../recoil/profile';
 
 export interface FormValue {
   name: string;
@@ -19,6 +21,7 @@ export interface FormValue {
 
 const Landing = () => {
   const [ismodal, setIsModal] = useState(true);
+
   const navigate = useNavigate();
   //yup schema
   const schema = yup.object().shape({
@@ -62,15 +65,18 @@ const Landing = () => {
     const password = data.password;
     try {
       const { data: Token } = await UserApi.signin(email, password);
-      const token = Token.token;
+      const token = Token.token.accessToken;
+      console.log(token);
+      const Id = Token.token.user.userId;
+      console.log(Id);
+      const name = Token.token.user.name;
+      const identifier = Token.token.user.identifier;
       localStorage.setItem('token', token);
+      localStorage.setItem('userId', Id);
+      localStorage.setItem('name', name);
+      localStorage.setItem('identifier', identifier);
 
-      const { data: userData } = await readuser({ token, email, password });
-      if (userData) {
-        window.localStorage.setItem('name', userData.user.name);
-        window.localStorage.setItem('identifier', userData.user.identifier);
-        navigate('/assetList');
-      }
+      navigate('/assetList');
     } catch (error: any) {
       if (error.response) {
         window.confirm(error?.response?.data?.error);
@@ -82,8 +88,8 @@ const Landing = () => {
     <Wrap>
       <ImageContainer>
         <SpanBox>
-          <Text>{'김대리, 컴퓨터 이거 또 안되는데..'}</Text>
-          <Text>{'하..내 업무는 컴퓨터 수리가 아닌데..'}</Text>
+          <Text>김대리, 컴퓨터 이거 또 안되는데..</Text>
+          <Text>하..내 업무는 컴퓨터 수리가 아닌데..</Text>
         </SpanBox>
         <LandingImage src={landingimage} />
       </ImageContainer>

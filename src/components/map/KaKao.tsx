@@ -379,10 +379,10 @@ const KaKao = (props: propsType) => {
         <div id="search-result">
           <p className="result-text">{/* <span className="result-keyword">{props.searchKeyword}</span> */}</p>
           <div className="scroll-wrapper">
-            <PlaceList id="places-list"></PlaceList>
+            <PlaceList id="places-list" />
           </div>
 
-          <Pagenation id="pagination"></Pagenation>
+          <Pagenation id="pagination" />
         </div>
       </ResultList>
       <MapDiv>
@@ -394,7 +394,7 @@ const KaKao = (props: propsType) => {
             height: '562px',
             borderRadius: '10px',
           }}
-        ></div>
+        />
       </MapDiv>
     </Mapcontainer>
   );

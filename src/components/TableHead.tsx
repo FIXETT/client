@@ -1,8 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import check from '../assets/icon/check.png';
+import { useRecoilState } from 'recoil';
+import { allCheckedState, assetNumberListState } from '../recoil/assets';
 
-const TableHead = () => {
+const TableHead = ({ assetList }: any) => {
+  const [selected, setSelected] = useRecoilState(allCheckedState);
+  const [assetNumberList, setAssetNumberList] = useRecoilState(assetNumberListState);
+  const isAllSelected =
+    assetList?.length > 0 &&
+    assetList?.every((item: any) =>
+      assetNumberList.some((selectedItem: any) => selectedItem.assetNumber === item.assetNumber),
+    );
+  console.log(assetNumberList);
+  useEffect(() => {
+    setSelected(false);
+    setAssetNumberList([]);
+  }, []);
+  const handleChangeAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setSelected(checked);
+
+    if (checked) {
+      const identifier = Number(window.localStorage.getItem('identifier'));
+      const newAssetList = assetList?.map((item: any) => ({
+        assetNumber: item.assetNumber,
+        identifier,
+      }));
+      setAssetNumberList(newAssetList);
+    } else {
+      setAssetNumberList([]);
+    }
+  };
   return (
     <thead>
       <tr>
@@ -10,9 +39,9 @@ const TableHead = () => {
           <CheckboxLabel>
             <CheckboxInput
               type="checkbox"
-              onChange={(e) => {
-                console.log(e);
-              }}
+              // 전체 선택
+              onChange={handleChangeAll}
+              checked={isAllSelected && selected}
             />
             <span />
           </CheckboxLabel>

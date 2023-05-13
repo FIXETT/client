@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import * as XLSX from 'xlsx';
 import {
   showDeleteModalState,
   assetNumberListState,
   showAddComponentState,
-  showModifyModalState,
   showModifyComponentState,
 } from './../../recoil/assets';
 import addAsset from '../../assets/icon/addAsset.svg';
 import xlsx_w from '../../assets/icon/xlsx_w.svg';
 import xlsx_g from '../../assets/icon/xlsx_g.svg';
 import { postAsset } from '../../apis/asset';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const AssetButton = () => {
   const setShowAddComponent = useSetRecoilState(showAddComponentState);
-  const assetNumber = useRecoilValue(assetNumberListState);
+  const [assetNumberList, setAssetNumberList] = useRecoilState(assetNumberListState);
   const setDeleteShowModal = useSetRecoilState(showDeleteModalState);
   const setshowModifyComponent = useSetRecoilState(showModifyComponentState);
 
@@ -101,6 +100,10 @@ const AssetButton = () => {
           const aCell = sheet[XLSX.utils.encode_cell({ r: R, c: 0 })];
           const bCell = sheet[XLSX.utils.encode_cell({ r: R, c: 1 })];
           const cCell = sheet[XLSX.utils.encode_cell({ r: R, c: 2 })];
+          if (!aCell?.v && !bCell?.v && !cCell?.v) {
+            alert('필수항목을 입력해주세요');
+            return;
+          }
           if (aCell?.v && bCell?.v && cCell?.v) {
             // a,b,c열에 모든 데이터가 존재하는 행만 파싱
             const obj: any = {};
@@ -124,7 +127,7 @@ const AssetButton = () => {
 
             // Add the identifier key
             const identifier = window.localStorage.getItem('identifier');
-            obj['identifier'] = identifier ? Number(identifier) : null;
+            obj.identifier = identifier ? Number(identifier) : null;
 
             result.push(obj);
           }
@@ -136,45 +139,58 @@ const AssetButton = () => {
     }
   };
   return (
-    <AssetTypeBtnWrap>
-      <ModifyBtn onClick={modifyAsset} disabled={assetNumber.length !== 2}>
-        수정
-      </ModifyBtn>
-      <DeleteBtn onClick={deleteAsset} disabled={assetNumber.length < 2}>
-        삭제
-      </DeleteBtn>
-      <AddAssetBtn
-        onClick={() => {
-          setShowAddComponent(true);
-        }}
-      >
-        <img src={addAsset} alt="등록 아이콘" />
-        <p>제품 등록하기</p>
-      </AddAssetBtn>
-      <AddExcelBtn>
-        <input type="file" accept=".xlsx" id="uploadExcel" onChange={uploadExcel} />
-        <label htmlFor="uploadExcel">
-          <img src={xlsx_w} alt="Excel 흰색 아이콘" />
-          <p>Excel로 등록하기</p>
-        </label>
-      </AddExcelBtn>
-      <ExcelDownBtn onClick={downloadExcel}>
-        <img src={xlsx_g} alt="Excel 초록색 아이콘" />
-        <p>Excel 양식 다운로드</p>
-      </ExcelDownBtn>
-    </AssetTypeBtnWrap>
+    <AssetListHeaderContainer>
+      <AssetListHeaderWrap>
+        <AddAssetBtn
+          onClick={() => {
+            setShowAddComponent(true);
+          }}
+        >
+          <img src={addAsset} alt="등록 아이콘" />
+          <p>제품 등록하기</p>
+        </AddAssetBtn>
+        <AddExcelBtn>
+          <input type="file" accept=".xlsx" id="uploadExcel" onChange={uploadExcel} />
+          <label htmlFor="uploadExcel">
+            <img src={xlsx_w} alt="Excel 흰색 아이콘" />
+            <p>Excel로 등록하기</p>
+          </label>
+        </AddExcelBtn>
+        <ExcelDownBtn onClick={downloadExcel}>
+          <img src={xlsx_g} alt="Excel 초록색 아이콘" />
+          <p>Excel 양식 다운로드</p>
+        </ExcelDownBtn>
+      </AssetListHeaderWrap>
+      <AssetListBtnWrap>
+        <ModifyBtn onClick={modifyAsset} disabled={assetNumberList.length !== 1}>
+          수정
+        </ModifyBtn>
+        <DeleteBtn onClick={deleteAsset} disabled={assetNumberList.length < 0}>
+          삭제
+        </DeleteBtn>
+      </AssetListBtnWrap>
+    </AssetListHeaderContainer>
   );
 };
 
 export default AssetButton;
 
-const AssetTypeBtnWrap = styled.div`
+const AssetListHeaderContainer = styled.div`
+  margin-top: 24px;
+  padding: 0 8px;
+`;
+const AssetListHeaderWrap = styled.div`
   text-align: center;
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: 24px;
-  padding: 0 8px;
+`;
+const AssetListBtnWrap = styled.div`
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `;
 const DeleteBtn = styled.button<{ disabled: boolean }>`
   display: flex;
@@ -183,8 +199,8 @@ const DeleteBtn = styled.button<{ disabled: boolean }>`
   font-weight: 500;
   font-size: 14px;
   color: #999;
-  background: #f4f4f4;
   border-radius: 8px;
+  border: 1px solid #999999;
   cursor: default;
   ${(props) =>
     !props.disabled &&
@@ -199,8 +215,8 @@ const ModifyBtn = styled.button<{ disabled: boolean }>`
   font-weight: 500;
   font-size: 14px;
   color: #999;
-  background: #f4f4f4;
   border-radius: 8px;
+  border: 1px solid #999999;
   cursor: default;
   ${(props) =>
     !props.disabled &&
@@ -227,6 +243,7 @@ const AddExcelBtn = styled.button`
     display: flex;
     align-items: center;
     gap: 8px;
+    cursor: pointer;
   }
   padding: 8px;
   background: var(--green);

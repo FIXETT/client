@@ -34,14 +34,14 @@ const Signup = () => {
   return (
     <Wrap>
       <ImageContainer>
-        <LandingImage src={landingimage}></LandingImage>
+        <LandingImage src={landingimage} />
         <SpanBox>
           <Text>우당탕탕💥</Text>
           <Text>또 회사 자산정리로 야근 중이시라면?</Text>
         </SpanBox>
       </ImageContainer>
       <LoginContainer>
-        <Logo src={landinglogo} alt=""></Logo>
+        <Logo src={landinglogo} alt="" />
 
         <UzzulText>
           <span style={{ fontWeight: '700', fontSize: '24px', color: '#5A3092' }}>안녕하세요, FIXET 입니다.</span>
@@ -49,13 +49,7 @@ const Signup = () => {
             이메일로 간단하게 가입하고 FIXET으로 회사 자산을 관리해보세요.
           </span>
         </UzzulText>
-        <Email
-          value={email}
-          onChange={onChange}
-          type="text"
-          name="email"
-          placeholder="회사 이메일을 입력해주세요"
-        ></Email>
+        <Email value={email} onChange={onChange} type="text" name="email" placeholder="회사 이메일을 입력해주세요" />
         <SignBtn onClick={signupHandler}>회원가입</SignBtn>
         <FindPW>
           이미 계정이 있으신가요?

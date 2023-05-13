@@ -1,32 +1,41 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { handleChangeType, patchAssetDataType } from '../../types/asset';
-import { assetNumberListState, modifyState } from './../../recoil/assets';
+import { allCheckedState, assetNumberListState, modifyState } from './../../recoil/assets';
 
 import check from '../../assets/icon/check.png';
 
 const AssetRadioButton = ({ assetList, value }: any) => {
-  const [assetNumberList, setAssetNumberList] = useRecoilState(assetNumberListState);
+  const [assetNumberList, setAssetNumberList] = useRecoilState<any>(assetNumberListState);
   const setModify = useSetRecoilState(modifyState);
 
   const checkedInput: handleChangeType = (e) => {
     e.stopPropagation();
     const checked = e.target.checked;
+    const assetNumber = Number(e.target.id);
+    const identifier = Number(window.localStorage.getItem('identifier'));
+
     if (checked) {
-      const identifier = Number(window.localStorage.getItem('identifier'));
-      setAssetNumberList([...assetNumberList, { assetNumber: Number(e.target.id), identifier }]);
-      const filteredData = assetList.filter((item: patchAssetDataType) => item.assetNumber === Number(e.target.id));
+      const newAsset = { assetNumber, identifier };
+      setAssetNumberList((prevList: any) => [...prevList, newAsset]);
+
+      const filteredData = assetList.filter((item: patchAssetDataType) => item.assetNumber === assetNumber);
       setModify(filteredData);
     } else {
-      const filtered = assetNumberList.filter((element) => element.assetNumber !== Number(e.target.id));
-      setAssetNumberList(filtered);
+      setAssetNumberList((prevList: any) => prevList.filter((element: any) => element.assetNumber !== assetNumber));
     }
   };
   return (
     <CheckboxInputContainer>
       <CheckboxLabel>
-        <CheckboxInput type="checkbox" id={String(value.assetNumber)} onChange={checkedInput} />
+        <CheckboxInput
+          type="checkbox"
+          id={String(value.assetNumber)}
+          // 개별선택
+          onChange={checkedInput}
+          checked={assetNumberList.some((item: any) => item.assetNumber === value.assetNumber)}
+        />
         <span />
       </CheckboxLabel>
     </CheckboxInputContainer>
