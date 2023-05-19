@@ -1,9 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Outlet } from 'react-router-dom';
-
-import { useRecoilState } from 'recoil';
-import { useLogoutState } from '../../recoil/userList';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import profile from '../../assets/icon/profile.png';
 import logo from '../../assets/logo.svg';
@@ -11,16 +8,17 @@ import NavList from './NavList';
 
 const Aside = () => {
   const name = window.localStorage.getItem('name') as string;
-  const [islogout, setIslogout] = useRecoilState(useLogoutState);
-
-  const logoutHandler = () => {
-    setIslogout(!islogout);
-  };
-
+  const navigate = useNavigate();
   return (
     <>
       <AsideContainer>
-        <LogoImg src={logo} alt="로고" />
+        <LogoImg
+          src={logo}
+          alt="로고"
+          onClick={() => {
+            navigate('/assetlist');
+          }}
+        />
         <ProfileWrap>
           <ImgWrap>
             <img src={profile} alt="프로필" />
@@ -32,7 +30,6 @@ const Aside = () => {
         </ProfileWrap>
         <NavListContainer>
           <NavList />
-          {/* <LogoutBtn onClick={logoutHandler}>로그아웃</LogoutBtn> */}
         </NavListContainer>
       </AsideContainer>
       <Outlet />
@@ -52,6 +49,7 @@ const AsideContainer = styled.div`
 const LogoImg = styled.img`
   margin-top: 42px;
   margin-bottom: 16px;
+  cursor: pointer;
 `;
 const ProfileWrap = styled.div`
   display: flex;
@@ -85,11 +83,6 @@ const Company = styled.p`
   font-size: var(--heading6);
   color: #999;
 `;
-const Job = styled.p`
-  font-weight: 500;
-  font-size: var(--heading6);
-  color: #999;
-`;
 const Name = styled.p`
   font-weight: 700;
   font-size: var(--heading5);
@@ -98,12 +91,4 @@ const Name = styled.p`
 const NavListContainer = styled.ul`
   display: flex;
   flex-direction: column;
-`;
-const LogoutBtn = styled.button`
-  background-color: var(--gray);
-  border-radius: 8px;
-  color: var(--black2);
-  font-weight: 700;
-  font-size: 15px;
-  height: 44px;
 `;
