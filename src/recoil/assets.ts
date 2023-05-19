@@ -38,22 +38,7 @@ export const assetlistState = atom({
 });
 export const searchlistState = atom({
   key: 'searchlist',
-  default: [
-    {
-      name: '',
-      product: '',
-      category: '',
-      serialNumber: '',
-      team: '',
-      manufacturer: '',
-      acquisitionDate: '',
-      location: '',
-      status: '',
-      note: '',
-      identifier: 0,
-      assetNumber: 0,
-    },
-  ],
+  default: [{}],
 });
 export const categoryState = atom({
   key: 'category',

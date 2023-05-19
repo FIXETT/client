@@ -12,7 +12,6 @@ const TableHead = ({ assetList }: any) => {
     assetList?.every((item: any) =>
       assetNumberList.some((selectedItem: any) => selectedItem.assetNumber === item.assetNumber),
     );
-  console.log(assetNumberList);
   useEffect(() => {
     setSelected(false);
     setAssetNumberList([]);

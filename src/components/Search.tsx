@@ -1,7 +1,7 @@
 import React, { useEffect, ChangeEvent, KeyboardEvent, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState, useRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 
 import { categoryState, searchTextState } from '../recoil/assets';
 
@@ -15,13 +15,11 @@ const Search = () => {
   const [text, setText] = useState('');
   const [searchText, setSearchText] = useRecoilState(searchTextState);
   const [category, setCategory] = useRecoilState(categoryState);
+
   useEffect(() => {
-    setText(searchText);
+    setSearchText(text);
   }, [searchText]);
-  useEffect(() => {
-    setCategory('');
-    setText('');
-  }, []);
+
   const searchOnchange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setText(e.target.value);
@@ -30,14 +28,18 @@ const Search = () => {
   const handleOnKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
+
       if (category === '') {
         alert('카테고리를 선택해주세요');
+        return;
       }
       if (text === '') {
         alert('검색어를 입력해주세요');
+        return;
       }
       setSearchText(text);
       navigate('/searchlist');
+      return;
     }
   };
   return (

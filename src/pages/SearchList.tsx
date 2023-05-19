@@ -15,15 +15,50 @@ const SearchList = () => {
   const [searchList, setSearList] = useRecoilState(searchlistState);
   const category = useRecoilValue(categoryState);
 
-  const { data, status } = useQuery(['searchAsset', category, searchText], () => searchAsset(category, searchText));
+  const { data, isLoading } = useQuery(['searchAsset', category, searchText], () => searchAsset(category, searchText));
 
   useEffect(() => {
+    setSearList([]);
     if (data) {
-      const newList = data.result;
+      const newList = data?.result;
       setSearList(newList);
     }
   }, [data]);
+  const categoryIcon = (category: string) => {
+    switch (category) {
+      case '노트북/데스크탑/서버':
+        return <span>💻</span>;
+      case '모니터':
+        return <span>🖥️</span>;
+      case '모바일기기':
+        return <span>📱</span>;
+      case '사무기기':
+        return <span>🖨️</span>;
+      case '기타장비':
+        return <span>⌨️</span>;
+      case '소프트웨어':
+        return <span>🧑‍💻</span>;
+      default:
+        return;
+    }
+  };
 
+  const statusIcon = (status: string) => {
+    switch (status) {
+      case '정상':
+        return <span>🟢</span>;
+      case '분실':
+        return <span>🔴</span>;
+      case '수리중':
+        return <span>🟡</span>;
+      case '수리완료':
+        return <span>🔵</span>;
+      case '수리필요':
+        return <span>🟠</span>;
+      default:
+        return;
+    }
+  };
   return (
     <AssetContainer>
       <AssetWrap>
@@ -31,36 +66,47 @@ const SearchList = () => {
       </AssetWrap>
       {searchText && (
         <SerchText>
-          <span>&#39;{searchText}&#39;</span> 검색 결과 ({searchList.length?.toString().padStart(2, '0')})
+          <span>&#39;{searchText}&#39;</span> 검색 결과{'  '}
+          {searchList.length > 0 ? String(searchList.length).padStart(2, '0') : ''}
         </SerchText>
       )}
 
       <AssetListContainer>
-        <table>
-          <TableHead />
-          <tbody>
-            {searchList &&
-              searchList?.map((value) => {
+        {searchList && (
+          <table>
+            <TableHead />
+            <tbody>
+              {searchList?.map((value: any) => {
                 return (
                   <tr key={value?.assetNumber}>
                     <AssetRadioButton assetList={searchList} value={value} />
                     <AssetItem>{value?.assetNumber}</AssetItem>
                     <AssetItem>{value?.name}</AssetItem> {/* 실사용자 */}
                     <AssetItem>{value?.product}</AssetItem> {/* 제품명 */}
-                    <AssetItem>{value?.category}</AssetItem> {/* 품목 */}
+                    <AssetItem>
+                      {categoryIcon(value?.Category?.category)}
+                      {value?.Category?.category}
+                    </AssetItem>{' '}
+                    {/* 품목 */}
                     <AssetItem>{value?.serialNumber}</AssetItem> {/* 시리얼번호 */}
                     <AssetItem>{value?.team}</AssetItem> {/* 팀 */}
                     <AssetItem>{value?.manufacturer}</AssetItem> {/* 제조사 */}
                     <AssetItem>{value?.acquisitionDate}</AssetItem> {/* 취득일자 */}
                     <AssetItem>{value?.location}</AssetItem> {/* 자산위치 */}
-                    <AssetItem>{value?.status}</AssetItem> {/* 상태 */}
+                    <AssetItem>
+                      {statusIcon(value?.Status?.status)}
+                      {value?.Status?.status}
+                    </AssetItem>{' '}
+                    {/* 상태 */}
                     <AssetItem>{value?.note}</AssetItem> {/* 비고 */}
                   </tr>
                 );
               })}
-            <tr>{data?.Assets === 'does not exist asset' && <NotData />}</tr>
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        )}
+        {isLoading && <Loading />}
+        {!isLoading && !data && <NotData />}
       </AssetListContainer>
     </AssetContainer>
   );

@@ -1,91 +1,58 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const Loading = () => {
   return (
-    <CategoryWrap>
-      {[0, 0, 0, 0, 0].map((value, index) => {
-        return (
-          <ListItem key={index}>
-            <BookImg />
-            <BookWrap>
-              <BookTitle />
-            </BookWrap>
-          </ListItem>
-        );
-      })}
-    </CategoryWrap>
+    <Table>
+      <TableRow>
+        <TableItem animationDelay="0s" />
+        <TableItem animationDelay="0.1s" />
+        <TableItem animationDelay="0.2s" />
+        <TableItem animationDelay="0.3s" />
+        <TableItem animationDelay="0.4s" />
+        <TableItem animationDelay="0.5s" />
+        <TableItem animationDelay="0.6s" />
+        <TableItem animationDelay="0.7s" />
+        <TableItem animationDelay="0.8s" />
+        <TableItem animationDelay="0.9s" />
+      </TableRow>
+    </Table>
   );
 };
 
 export default Loading;
 
-const CategoryWrap = styled.td`
+const Table = styled.table`
   width: 100%;
 `;
 
-const ListItem = styled.li`
-  display: block;
+const TableRow = styled.tr`
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  &:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
 `;
 
-const BookImg = styled.div`
+const skeletonAnimation = keyframes`
+  0% {
+    background-color: #FFF;
+  }
+  50% {
+    background-color: #F4F4F4;
+  }
+  100% {
+    background-color: #FFF;
+  }
+`;
+
+const TableItem = styled.td<{ animationDelay: string }>`
   width: 100%;
-  height: 265px;
-  margin-bottom: 14px;
+  height: 30px;
+  background-color: #fff;
   border-radius: 8px;
-  overflow: hidden;
-  position: relative;
-  background-color: #f2f2f2;
-  @keyframes loading {
-    0% {
-      transform: translateY(0);
-    }
-    50%,
-    100% {
-      transform: translateY(360px);
-    }
-  }
-  :before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to top, #f2f2f2, #ececec, #f2f2f2);
-    animation: loading 1s infinite linear;
-  }
-`;
-
-const BookWrap = styled.div`
-  width: 100%;
-  margin: 0 auto;
-`;
-
-const BookTitle = styled.h3`
-  width: 100%;
-  height: 20px;
-  overflow: hidden;
-  position: relative;
-  background-color: #f2f2f2;
-  border-radius: 8px;
-  @keyframes loading {
-    0% {
-      transform: translateY(0);
-    }
-    50%,
-    100% {
-      transform: translateY(360px);
-    }
-  }
-  :before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 180px;
-    height: 100%;
-    background: linear-gradient(to right, #f2f2f2, #ececec, #f2f2f2);
-    animation: loading 1s infinite linear;
-  }
+  margin-bottom: 18px;
+  animation: ${skeletonAnimation} 1s ease-in-out infinite;
+  animation-delay: ${(props) => props.animationDelay};
 `;

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import profile from '../../assets/icon/profile.png';
 import logo from '../../assets/logo.svg';
@@ -8,11 +8,17 @@ import NavList from './NavList';
 
 const Aside = () => {
   const name = window.localStorage.getItem('name') as string;
-
+  const navigate = useNavigate();
   return (
     <>
       <AsideContainer>
-        <LogoImg src={logo} alt="로고" />
+        <LogoImg
+          src={logo}
+          alt="로고"
+          onClick={() => {
+            navigate('/assetlist');
+          }}
+        />
         <ProfileWrap>
           <ImgWrap>
             <img src={profile} alt="프로필" />
@@ -43,6 +49,7 @@ const AsideContainer = styled.div`
 const LogoImg = styled.img`
   margin-top: 42px;
   margin-bottom: 16px;
+  cursor: pointer;
 `;
 const ProfileWrap = styled.div`
   display: flex;
