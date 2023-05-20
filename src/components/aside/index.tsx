@@ -54,7 +54,7 @@ const Aside = () => {
                 onClick={() => {
                   localStorage.clear();
                   setIslogout(false);
-                  navigate('/');
+                  navigate('/login');
                   setContextMenu(false);
                 }}
               >
