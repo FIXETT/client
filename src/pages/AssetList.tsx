@@ -3,7 +3,12 @@ import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 
 import { useRecoilValue } from 'recoil';
-import { showAddComponentState, showDeleteModalState, showModifyComponentState } from '../recoil/assets';
+import {
+  showAddComponentState,
+  showAddExcelComponentState,
+  showDeleteModalState,
+  showModifyComponentState,
+} from '../recoil/assets';
 import { getAsset } from '../apis/asset';
 import { assetListType } from '../types/asset';
 
@@ -16,10 +21,12 @@ import TableHead from '../components/TableHead';
 import TableItemList from '../components/assetList/TableItemList';
 import Loading from '../components/Loading';
 import NotData from '../components/NotData';
+import ExcelModal from '../components/addassetExcel';
 
 const AssetList = () => {
   const deleteShowModal = useRecoilValue(showDeleteModalState);
   const showAddComponent = useRecoilValue(showAddComponentState);
+  const showAddExcelComponent = useRecoilValue(showAddExcelComponentState);
   const showModifyComponent = useRecoilValue(showModifyComponentState);
 
   // 로그인 확인
@@ -132,6 +139,7 @@ const AssetList = () => {
         {renderPagination()}
       </AssetListContainer>
       {showAddComponent && <AddAsset />}
+      {showAddExcelComponent && <ExcelModal />}
       {showModifyComponent && <ModifyAsset />}
       {deleteShowModal && <DeleteModal />}
     </AssetContainer>

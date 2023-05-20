@@ -56,6 +56,10 @@ export const showAddComponentState = atom({
   key: 'showAddComponent',
   default: false,
 });
+export const showAddExcelComponentState = atom({
+  key: 'showAddExcelComponent',
+  default: false,
+});
 export const showModifyComponentState = atom({
   key: 'showModifyComponent',
   default: false,
