@@ -12,25 +12,25 @@ import EnterInfoPage from '../pages/EnterInfoPage';
 import AssetList from '../pages/AssetList';
 import SearchList from '../pages/SearchList';
 import MyPage from '../pages/MyPage';
+import Landing from '../pages/Landing';
 function Router() {
   return (
-    <div>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/confirm" element={<ConfirmPage />} />
-        <Route path="/enter" element={<EnterInfoPage />} />
-        <Route element={<Layout />}>
-          <Route element={<Aside />}>
-            <Route path="/assetlist" element={<AssetList />} />
-            <Route path="/searchlist" element={<SearchList />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/fix" element={<FixPage />} />
-            <Route path="/mypage" element={<MyPage />} />
-          </Route>
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      <Route path="/login" element={<LandingPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route path="/confirm" element={<ConfirmPage />} />
+      <Route path="/enter" element={<EnterInfoPage />} />
+      <Route element={<Layout />}>
+        <Route element={<Aside />}>
+          <Route path="/assetlist" element={<AssetList />} />
+          <Route path="/searchlist" element={<SearchList />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/fix" element={<FixPage />} />
+          <Route path="/mypage" element={<MyPage />} />
         </Route>
-      </Routes>
-    </div>
+      </Route>
+    </Routes>
   );
 }
 export default Router;
