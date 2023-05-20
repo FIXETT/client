@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import profile from '../../assets/icon/profile.png';
 import logo from '../../assets/logo.svg';
+import user from '../../assets/icon/user.png';
+import logout from '../../assets/icon/logout.png';
+
 import NavList from './NavList';
+import { useSetRecoilState } from 'recoil';
+import { useLogoutState } from '../../recoil/userList';
 
 const Aside = () => {
   const name = window.localStorage.getItem('name') as string;
   const navigate = useNavigate();
+  const setIslogout = useSetRecoilState(useLogoutState);
+  const [contextMenu, setContextMenu] = useState(false);
   return (
     <>
       <AsideContainer>
@@ -19,7 +26,12 @@ const Aside = () => {
             navigate('/assetlist');
           }}
         />
-        <ProfileWrap>
+        <ProfileWrap
+          onContextMenu={(e) => {
+            e.preventDefault();
+            setContextMenu(true);
+          }}
+        >
           <ImgWrap>
             <img src={profile} alt="프로필" />
           </ImgWrap>
@@ -27,6 +39,30 @@ const Aside = () => {
             <Name>{name}</Name>
             <Company>비누랩스</Company>
           </TextWrap>
+          {contextMenu && (
+            <ContextMenu>
+              <button
+                onClick={() => {
+                  navigate('/mypage');
+                  setContextMenu(false);
+                }}
+              >
+                <img src={user} alt="프로필아이콘" />
+                프로필 바로가기
+              </button>
+              <button
+                onClick={() => {
+                  localStorage.clear();
+                  setIslogout(false);
+                  navigate('/');
+                  setContextMenu(false);
+                }}
+              >
+                <img src={logout} alt="로그아웃아이콘" />
+                로그아웃
+              </button>
+            </ContextMenu>
+          )}
         </ProfileWrap>
         <NavListContainer>
           <NavList />
@@ -42,22 +78,52 @@ export default Aside;
 const AsideContainer = styled.div`
   min-width: 180px;
   height: 100%;
-  padding: 0 16px;
   background-color: #fff;
   border-right: 1px solid #eee;
 `;
 const LogoImg = styled.img`
   margin-top: 42px;
   margin-bottom: 16px;
+  padding: 0 16px;
+
   cursor: pointer;
 `;
 const ProfileWrap = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 16px 0;
+  padding: 16px;
+  :hover {
+    background-color: #f4f4f4;
+    border-radius: 16px;
+  }
 `;
 
+const ContextMenu = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background-color: #fff;
+  padding: 4px;
+  width: 100%;
+  font-weight: 500;
+  font-size: 14px;
+  color: #666;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    text-align: left;
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    :hover {
+      background: #f4f4f4;
+    }
+  }
+`;
 const ImgWrap = styled.div`
   width: 56px;
   height: 56px;
