@@ -115,7 +115,7 @@ const Landing = () => {
           </InputDiv>
 
           <BtnDiv>
-            <LoginBtn className={errors?.password?.message || errors?.confirm?.message ? '' : 'complete'} type="submit">
+            <LoginBtn className={errors?.email?.message || errors?.password?.message ? '' : 'complete'} type="submit">
               이메일로 로그인 하기
             </LoginBtn>
           </BtnDiv>
