@@ -56,7 +56,7 @@ const Landing = () => {
           </LoginBtn>
           <SignInBtn
             onClick={() => {
-              navigate('/signin');
+              navigate('/signup');
             }}
           >
             회원가입

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import KaKao from '../map/KaKao';
 import { useRecoilState } from 'recoil';
 import { useFixState } from '../../recoil/fix';
+import Naver from '../map/Naver';
 
 export interface propsType {
   searchKeyword: string;
