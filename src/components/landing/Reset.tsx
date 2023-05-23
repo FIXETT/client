@@ -10,16 +10,19 @@ import { useNavigate } from 'react-router-dom';
 import fixetimg from '../../assets/login/fixet.svg';
 import { Fixet } from './Signup';
 import logo_g from '../../assets/icon/logo_g.png';
+import { useRecoilState } from 'recoil';
+import { useUserState } from '../../recoil/userList';
 const Reset = () => {
   const [form, onChange, reset] = useInputs([]);
   const [error, setError] = useState(true);
   const navigate = useNavigate();
-
+  const [info, setInfo] = useRecoilState(useUserState);
   const transHandler = async () => {
     try {
-      const { data } = await UserApi.resetpw(form.email, form.name);
-      window.alert('인증메일이 발송 되었습니다.');
-      navigate('/login');
+      const { data } = await UserApi.resetauth(form.email, form.name);
+
+      setInfo(form.email);
+      navigate('/resetauth');
     } catch (error) {
       setError(false);
     }

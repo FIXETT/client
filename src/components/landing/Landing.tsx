@@ -115,7 +115,9 @@ const Landing = () => {
           </InputDiv>
 
           <BtnDiv>
-            <LoginBtn type="submit">이메일로 로그인 하기</LoginBtn>
+            <LoginBtn className={errors?.password?.message || errors?.confirm?.message ? '' : 'complete'} type="submit">
+              이메일로 로그인 하기
+            </LoginBtn>
           </BtnDiv>
         </LoginContainer>
         <Signup>
@@ -244,6 +246,22 @@ const LoginBtn = styled.button`
   color: #ffffff;
 
   background: linear-gradient(0deg, rgba(255, 255, 255, 0.59), rgba(255, 255, 255, 0.59)), #066aff;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 16px;
+
+  &.complete {
+    width: 400px;
+    height: 48px;
+    border-radius: 12px;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 16px;
+    background: #066aff;
+    color: #ffffff;
+  }
 `;
 
 const BtnDiv = styled.div`
@@ -251,8 +269,8 @@ const BtnDiv = styled.div`
   gap: 37px;
 `;
 export const Errormessage = styled.div`
-  color: #da1919;
-
+  color: #ff0000;
+  margin-top: 8px;
   font-weight: 400;
   font-size: 14px;
   line-height: 14px;

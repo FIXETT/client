@@ -15,6 +15,8 @@ import SearchList from '../pages/SearchList';
 import MyPage from '../pages/MyPage';
 import Landing from '../pages/Landing';
 import ResetPage from '../pages/ResetPage';
+import ResetAuthPage from '../pages/ResetAuthPage';
+import NewSet from '../pages/NewSet';
 function Router() {
   return (
     <Routes>
@@ -24,6 +26,8 @@ function Router() {
       <Route path="/confirm" element={<ConfirmPage />} />
       <Route path="/enter" element={<EnterInfoPage />} />
       <Route path="/reset" element={<ResetPage />} />
+      <Route path="/resetauth" element={<ResetAuthPage />} />
+      <Route path="/newsetpw" element={<NewSet />} />
       <Route element={<Layout />}>
         <Route element={<Aside />}>
           <Route path="/assetlist" element={<AssetList />} />
