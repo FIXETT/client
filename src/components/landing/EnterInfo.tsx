@@ -8,11 +8,14 @@ import useInputs from '../../hooks/useInput';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FormValue, Wrap } from './Landing';
+import { Flex, Footer, FormValue, Wrap } from './Landing';
 import { User } from '../../recoil/userList';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../modal/Modal';
-
+import { Fixet } from './Signup';
+import fixetimg from '../../assets/login/fixet.svg';
+import logo_g from '../../assets/icon/logo_g.png';
+import complte from '../../assets/login/complete.svg';
 const EnterInfo = () => {
   const [{ name, password }, onChange, Reset] = useInputs({
     name: '',
@@ -22,11 +25,12 @@ const EnterInfo = () => {
 
   const [info, setInfo] = useRecoilState(useUserState);
   const [agreePi, setAgreePi] = useState<boolean>(false);
+  const [iscomplete, SetIsComplete] = useState<boolean>(false);
   const schema = yup.object().shape({
     name: yup
       .string()
 
-      .matches(/^[가-힣]{2,20}$/, '이름에 특수기호는 사용 할 수 없어요')
+      .matches(/^[가-힣a-zA-Z]{2,20}$/, '이름에 특수기호는 사용 할 수 없어요')
       .required('이름을 입력해주세요.'),
     password: yup
       .string()
@@ -60,58 +64,90 @@ const EnterInfo = () => {
     try {
       await UserApi.signup(info, password, name, agreePi);
       alert(`안녕하세요😊 ${name}님 FIXET에 오신걸 환영합니다.`);
-      navigate('/');
+      SetIsComplete(true);
     } catch (error: any) {
       window.alert(error?.response?.data.error);
     }
   };
-
+  const loginHandler = () => {
+    navigate('/login');
+  };
   return (
     <Wrap>
+      <Fixet src={fixetimg} alt="fixet" />
+
       <Modal>
-        <Img src={enter} alt="" />
-        <InfoBox onSubmit={onSubmit(signupHandler)}>
-          <Text>
-            이제 이름과 비밀번호만
-            <br />
-            입력해주세요
-          </Text>
+        {iscomplete ? (
+          <>
+            <CompleteImg src={complte} alt="complete" />
+            <CompleteDiv>
+              <Text>
+                {name}님<br />
+                회원가입이 완료됐어요!
+                <br />
+                fixet을 둘러보세요
+              </Text>
+            </CompleteDiv>
+            <CompleteBtn onClick={loginHandler}>로그인 하러가기</CompleteBtn>
+          </>
+        ) : (
+          <>
+            <Img src={enter} alt="" />
+            <InfoBox onSubmit={onSubmit(signupHandler)}>
+              <Text>
+                이제 이름과 비밀번호만
+                <br />
+                입력해주세요
+              </Text>
 
-          <Input
-            className={errors.name?.message && 'error'}
-            {...register('name')}
-            id="name"
-            name="name"
-            placeholder="이름을 입력해주세요"
-          />
-          <Errormessage>{errors.name?.message}</Errormessage>
-          <Input
-            className={errors.password?.message && 'error'}
-            {...register('password')}
-            id="password"
-            name="password"
-            type="password"
-            placeholder="비밀번호를 입력해주세요"
-          />
-          <Errormessage>{errors.password?.message}</Errormessage>
-          <Input
-            className={errors.password?.message && 'error'}
-            {...register('confirm')}
-            id="confirm"
-            name="confirm"
-            type="password"
-            placeholder="비밀번호를 한번 더 입력해주세요"
-          />
-          <Errormessage>{errors.confirm?.message}</Errormessage>
+              <Input
+                className={errors.name?.message && 'error'}
+                {...register('name')}
+                id="name"
+                name="name"
+                placeholder="이름을 입력해주세요"
+              />
+              <Errormessage>{errors.name?.message}</Errormessage>
+              <Input
+                className={errors.password?.message && 'error'}
+                {...register('password')}
+                id="password"
+                name="password"
+                type="password"
+                placeholder="비밀번호를 입력해주세요"
+              />
+              <Errormessage>{errors.password?.message}</Errormessage>
+              <Input
+                className={errors.password?.message && 'error'}
+                {...register('confirm')}
+                id="confirm"
+                name="confirm"
+                type="password"
+                placeholder="비밀번호를 한번 더 입력해주세요"
+              />
+              <Errormessage>{errors.confirm?.message}</Errormessage>
 
-          <Info>
-            <CheckBox checked={agreePi} onClick={() => setAgreePi(!agreePi)} type="checkbox" />
-            <Service>서비스 약관 및 개인정보 처리 방침에 동의합니다.(필수) </Service>
-          </Info>
+              <Info>
+                <CheckBox checked={agreePi} onClick={() => setAgreePi(!agreePi)} type="checkbox" />
+                <Service href="https://www.notion.so/FIXET-609f2bb143f9404fb392c63e88ab0291" target="_blank">
+                  <a>서비스 약관</a> 및 개인정보 처리 방침에 동의합니다.(필수)
+                </Service>
+              </Info>
 
-          <ManageBtn type="submit">관리어쩔 시작하기</ManageBtn>
-        </InfoBox>
+              <ManageBtn type="submit">관리어쩔 시작하기</ManageBtn>
+            </InfoBox>
+          </>
+        )}
       </Modal>
+      <Footer>
+        <div>
+          <img src={logo_g} alt="로고" />
+        </div>
+        <Flex>
+          <p>Copyright 2023 UZ. All rights reserved</p>
+          <p>Team UZ Contact. Eojjeoji@gmail.com</p>
+        </Flex>
+      </Footer>
     </Wrap>
   );
 };
@@ -141,6 +177,29 @@ const InfoBox = styled.form`
 `;
 const Img = styled.img`
   margin-top: 93px;
+`;
+
+const CompleteImg = styled.img`
+  margin-top: 209px;
+`;
+
+const CompleteDiv = styled.div`
+  margin-top: 24px;
+  width: 400px;
+  height: 192px;
+  gap: 24px;
+`;
+const CompleteBtn = styled.button`
+  background-color: #066aff;
+  color: #ffffff;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 16px;
+  height: 48px;
+  width: 400px;
+
+  border-radius: 12px;
 `;
 const Input = styled.input`
   height: 48px;
@@ -181,10 +240,16 @@ const Errormessage = styled.div`
   text-align: left;
 `;
 
-const Service = styled.span`
+const Service = styled.a`
   font-weight: 700;
   font-size: 15px;
   line-height: 22.5px;
+  a {
+    :hover {
+      font-weight: 900;
+      color: black;
+    }
+  }
 `;
 const Personal = styled.span`
   font-weight: 700;

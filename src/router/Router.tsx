@@ -14,6 +14,7 @@ import AssetList from '../pages/AssetList';
 import SearchList from '../pages/SearchList';
 import MyPage from '../pages/MyPage';
 import Landing from '../pages/Landing';
+import ResetPage from '../pages/ResetPage';
 function Router() {
   return (
     <Routes>
@@ -22,6 +23,7 @@ function Router() {
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/confirm" element={<ConfirmPage />} />
       <Route path="/enter" element={<EnterInfoPage />} />
+      <Route path="/reset" element={<ResetPage />} />
       <Route element={<Layout />}>
         <Route element={<Aside />}>
           <Route path="/assetlist" element={<AssetList />} />

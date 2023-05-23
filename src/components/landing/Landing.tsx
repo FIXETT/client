@@ -58,7 +58,7 @@ const Landing = () => {
   };
   const resetpwHandler = () => {
     localStorage.clear();
-    navigate('/fix');
+    navigate('/reset');
   };
 
   const loginHandler: SubmitHandler<FormValue> = async (data) => {
@@ -249,7 +249,7 @@ const BtnDiv = styled.div`
   display: flex;
   gap: 37px;
 `;
-const Errormessage = styled.div`
+export const Errormessage = styled.div`
   color: #da1919;
 
   font-weight: 400;
