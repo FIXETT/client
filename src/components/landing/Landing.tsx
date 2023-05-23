@@ -151,6 +151,7 @@ const LoginImg = styled.img`
   margin-top: 169px;
 `;
 const Fixet = styled.img`
+  cursor: pointer;
   position: absolute;
   top: 40px;
   left: 24px;
