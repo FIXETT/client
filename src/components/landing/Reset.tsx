@@ -26,7 +26,7 @@ const Reset = () => {
   };
   return (
     <Wrap>
-      <Fixet src={fixetimg} alt="fixet" />
+      <Fixet onClick={() => navigate('/')} src={fixetimg} alt="fixet" />
       <Modal>
         <ResetImg src={resetimg} alt="reset" />
         <ResetDiv className={error ? '' : 'error'}>

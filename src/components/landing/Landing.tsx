@@ -67,9 +67,9 @@ const Landing = () => {
     try {
       const { data: Token } = await UserApi.signin(email, password);
       const token = Token.token.accessToken;
-      console.log(token);
+
       const Id = Token.token.user.userId;
-      console.log(Id);
+
       const name = Token.token.user.name;
       const identifier = Token.token.user.identifier;
       localStorage.setItem('token', token);
@@ -87,7 +87,7 @@ const Landing = () => {
 
   return (
     <Wrap>
-      <Fixet src={fixetimg} alt="fixet" />
+      <Fixet onClick={() => navigate('/')} src={fixetimg} alt="fixet" />
       <Modal>
         <LoginImg src={loginimg} alt="login" />
         <LoginContainer onSubmit={onSubmit(loginHandler)} tabIndex={0} autoComplete="off">
