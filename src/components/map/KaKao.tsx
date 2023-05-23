@@ -257,7 +257,7 @@ const KaKao = (props: propsType) => {
 
     // 마커를 생성하고 지도 위에 마커를 표시하는 함수
     function addMarker(position: any, idx: number, title: undefined) {
-      const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지
+      const imageSrc = 'https://ifh.cc/g/3JZ376.png', // 마커 이미지 url, 스프라이트 이미지
         imageSize = new kakao.maps.Size(32, 45), // 마커 이미지의 크기
         imgOptions = {
           spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기

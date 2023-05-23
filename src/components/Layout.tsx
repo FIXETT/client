@@ -41,6 +41,7 @@ const Footer = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
+
   padding: 24px;
   background-color: #f4f4f4;
   display: flex;

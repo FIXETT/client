@@ -8,6 +8,10 @@ import { useNavigate } from 'react-router-dom';
 import { useInfoState, useUserState } from '../../recoil/userList';
 import { useRecoilState } from 'recoil';
 import { UserApi } from '../../apis/axiosInstance';
+import { Wrap } from './Landing';
+import Modal from '../modal/Modal';
+import fixetimg from '../../assets/login/fixet.svg';
+import loginimg from '../../assets/login/login.svg';
 
 const Signup = () => {
   const [{ email }, onChange, reset] = useInputs({
@@ -33,146 +37,124 @@ const Signup = () => {
 
   return (
     <Wrap>
-      <ImageContainer>
-        <LandingImage src={landingimage} />
-        <SpanBox>
-          <Text>우당탕탕💥</Text>
-          <Text>또 회사 자산정리로 야근 중이시라면?</Text>
-        </SpanBox>
-      </ImageContainer>
-      <LoginContainer>
-        <Logo src={landinglogo} alt="" />
+      <Fixet src={fixetimg} alt="fixet" />
+      <Modal>
+        <LoginImg src={loginimg} alt="login" />
 
-        <UzzulText>
-          <span style={{ fontWeight: '700', fontSize: '24px', color: '#5A3092' }}>안녕하세요, FIXET 입니다.</span>
-          <span style={{ fontWeight: '700', fontSize: '13px', color: '#8F8F8F' }}>
-            이메일로 간단하게 가입하고 FIXET으로 회사 자산을 관리해보세요.
-          </span>
-        </UzzulText>
-        <Email value={email} onChange={onChange} type="text" name="email" placeholder="회사 이메일을 입력해주세요" />
-        <SignBtn onClick={signupHandler}>회원가입</SignBtn>
+        <LoginContainer>
+          <UzzulText>
+            <Hi>
+              안녕하세요!
+              <br />
+              자산관리가 간단해지는
+              <br /> fixet 입니다.
+            </Hi>
+            <FixetSpan>관리자 계정을 만들고 우리회사 자산을 간편하게 관리해보세요.</FixetSpan>
+          </UzzulText>
+          <SignupDiv>
+            <Email
+              value={email}
+              onChange={onChange}
+              type="text"
+              name="email"
+              placeholder="회사 이메일을 입력해주세요"
+            />
+            <SignBtn onClick={signupHandler}>회원가입 시작하기</SignBtn>
+          </SignupDiv>
+        </LoginContainer>
         <FindPW>
-          이미 계정이 있으신가요?
-          <Nav onClick={() => navigate('/')}>로그인하기</Nav>
+          <Nav onClick={() => navigate('/login')}>이미 계정이 있으신가요?로그인하기</Nav>
         </FindPW>
-      </LoginContainer>
+      </Modal>
     </Wrap>
   );
 };
 
 export default Signup;
-const Wrap = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: row;
-`;
 
-//이미지 컨테이너
-const ImageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+export const Fixet = styled.img`
+  position: absolute;
+  top: 40px;
+  left: 24px;
 `;
-const LandingImage = styled.img`
-  width: 52rem;
-  height: 47.3rem;
+const LoginImg = styled.img`
+  margin-top: 169px;
 `;
-const Text = styled.span`
-  font-family: Inter;
-  font-weight: 700;
-  font-size: 48px;
-  line-height: 72px;
-  line-height: 150%;
-  text-align: top;
-  vertical-align: top;
-  letter-spacing: -1.1%;
-`;
-const SpanBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  top: -13rem;
-  left: 3rem;
-`;
-
 //로그인 컨테이너
 const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  left: 9.125rem;
+
+  margin-top: 24px;
 `;
 const Logo = styled.img`
   position: relative;
   bottom: 12rem;
 `;
 const UzzulText = styled.div`
-  width: 26rem;
-  height: 3.5rem;
-
-  border: none;
-  position: relative;
-  bottom: 4rem;
-  outline: none;
+  width: 343px;
+  height: 146px;
+  gap: 12px;
   display: flex;
   flex-direction: column;
-  line-height: 36px;
-  letter-spacing: -1.1%;
+`;
+const Hi = styled.span`
+  font-family: Pretendard;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: 0em;
+  text-align: left;
+`;
+const FixetSpan = styled.span`
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #999999;
+`;
+const SignupDiv = styled.div`
+  width: 400px;
+  height: 120px;
+  margin-top: 24px;
+  gap: 24px;
+  display: flex;
+  flex-direction: column;
 `;
 const Email = styled.input`
-  width: 26rem;
-  height: 2.688rem;
-  background-color: rgba(233, 226, 242, 0.44);
-  border: none;
-  border-radius: 4px;
-  outline: none;
-  position: relative;
-  bottom: 3rem;
-  font-weight: 700;
-  font-size: 15px;
-  font-family: Inter;
-  line-height: 23px;
-  line-height: 150%;
-  text-align: left;
-  vertical-align: top;
-  letter-spacing: -1.1%;
+  height: 48px;
+  width: 400px;
+  left: 0px;
+  top: 170px;
+  border-radius: 12px;
+  padding: 16px;
+  background-color: #f4f4f4;
 `;
 
 const FindPW = styled.div`
-  width: 418px;
-  font-family: Inter;
-  font-style: Regular;
-  font-size: 12px;
-  line-height: 18px;
-  line-height: 150%;
-  text-align: Right;
-  vertical-align: Top;
-  letter-spacing: -1.1%;
-  color: #8f8f8f;
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
+  width: 400px;
+  margin-top: 12px;
 `;
 const SignBtn = styled.button`
-  width: 416px;
-  height: 43px;
-  background-color: #8e52d9;
+  height: 48px;
+  width: 400px;
+  left: 0px;
+  top: 242px;
+  border-radius: 12px;
+  padding: 16px;
   color: #ffffff;
-  border-radius: 10px;
-  font-weight: 700;
-  font-family: Inter;
-  font-size: 15px;
-  line-height: 22.5px;
-  letter-spacing: -1.1%;
-  text-align: center;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.59), rgba(255, 255, 255, 0.59)), #066aff;
 `;
 const Nav = styled.div`
-  font-style: normal;
-  font-weight: 700;
-  font-size: 12px;
-  line-height: 18px;
-  color: black;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #999999;
+
   cursor: pointer;
 `;
