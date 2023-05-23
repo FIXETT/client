@@ -8,11 +8,11 @@ import { useNavigate } from 'react-router-dom';
 import { useInfoState, useUserState } from '../../recoil/userList';
 import { useRecoilState } from 'recoil';
 import { UserApi } from '../../apis/axiosInstance';
-import { Wrap } from './Landing';
+import { Flex, Footer, Wrap } from './Landing';
 import Modal from '../modal/Modal';
 import fixetimg from '../../assets/login/fixet.svg';
 import loginimg from '../../assets/login/login.svg';
-
+import logo_g from '../../assets/icon/logo_g.png';
 const Signup = () => {
   const [{ email }, onChange, reset] = useInputs({
     email: '',
@@ -66,6 +66,15 @@ const Signup = () => {
           <Nav onClick={() => navigate('/login')}>이미 계정이 있으신가요?로그인하기</Nav>
         </FindPW>
       </Modal>
+      <Footer>
+        <div>
+          <img src={logo_g} alt="로고" />
+        </div>
+        <Flex>
+          <p>Copyright 2023 UZ. All rights reserved</p>
+          <p>Team UZ Contact. Eojjeoji@gmail.com</p>
+        </Flex>
+      </Footer>
     </Wrap>
   );
 };
