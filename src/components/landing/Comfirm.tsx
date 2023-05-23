@@ -21,7 +21,7 @@ const Comfirm = () => {
   const navigate = useNavigate();
   const [info, setInfo] = useRecoilState(useUserState);
   const thisemail = useRecoilValue(useUserState);
-  console.log(thisemail);
+
   //본인 이메일 인증하기 핸들러
   const confirmHandler = () => {
     const confirmMail = async () => {
@@ -57,7 +57,7 @@ const Comfirm = () => {
   return (
     <>
       <Wrap>
-        <Fixet src={fixetimg} />
+        <Fixet onClick={() => navigate('/')} src={fixetimg} />
         <Modal>
           <Auth src={confirm} alt="" />
           <ConfirmText>

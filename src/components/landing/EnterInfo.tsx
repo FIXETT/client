@@ -26,6 +26,7 @@ const EnterInfo = () => {
   const [info, setInfo] = useRecoilState(useUserState);
   const [agreePi, setAgreePi] = useState<boolean>(false);
   const [iscomplete, SetIsComplete] = useState<boolean>(false);
+  const [nickname, setnickname] = useState<string>('');
   const schema = yup.object().shape({
     name: yup
       .string()
@@ -60,7 +61,7 @@ const EnterInfo = () => {
   const signupHandler: SubmitHandler<FormValue> = async (data) => {
     const name = data.name;
     const password = data.password;
-
+    setnickname(name);
     try {
       await UserApi.signup(info, password, name, agreePi);
       alert(`안녕하세요😊 ${name}님 FIXET에 오신걸 환영합니다.`);
@@ -74,7 +75,7 @@ const EnterInfo = () => {
   };
   return (
     <Wrap>
-      <Fixet src={fixetimg} alt="fixet" />
+      <Fixet onClick={() => navigate('/')} src={fixetimg} alt="fixet" />
 
       <Modal>
         {iscomplete ? (
@@ -82,7 +83,7 @@ const EnterInfo = () => {
             <CompleteImg src={complte} alt="complete" />
             <CompleteDiv>
               <Text>
-                {name}님<br />
+                {nickname}님<br />
                 회원가입이 완료됐어요!
                 <br />
                 fixet을 둘러보세요

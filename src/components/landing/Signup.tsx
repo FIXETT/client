@@ -37,7 +37,7 @@ const Signup = () => {
 
   return (
     <Wrap>
-      <Fixet src={fixetimg} alt="fixet" />
+      <Fixet onClick={() => navigate('/')} src={fixetimg} alt="fixet" />
       <Modal>
         <LoginImg src={loginimg} alt="login" />
 
@@ -83,6 +83,7 @@ export default Signup;
 
 export const Fixet = styled.img`
   position: absolute;
+  cursor: pointer;
   top: 40px;
   left: 24px;
 `;
