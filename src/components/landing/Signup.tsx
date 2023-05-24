@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import landingimage from '../../assets/ladingimage.svg';
 import landinglogo from '../../assets/landinglogo.svg';
@@ -8,33 +8,51 @@ import { useNavigate } from 'react-router-dom';
 import { useInfoState, useUserState } from '../../recoil/userList';
 import { useRecoilState } from 'recoil';
 import { UserApi } from '../../apis/axiosInstance';
-import { Flex, Footer, Wrap } from './Landing';
+import { Errormessage, Flex, Footer, Wrap } from './Landing';
 import Modal from '../modal/Modal';
 import fixetimg from '../../assets/login/fixet.svg';
 import loginimg from '../../assets/login/login.svg';
 import logo_g from '../../assets/icon/logo_g.png';
 const Signup = () => {
-  const [{ email }, onChange, reset] = useInputs({
+  const [{ email }, onChange, reset, complete] = useInputs({
     email: '',
   });
   const [user, setUser] = useRecoilState(useUserState);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
+  // 이메일 중복 검사 함수
+  async function checkuserinfo() {
+    try {
+      const { data } = await UserApi.checkuser(email);
+      authMail();
+      setError(null);
+    } catch (error: any) {
+      setError(error?.response?.data?.error);
+    }
+  }
+  console.log(complete);
+  //정규표현식 검증 함수
+
+  // 이메일 인증번호 함수
+  async function authMail() {
+    try {
+      const { data } = await UserApi.authmail(email);
+      navigate('/confirm');
+      setUser(email);
+    } catch (error: any) {
+      window.alert(error?.response?.data?.error);
+    }
+  }
 
   //회원가입 버튼 핸들러
   const signupHandler = () => {
-    const authMail = async () => {
-      try {
-        const { data } = await UserApi.authmail(email);
-        navigate('/confirm');
-        setUser(email);
-      } catch (error: any) {
-        window.alert(error?.response?.data?.error);
-      }
-    };
-    authMail();
+    try {
+      checkuserinfo();
+    } catch (err) {
+      console.log(err);
+    }
   };
-
   return (
     <Wrap>
       <Fixet onClick={() => navigate('/')} src={fixetimg} alt="fixet" />
@@ -51,15 +69,21 @@ const Signup = () => {
             </Hi>
             <FixetSpan>관리자 계정을 만들고 우리회사 자산을 간편하게 관리해보세요.</FixetSpan>
           </UzzulText>
-          <SignupDiv>
+          <SignupDiv className={error ? 'error' : ''}>
             <Email
+              className={error ? 'error' : ''}
               value={email}
+              pattern="/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/"
               onChange={onChange}
               type="text"
               name="email"
               placeholder="회사 이메일을 입력해주세요"
             />
-            <SignBtn onClick={signupHandler}>회원가입 시작하기</SignBtn>
+            {error && <Errormessage>{error}</Errormessage>}
+
+            <SignBtn className={complete ? 'complete' : ''} onClick={signupHandler}>
+              회원가입 시작하기
+            </SignBtn>
           </SignupDiv>
         </LoginContainer>
         <FindPW>
@@ -129,9 +153,12 @@ const SignupDiv = styled.div`
   width: 400px;
   height: 120px;
   margin-top: 24px;
-  gap: 24px;
+
   display: flex;
   flex-direction: column;
+  &.error {
+    height: 140px;
+  }
 `;
 const Email = styled.input`
   height: 48px;
@@ -141,6 +168,9 @@ const Email = styled.input`
   border-radius: 12px;
   padding: 16px;
   background-color: #f4f4f4;
+  &.error {
+    border: 1px solid red;
+  }
 `;
 
 const FindPW = styled.div`
@@ -150,12 +180,14 @@ const FindPW = styled.div`
 const SignBtn = styled.button`
   height: 48px;
   width: 400px;
-  left: 0px;
-  top: 242px;
+  margin-top: 24px;
   border-radius: 12px;
   padding: 16px;
   color: #ffffff;
   background: linear-gradient(0deg, rgba(255, 255, 255, 0.59), rgba(255, 255, 255, 0.59)), #066aff;
+  &.complete {
+    background: #066aff;
+  }
 `;
 const Nav = styled.div`
   font-family: Pretendard;

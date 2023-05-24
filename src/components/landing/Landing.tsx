@@ -60,6 +60,7 @@ const Landing = () => {
     localStorage.clear();
     navigate('/reset');
   };
+  console.log(schema);
 
   const loginHandler: SubmitHandler<FormValue> = async (data) => {
     const email = data.email;
@@ -115,7 +116,7 @@ const Landing = () => {
           </InputDiv>
 
           <BtnDiv>
-            <LoginBtn className={errors?.email?.message || errors?.password?.message ? '' : 'complete'} type="submit">
+            <LoginBtn className={!errors?.email?.message && !errors?.password?.message ? 'complete' : ''} type="submit">
               이메일로 로그인 하기
             </LoginBtn>
           </BtnDiv>

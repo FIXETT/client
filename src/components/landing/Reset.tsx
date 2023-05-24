@@ -52,7 +52,9 @@ const Reset = () => {
             />
             {!error && <Errormessage>일치하는 이메일이 없습니다.</Errormessage>}
           </InputDiv>
-          <ResetBtn onClick={transHandler}>인증메일 발송하기</ResetBtn>
+          <ResetBtn className={form.name && form.email && 'complete'} onClick={transHandler}>
+            인증메일 발송하기
+          </ResetBtn>
         </ResetDiv>
       </Modal>
       <Footer>
@@ -147,4 +149,16 @@ const ResetBtn = styled.button`
   font-size: 16px;
   font-weight: 700;
   line-height: 16px;
+  &.complete {
+    height: 48px;
+    width: 400px;
+
+    background: #066aff;
+    color: #ffffff;
+    border-radius: 12px;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 16px;
+  }
 `;

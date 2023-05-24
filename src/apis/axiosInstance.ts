@@ -25,4 +25,5 @@ export const UserApi = {
   resetauth: (email: string, name: string) => instance.post('/user/authmail', { email: email, name: name }),
   patchpw: (info: User[], password: string) =>
     instance.patch('/user/resetpassword', { email: info, password: password }),
+  checkuser: (email: string) => instance.post('/user/checkuserinfo', { email: email }),
 };
