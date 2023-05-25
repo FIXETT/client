@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import profileImg from '../../assets/icon/profile.svg';
 import email from '../../assets/icon/email.svg';
-import phone from '../../assets/icon/phone.svg';
+import auth from '../../assets/icon/auth.svg';
 import locker from '../../assets/icon/locker.svg';
 import { useRecoilState } from 'recoil';
 import { useProfileState } from '../../recoil/profile';
@@ -10,27 +10,40 @@ import { readuser } from '../../apis/auth';
 import EditInfo from '../modal/EditInfo';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { FormValue } from '../landing/Landing';
+import { Errormessage, FormValue } from '../landing/Landing';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { UserApi } from '../../apis/axiosInstance';
+import cancle from '../../assets/icon/cancel.svg';
+import useInputs from '../../hooks/useInput';
 const MyInfo = () => {
   const [profile, setProfile] = useRecoilState(useProfileState);
   const token = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
   const profilEmail = localStorage.getItem('email');
-  const [editModal, setEditMoadl] = useState(false);
-  const [edit, setEdit] = useState(false);
+  const [editModal, setEditMoadl] = useState<boolean>(false);
+  const [edit, setEdit] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
   interface FormValue {
     name: string;
     phone: string;
     company: string;
     job: string;
     email: string;
+    password: string;
+    auth: string | number;
+  }
+  interface ModalFormValue {
+    password: string;
   }
   useEffect(() => {
     getprofile();
   }, []);
+
+  const [{ password }, onChange, reset] = useInputs({
+    password: '',
+  });
   const profilesubmitHandler: SubmitHandler<FormValue> = async (data) => {
     const name = data?.name;
     const company = data?.company;
@@ -43,7 +56,7 @@ const MyInfo = () => {
       console.log(err);
     }
   };
-
+  //유저 정보 가져오는 핸들러
   async function getprofile() {
     try {
       const { data: userData } = await readuser({ token, Id: userId });
@@ -56,8 +69,22 @@ const MyInfo = () => {
   const editpwHandler = () => {
     setEditMoadl(!editModal);
   };
-  const editprofileHandler = () => {
-    buttonRef.current?.click();
+
+  //ModalHandler
+  const cancelHandler = () => {
+    setEditMoadl(!editModal);
+  };
+  const authHandler = async () => {
+    try {
+      const { data } = await UserApi.authuser(profile?.user?.email, password);
+      console.log(data);
+      setError(false);
+
+      setEditMoadl(!editModal);
+      setEdit(!edit);
+    } catch (err) {
+      setError(true);
+    }
   };
 
   //yup schema
@@ -70,6 +97,8 @@ const MyInfo = () => {
     phone: yup.string().required('번호를 입력해주세요'),
     company: yup.string().required('회사를 입력해주세요'),
     job: yup.string().required('소속을 입력해주세요'),
+    password: yup.string().required('비밀번호를 입력해주세요'),
+    auth: yup.string().required('비밀번호를 입력해주세요'),
   });
 
   //react-hook-form
@@ -84,82 +113,126 @@ const MyInfo = () => {
       company: '',
       job: '',
       email: '',
+      password: '',
+      auth: '',
     },
     resolver: yupResolver(schema),
     mode: 'all',
   });
+  console.log(errors);
 
   return (
     <Wrap>
       <Container>
-        <SpanBox>
-          <Span>MY페이지</Span>
-          <BtnBox>
-            <InfoSpan>기본정보</InfoSpan>
-            {edit ? (
-              <>
-                <button onClick={() => editprofileHandler()}>확인하기</button>
-                <button onClick={() => setEdit(!edit)}>취소하기</button>{' '}
-              </>
-            ) : (
-              <EditBtn onClick={() => setEdit(!edit)}>수정하기</EditBtn>
-            )}
-          </BtnBox>
-        </SpanBox>
         {edit ? (
-          <InfoBox>
-            <form onSubmit={onSubmit(profilesubmitHandler)}>
-              <ProfileBox>
-                <img src={profileImg} alt="fixet" />
-                <Profile>
-                  <input placeholder="이름" {...register('name')} />
-                  <input placeholder="회사" {...register('company')} />
-                  <input placeholder="파트" {...register('job')} />
-                </Profile>
-              </ProfileBox>
-              <EmailBox>
-                <EmailImg src={email} alt="email" />
-                <input placeholder="이메일" {...register('email')} />
-              </EmailBox>
-              <PhoneBox>
-                <PhoneImg src={phone} alt="phone" />
-                <input placeholder="전화번호" {...register('phone')} />
-              </PhoneBox>
-              <button ref={buttonRef} type="submit" />
-            </form>
-          </InfoBox>
+          <>
+            <MypageBox>
+              <Span>개인정보 수정</Span>
+              <MypageBtn>마이페이지로 가기</MypageBtn>
+            </MypageBox>
+            <SubSpan margin="32px">기본정보 수정</SubSpan>
+            <InfoForm onSubmit={onSubmit(profilesubmitHandler)}>
+              <InfoEditBox>
+                <ProfileBox>
+                  <Fixet src={profileImg} alt="fixet" />
+                  <Profile>
+                    <Input margin="0px" width="304px" placeholder={profile?.user?.name} {...register('name')} />
+                    <Input margin="0px" width="304px" placeholder="회사" {...register('company')} />
+                  </Profile>
+                </ProfileBox>
+                <EditInfoBtn>기본정보 수정하기</EditInfoBtn>
+              </InfoEditBox>
+
+              <SubSpan margin="24px">이메일 수정</SubSpan>
+
+              <InfoEditEmailBox>
+                <SubSpan margin="0px">현재 이메일</SubSpan>
+                <EmailSpan margin="8px">{profile?.user?.email}</EmailSpan>
+
+                <EmailBox>
+                  <SubSpan margin="16px">변경 이메일</SubSpan>
+                  <div>
+                    <Input
+                      margin="0px"
+                      width="404px"
+                      placeholder="변경할 이메일주소를 입력해주세요"
+                      {...register('email')}
+                    />
+                    <button>인증</button>
+                  </div>
+
+                  <Input margin="0px" width="404px" placeholder="인증번호를 입력해주세요" {...register('auth')} />
+                </EmailBox>
+                <EditInfoBtn>이메일 수정하기</EditInfoBtn>
+              </InfoEditEmailBox>
+              <SubSpan margin="24px">비밀번호 변경</SubSpan>
+              <InfoEditPwBox>
+                <PhoneBox>
+                  <Input margin="0px" width="404px" placeholder="새 비밀번호를 입력해주세요" {...register('phone')} />
+                  <EmailSpan margin="4px">영문,숫자 혼합 8~20자로 입력해주세요.</EmailSpan>
+                  <Input margin="8px" width="404px" placeholder="한번 더 입력해주세요" {...register('phone')} />
+                </PhoneBox>
+                <EditInfoBtn ref={buttonRef} type="submit">
+                  비밀번호 변경하기
+                </EditInfoBtn>
+              </InfoEditPwBox>
+            </InfoForm>
+          </>
         ) : (
-          <InfoBox>
-            <ProfileBox>
-              <img src={profileImg} alt="fixet" />
-              <Profile>
-                <Name>{profile?.user?.name}</Name>
-                <Company>{profile?.user?.company}</Company>
-                <Part>{profile?.user?.job}</Part>
-              </Profile>
-            </ProfileBox>
-            <EmailBox>
-              <EmailImg src={email} alt="email" />
-              <Email>{profile?.user?.email}</Email>
-            </EmailBox>
-            <PhoneBox>
-              <PhoneImg src={phone} alt="phone" />
-              <Phone>{profile?.user?.phone}</Phone>
-            </PhoneBox>
-          </InfoBox>
+          <>
+            <Span>마이페이지</Span>
+            <InfoBox>
+              <ProfileDiv>
+                <ProfileBox>
+                  <Fixet src={profileImg} alt="fixet" />
+                  <Profile>
+                    <Name>{profile?.user?.name}</Name>
+                    <Company>{profile?.user?.company}</Company>
+                  </Profile>
+                </ProfileBox>
+                <EmailBox>
+                  <EmailDiv>
+                    <EmailImg src={email} alt="email" />
+                    <Email>{profile?.user?.email}</Email>
+                    <EmailAuthBtn>인증 완료</EmailAuthBtn>
+                  </EmailDiv>
+                  <PhoneBox>
+                    <PhoneImg src={auth} alt="phone" />
+                    <Phone>********</Phone>
+                  </PhoneBox>
+                </EmailBox>
+              </ProfileDiv>
+              <EditBtn onClick={editpwHandler}>개인정보 수정</EditBtn>
+            </InfoBox>
+          </>
         )}
-
-        <Security>보안설정</Security>
-        <SecurityContainer>
-          <SecurityBox>
-            <Locker src={locker} alt="Lock" />
-            <span>비밀번호</span>
-          </SecurityBox>
-
-          <Editpw onClick={editpwHandler}>비밀번호 수정</Editpw>
-        </SecurityContainer>
       </Container>
-      {editModal && <EditInfo modal={editModal} EditModal={setEditMoadl} />}
+      {editModal && (
+        <EditInfo>
+          <ModalSpan>본인인증</ModalSpan>
+          <ModalDiv>
+            <Password
+              className={error ? 'error' : ''}
+              name="password"
+              onChange={onChange}
+              autoComplete="off"
+              type="password"
+              placeholder="현재 비밀번호를 입력해주세요"
+            />
+            {error && <Errormessage>비밀번호를 올바르게 입력해주세요.</Errormessage>}
+
+            <ButtonBox>
+              <OK className={password && 'active'} onClick={authHandler}>
+                본인인증 완료
+              </OK>
+              <Cancel onClick={cancelHandler}>
+                <img src={cancle} alt="cancle" />
+                취소하기
+              </Cancel>
+            </ButtonBox>
+          </ModalDiv>
+        </EditInfo>
+      )}
     </Wrap>
   );
 };
@@ -168,18 +241,97 @@ export default MyInfo;
 const Wrap = styled.div`
   width: 100%;
   height: 100%;
+  overflow: hidden;
 `;
 
 const Container = styled.div`
-  margin-left: 57px;
-  margin-top: 72px;
+  margin-left: 40px;
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
 `;
+// Edit 활성화 된 뒤 css
+const MypageBox = styled.div`
+  width: 452px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+const MypageBtn = styled.button`
+  background-color: #066aff;
+  width: 139px;
+  height: 40px;
+  font-weight: 700;
+  font-size: 16px;
+  color: #ffffff;
+  border-radius: 8px;
+`;
+const Fixet = styled.img``;
 const Span = styled.span`
   font-weight: 700;
-  font-size: 24px;
+  font-size: 32px;
 `;
+const SubSpan = styled.span<{ margin: string }>`
+  margin-top: ${(props) => props.margin};
+
+  font-weight: 700;
+  font-size: 14px;
+  color: #666666;
+`;
+const EmailSpan = styled.span<{ margin: string }>`
+  margin-top: ${(props) => props.margin};
+  font-size: 14px;
+  font-weight: 500;
+
+  color: #999999;
+`;
+const InfoEditBox = styled.div`
+  margin-top: 8px;
+  height: 190px;
+  width: 452px;
+  border: 1px solid #dddddd;
+  border-radius: 24px;
+  padding: 24px;
+`;
+const EditInfoBtn = styled.button`
+  width: 125px;
+  height: 38px;
+  border-radius: 8px;
+  margin-top: 16px;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 700;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), #066aff;
+  color: #ffffff;
+`;
+const InfoEditEmailBox = styled.div`
+  height: 264px;
+  width: 452px;
+  border: 1px solid #dddddd;
+  border-radius: 24px;
+  padding: 24px;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+`;
+const InfoEditPwBox = styled.div`
+  margin-top: 8px;
+  height: 212px;
+  width: 452px;
+  gap: 16px;
+
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid #dddddd;
+`;
+const InfoForm = styled.form`
+  width: 452px;
+  height: 780px;
+  display: flex;
+  flex-direction: column;
+`;
+
 const SpanBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -198,43 +350,69 @@ const InfoSpan = styled.span`
   font-size: 15px;
 `;
 const EditBtn = styled.button`
-  width: 58px;
-  height: 16px;
-  background-color: #066aff;
-  color: #ffffff;
+  width: 93px;
+  height: 30px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  margin: 24px 24px 0 0;
+  color: #999999;
   font-size: 11px;
+  font-weight: 500;
+  font-size: 14px;
 `;
 const InfoBox = styled.div`
-  width: 660px;
-  height: 196px;
-  border: 1px solid #000000;
-  border-radius: 4px;
-  offset: 0px, 4px rgba(0, 0, 0, 0.25);
+  width: 670px;
+  height: 220px;
+  border: 1px solid #dddddd;
+  border-radius: 24px;
+  margin-top: 32px;
+  display: flex;
+  justify-content: space-between;
+`;
+const ProfileDiv = styled.div`
+  height: 172px;
+  margin: 24px 0 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 `;
 const Profile = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 12px;
-  gap: 10px;
+
+  gap: 8px;
 `;
 const ProfileBox = styled.div`
   display: flex;
-  margin-top: 37px;
-  margin-left: 17px;
-  input {
-    width: 115px;
-    height: 20px;
-    border: 1px solid #000000;
+  gap: 12px;
+`;
+const Input = styled.input<{ width: string; margin: string }>`
+  height: 40px;
+  width: ${(props) => props.width};
+  margin-top: ${(props) => props.margin};
+
+  border-radius: 8px;
+  padding: 8px;
+  background-color: #f4f4f4;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333333;
+  ::placeholder {
+    color: #999999;
   }
 `;
 const Name = styled.span`
-  font-size: 15px;
+  font-size: 24px;
   font-weight: 700;
+  color: #333333;
 `;
 const Company = styled.span`
   color: #999999;
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 500;
+  color: #999999;
 `;
 const Part = styled.span`
   color: #999999;
@@ -242,42 +420,43 @@ const Part = styled.span`
   font-weight: 500;
 `;
 const EmailBox = styled.div`
-  width: 195px;
-  height: 27px;
+  height: 110px;
   display: flex;
-  gap: 6px;
-  margin-left: 21px;
-  margin-top: 21px;
-  align-items: center;
-  input {
-    width: 115px;
-    height: 20px;
-    border: 1px solid #000000;
-  }
+  gap: 8px;
+  flex-direction: column;
 `;
 const EmailImg = styled.img``;
 const Email = styled.span`
   font-weight: 500;
-  font-size: 11px;
+  font-size: 16px;
+  color: #999999;
+  margin-left: 8px;
+  margin-top: 3px;
+`;
+const EmailDiv = styled.div`
+  height: 24px;
+  display: flex;
+`;
+const EmailAuthBtn = styled.button`
+  width: 49px;
+  height: 22px;
+  margin-left: 4px;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #066aff;
+  border-radius: 6px;
+  color: #066aff;
+  font-weight: 700;
+  font-size: 10px;
 `;
 const PhoneBox = styled.div`
   display: flex;
-  gap: 3px;
-  width: 178px;
-  height: 29px;
-  margin-left: 18px;
-
-  align-items: center;
-  input {
-    width: 115px;
-    height: 20px;
-    border: 1px solid #000000;
-  }
+  flex-direction: column;
 `;
 const PhoneImg = styled.img``;
 const Phone = styled.span`
   font-weight: 500;
-  font-size: 11px;
+  font-size: 16px;
+  color: #999999;
+  margin-top: 4px;
 `;
 const Security = styled.span`
   font-weight: 700;
@@ -311,4 +490,68 @@ const SecurityBox = styled.div`
     font-size: 11px;
     font-weight: 500;
   }
+`;
+
+//Modal
+const ModalSpan = styled.span`
+  font-weight: 700;
+  font-size: 32px;
+  color: #333333;
+  margin: 32px 0 0 32px;
+`;
+const ModalDiv = styled.div`
+  display: flex;
+
+  flex-direction: column;
+  margin-left: 32px;
+`;
+
+const Password = styled.input`
+  margin-top: 32px;
+  border: none;
+  color: #000000;
+  background-color: #f4f4f4;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+  width: 426px;
+  height: 40px;
+  border-radius: 8px;
+  padding: 8px;
+  &.error {
+    border: 1px solid #ff0000;
+  }
+`;
+
+const ButtonBox = styled.div`
+  margin-top: 18px;
+  width: 426px;
+  height: 40px;
+  display: flex;
+
+  gap: 8px;
+`;
+const OK = styled.button`
+  width: 322px;
+  height: 40px;
+  border-radius: 8px;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), #066aff;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
+  &.active {
+    background: #066aff;
+  }
+`;
+const Cancel = styled.button`
+  width: 96px;
+  height: 40px;
+  background-color: #f4f4f4;
+  color: #999999;
+  border: none;
+  border-radius: 8px;
+  gap: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
