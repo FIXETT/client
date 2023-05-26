@@ -70,6 +70,7 @@ const Landing = () => {
       const token = Token.token.accessToken;
 
       const Id = Token.token.user.userId;
+      const company = Token.token.user.company;
 
       const name = Token.token.user.name;
       const identifier = Token.token.user.identifier;
@@ -77,6 +78,7 @@ const Landing = () => {
       localStorage.setItem('userId', Id);
       localStorage.setItem('name', name);
       localStorage.setItem('identifier', identifier);
+      localStorage.setItem('company', company);
 
       navigate('/assetList');
     } catch (error: any) {

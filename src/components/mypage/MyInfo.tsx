@@ -141,6 +141,7 @@ const MyInfo = () => {
       return;
     }
   };
+  console.log(getValues());
   //기본정보 수정 핸들러
   const editprofileHandler = async () => {
     const formData = getValues();
@@ -155,6 +156,7 @@ const MyInfo = () => {
     if (formData.company) {
       try {
         const response = await UserApi.editprofile({ email: profile?.user?.email, company: formData.company });
+        alert('기본정보가 수정 되었습니다.');
       } catch (err) {
         return;
       }
@@ -229,10 +231,8 @@ const MyInfo = () => {
                 </ProfileBox>
                 <EditInfoBtn
                   className={
-                    !errors?.name?.message &&
-                    !errors?.company?.message &&
-                    getFields.name !== '' &&
-                    getFields.company !== ''
+                    !errors?.name?.message ||
+                    (!errors?.company?.message && getFields.name !== '' && getFields.company !== '')
                       ? 'complete'
                       : ''
                   }
