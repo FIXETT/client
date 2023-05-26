@@ -33,7 +33,7 @@ const Reset = () => {
       <Modal>
         <ResetImg src={resetimg} alt="reset" />
         <ResetDiv className={error ? '' : 'error'}>
-          {'비밀번호 재설정'}
+          비밀번호 재설정
           <InputDiv className={error ? '' : 'error'}>
             <Input
               value={form.name}

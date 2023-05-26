@@ -15,6 +15,17 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { UserApi } from '../../apis/axiosInstance';
 import cancle from '../../assets/icon/cancel.svg';
 import useInputs from '../../hooks/useInput';
+import { User } from '../../recoil/userList';
+export interface InfoFormValue {
+  name: string;
+  company: string;
+  password: string;
+  confirm: string;
+
+  email: string;
+
+  auth: string | number;
+}
 const MyInfo = () => {
   const [profile, setProfile] = useRecoilState(useProfileState);
   const token = localStorage.getItem('token');
@@ -23,20 +34,28 @@ const MyInfo = () => {
   const [editModal, setEditMoadl] = useState<boolean>(false);
   const [edit, setEdit] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [complete, setComplete] = useState<boolean>(false);
+  const buttonRef = useRef<HTMLInputElement>(null);
+  //yup schema
+  const schema = yup.object().shape({
+    name: yup
+      .string()
+      .notRequired()
 
-  interface FormValue {
-    name: string;
-    phone: string;
-    company: string;
-    job: string;
-    email: string;
-    password: string;
-    auth: string | number;
-  }
-  interface ModalFormValue {
-    password: string;
-  }
+      .matches(/^[가-힣a-zA-Z]{2,20}$/, '이름에 특수기호는 사용 할 수 없어요'),
+    company: yup.string().notRequired().required('회사를 입력해주세요'),
+    email: yup
+      .string()
+      .notRequired()
+      .matches(/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, '올바른 이메일 형식으로 입력해주세요.'),
+    auth: yup.string().min(6, '인증번호는 6자리 숫자입니다.').max(6, '6자리를 초과하면 안되요'),
+    password: yup
+      .string()
+      .notRequired()
+      .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/, '영문/숫자조합 8자에서 20자로 설정해주세요.'),
+
+    confirm: yup.string().oneOf([yup.ref('password'), undefined], '비밀번호가 일치하지 않습니다.'),
+  });
   useEffect(() => {
     getprofile();
   }, []);
@@ -44,18 +63,7 @@ const MyInfo = () => {
   const [{ password }, onChange, reset] = useInputs({
     password: '',
   });
-  const profilesubmitHandler: SubmitHandler<FormValue> = async (data) => {
-    const name = data?.name;
-    const company = data?.company;
-    const email = data?.email;
-    const job = data?.job;
-    const phone = data?.phone;
-    try {
-      const { data } = await UserApi.editprofile(name, phone, company, job, email);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+
   //유저 정보 가져오는 핸들러
   async function getprofile() {
     try {
@@ -69,6 +77,8 @@ const MyInfo = () => {
   const editpwHandler = () => {
     setEditMoadl(!editModal);
   };
+
+  //이메일 인증 핸들러
 
   //ModalHandler
   const cancelHandler = () => {
@@ -87,39 +97,107 @@ const MyInfo = () => {
     }
   };
 
-  //yup schema
-  const schema = yup.object().shape({
-    email: yup
-      .string()
-      .required('이메일을 입력해주세요.')
-      .matches(/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, '올바른 이메일 형식이 아닙니다.'),
-    name: yup.string().required('이름을 입력해주세요'),
-    phone: yup.string().required('번호를 입력해주세요'),
-    company: yup.string().required('회사를 입력해주세요'),
-    job: yup.string().required('소속을 입력해주세요'),
-    password: yup.string().required('비밀번호를 입력해주세요'),
-    auth: yup.string().required('비밀번호를 입력해주세요'),
-  });
-
   //react-hook-form
   const {
     register,
-    handleSubmit: onSubmit,
+    handleSubmit,
     formState: { errors },
-  } = useForm<FormValue>({
+    getValues,
+    watch,
+  } = useForm<InfoFormValue>({
+    resolver: yupResolver(schema),
     defaultValues: {
       name: '',
-      phone: '',
+
       company: '',
-      job: '',
+
       email: '',
       password: '',
+      confirm: '',
       auth: '',
     },
-    resolver: yupResolver(schema),
-    mode: 'all',
+
+    mode: 'onChange',
   });
   console.log(errors);
+  const getFields = getValues();
+  const watchedFields = watch();
+  //변경 이메일 전송 핸들러
+  const transemailHandler = async () => {
+    const email = watchedFields.email;
+    console.log(watchedFields);
+    console.log(email);
+    try {
+      const { data } = await UserApi.authmail(email);
+      alert(data.msg);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  console.log(getValues());
+  //auth code 전송 핸들러
+  const transauthcodeHandler = async () => {
+    const authcode = watchedFields.auth;
+    const email = watchedFields.email;
+    try {
+      const { data } = await UserApi.authcode(email, authcode);
+      setComplete(true);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  //기본정보 수정 핸들러
+  const editprofileHandler = async () => {
+    const formData = getValues();
+    if (formData.name) {
+      try {
+        const response = await UserApi.editprofile({ email: profile?.user?.email, name: formData.name });
+        alert('기본정보가 수정 되었습니다.');
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    if (formData.company) {
+      try {
+        const response = await UserApi.editprofile({ email: profile?.user?.email, company: formData.company });
+        console.log(response);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+  //이메일 수정하기 핸들러
+  const editemailhandler = async () => {
+    const email = profile?.user?.email;
+    const editEmail = watchedFields.email;
+    try {
+      const { data } = await UserApi.editemail(email, editEmail);
+      alert('이메일이 정상적으로 변경 되었습니다');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  //비밀번호 수정하기 핸들러
+  const editpasswordHandler = async () => {
+    if (!errors.confirm?.message) {
+      try {
+        const password = watchedFields.password;
+        if (watchedFields.email) {
+          const email = watchedFields.email;
+        } else {
+          const email = profile.user.email;
+        }
+        const { data } = await UserApi.patchpw(email, password);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  const profilesubmitHandler = () => {
+    console.log('제출');
+  };
 
   return (
     <Wrap>
@@ -128,51 +206,128 @@ const MyInfo = () => {
           <>
             <MypageBox>
               <Span>개인정보 수정</Span>
-              <MypageBtn>마이페이지로 가기</MypageBtn>
+              <MypageBtn onClick={() => setEdit(!edit)}>마이페이지로 가기</MypageBtn>
             </MypageBox>
             <SubSpan margin="32px">기본정보 수정</SubSpan>
-            <InfoForm onSubmit={onSubmit(profilesubmitHandler)}>
-              <InfoEditBox>
+            <InfoForm autoComplete="off" onSubmit={handleSubmit(profilesubmitHandler)}>
+              <InfoEditBox className={(errors.name?.message && 'error') || (errors.company?.message && 'error')}>
                 <ProfileBox>
                   <Fixet src={profileImg} alt="fixet" />
                   <Profile>
-                    <Input margin="0px" width="304px" placeholder={profile?.user?.name} {...register('name')} />
-                    <Input margin="0px" width="304px" placeholder="회사" {...register('company')} />
+                    <Input
+                      className={errors.name?.message ? 'error' : getFields.name === '' ? '' : 'complete'}
+                      id="name"
+                      margin="0px"
+                      width="304px"
+                      placeholder={profile?.user?.name}
+                      {...register('name')}
+                    />
+                    <Errormessage>{errors.name?.message}</Errormessage>
+                    <Input
+                      className={errors.company?.message ? 'error' : getFields.company === '' ? '' : 'complete'}
+                      id="company"
+                      margin="0px"
+                      width="304px"
+                      placeholder={profile?.user?.company}
+                      {...register('company')}
+                    />
+                    <Errormessage>{errors.company?.message}</Errormessage>
                   </Profile>
                 </ProfileBox>
-                <EditInfoBtn>기본정보 수정하기</EditInfoBtn>
+                <EditInfoBtn
+                  className={
+                    !errors?.name?.message &&
+                    !errors?.company?.message &&
+                    getFields.name !== '' &&
+                    getFields.company !== ''
+                      ? 'complete'
+                      : ''
+                  }
+                  onClick={editprofileHandler}
+                  type="button"
+                >
+                  기본정보 수정하기
+                </EditInfoBtn>
               </InfoEditBox>
 
               <SubSpan margin="24px">이메일 수정</SubSpan>
 
-              <InfoEditEmailBox>
+              <InfoEditEmailBox className={(errors.email?.message && 'error') || (errors.auth?.message && 'error')}>
                 <SubSpan margin="0px">현재 이메일</SubSpan>
                 <EmailSpan margin="8px">{profile?.user?.email}</EmailSpan>
 
                 <EmailBox>
                   <SubSpan margin="16px">변경 이메일</SubSpan>
-                  <div>
-                    <Input
-                      margin="0px"
-                      width="404px"
-                      placeholder="변경할 이메일주소를 입력해주세요"
-                      {...register('email')}
-                    />
-                    <button>인증</button>
-                  </div>
+                  <EditEmail className={errors.email?.message ? 'error' : getFields.email === '' ? '' : 'complete'}>
+                    <input id="email" placeholder="변경할 이메일주소를 입력해주세요" {...register('email')} />
 
-                  <Input margin="0px" width="404px" placeholder="인증번호를 입력해주세요" {...register('auth')} />
+                    <TransBtn
+                      className={errors.email?.message ? '' : 'complete'}
+                      onClick={() => transemailHandler()}
+                      width="81px"
+                      type="button"
+                    >
+                      인증번호 전송
+                    </TransBtn>
+                  </EditEmail>
+                  {errors.email?.message && <Errormessage>{errors.email?.message}</Errormessage>}
+                  <EditEmail className={errors.auth?.message ? 'error' : getFields.auth === '' ? '' : 'complete'}>
+                    <input id="auth" placeholder="인증번호를 입력해주세요" {...register('auth')} />
+
+                    <TransBtn
+                      className={!errors.auth?.message ? 'complete' : ''}
+                      onClick={() => transauthcodeHandler()}
+                      width="58px"
+                      type="button"
+                    >
+                      인증하기
+                    </TransBtn>
+                  </EditEmail>
+                  {errors.auth?.message && <Errormessage>{errors.auth?.message}</Errormessage>}
                 </EmailBox>
-                <EditInfoBtn>이메일 수정하기</EditInfoBtn>
+                <EditInfoBtn className={complete ? 'complete' : ''} onClick={editemailhandler} type="button">
+                  이메일 수정하기
+                </EditInfoBtn>
               </InfoEditEmailBox>
               <SubSpan margin="24px">비밀번호 변경</SubSpan>
               <InfoEditPwBox>
-                <PhoneBox>
-                  <Input margin="0px" width="404px" placeholder="새 비밀번호를 입력해주세요" {...register('phone')} />
-                  <EmailSpan margin="4px">영문,숫자 혼합 8~20자로 입력해주세요.</EmailSpan>
-                  <Input margin="8px" width="404px" placeholder="한번 더 입력해주세요" {...register('phone')} />
-                </PhoneBox>
-                <EditInfoBtn ref={buttonRef} type="submit">
+                <PwBox>
+                  <Input
+                    className={errors.password?.message ? 'error' : getFields.password === '' ? '' : 'complete'}
+                    id="password"
+                    type="password"
+                    margin="0px"
+                    width="404px"
+                    placeholder="새 비밀번호를 입력해주세요"
+                    {...register('password')}
+                  />
+
+                  <EmailSpan className={errors.password?.message && 'error'} margin="4px">
+                    영문,숫자 혼합 8~20자로 입력해주세요.
+                  </EmailSpan>
+                  <Input
+                    className={errors.confirm?.message ? 'error' : getFields.confirm === '' ? '' : 'complete'}
+                    type="password"
+                    margin="8px"
+                    width="404px"
+                    placeholder="한번 더 입력해주세요"
+                    {...register('confirm')}
+                  />
+                  <Errormessage>{errors.confirm?.message}</Errormessage>
+                </PwBox>
+                <EditInfoBtn
+                  className={
+                    !errors.password?.message &&
+                    !errors.confirm?.message &&
+                    getFields.password !== '' &&
+                    getFields.confirm !== ''
+                      ? 'complete'
+                      : ''
+                  }
+                  onClick={editpasswordHandler}
+                  id="confirm"
+                  type="button"
+                >
                   비밀번호 변경하기
                 </EditInfoBtn>
               </InfoEditPwBox>
@@ -202,7 +357,7 @@ const MyInfo = () => {
                   </PhoneBox>
                 </EmailBox>
               </ProfileDiv>
-              <EditBtn onClick={editpwHandler}>개인정보 수정</EditBtn>
+              <EditBtn onClick={() => editpwHandler()}>개인정보 수정</EditBtn>
             </InfoBox>
           </>
         )}
@@ -285,6 +440,9 @@ const EmailSpan = styled.span<{ margin: string }>`
   font-weight: 500;
 
   color: #999999;
+  &.error {
+    color: #ff0000;
+  }
 `;
 const InfoEditBox = styled.div`
   margin-top: 8px;
@@ -293,17 +451,22 @@ const InfoEditBox = styled.div`
   border: 1px solid #dddddd;
   border-radius: 24px;
   padding: 24px;
+  &.error {
+    height: 210px;
+  }
 `;
 const EditInfoBtn = styled.button`
   width: 125px;
   height: 38px;
   border-radius: 8px;
   margin-top: 16px;
-  font-family: Pretendard;
   font-size: 14px;
   font-weight: 700;
   background: linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), #066aff;
   color: #ffffff;
+  &.complete {
+    background: #066aff;
+  }
 `;
 const InfoEditEmailBox = styled.div`
   height: 264px;
@@ -314,6 +477,9 @@ const InfoEditEmailBox = styled.div`
   margin-top: 8px;
   display: flex;
   flex-direction: column;
+  &.error {
+    height: 304px;
+  }
 `;
 const InfoEditPwBox = styled.div`
   margin-top: 8px;
@@ -326,8 +492,6 @@ const InfoEditPwBox = styled.div`
   border: 1px solid #dddddd;
 `;
 const InfoForm = styled.form`
-  width: 452px;
-  height: 780px;
   display: flex;
   flex-direction: column;
 `;
@@ -348,6 +512,50 @@ const BtnBox = styled.div`
 const InfoSpan = styled.span`
   font-weight: 700;
   font-size: 15px;
+`;
+const TransBtn = styled.button<{ width: string }>`
+  height: 28px;
+  width: ${(props) => props.width};
+
+  border-radius: 8px;
+  padding: 8px;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), #066aff;
+  color: #ffffff;
+  font-family: Pretendard;
+  font-size: 12px;
+  font-weight: 700;
+  &.complete {
+    background: #066aff;
+  }
+`;
+const EditEmail = styled.div`
+  display: flex;
+  height: 40px;
+  width: 404px;
+  background: #f4f4f4;
+  border-radius: 8px;
+  padding: 8px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+
+  input {
+    border: transparent;
+    font-size: 14px;
+    font-weight: 500;
+
+    background-color: transparent;
+    width: 189px;
+    ::placeholder {
+      color: #999999;
+    }
+  }
+  &.error {
+    border: 1px solid #ff0000;
+  }
+  &.complete {
+    border: 1px solid #066aff;
+  }
 `;
 const EditBtn = styled.button`
   width: 93px;
@@ -380,8 +588,6 @@ const Profile = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 12px;
-
-  gap: 8px;
 `;
 const ProfileBox = styled.div`
   display: flex;
@@ -389,18 +595,25 @@ const ProfileBox = styled.div`
 `;
 const Input = styled.input<{ width: string; margin: string }>`
   height: 40px;
+  background-color: #f4f4f4;
   width: ${(props) => props.width};
   margin-top: ${(props) => props.margin};
 
   border-radius: 8px;
   padding: 8px;
-  background-color: #f4f4f4;
+
   font-family: Pretendard;
   font-size: 14px;
   font-weight: 500;
   color: #333333;
   ::placeholder {
     color: #999999;
+  }
+  &.error {
+    border: 1px solid #ff0000;
+  }
+  &.complete {
+    border: 1px solid #066aff;
   }
 `;
 const Name = styled.span`
@@ -420,9 +633,8 @@ const Part = styled.span`
   font-weight: 500;
 `;
 const EmailBox = styled.div`
-  height: 110px;
   display: flex;
-  gap: 8px;
+
   flex-direction: column;
 `;
 const EmailImg = styled.img``;
@@ -447,11 +659,18 @@ const EmailAuthBtn = styled.button`
   font-weight: 700;
   font-size: 10px;
 `;
-const PhoneBox = styled.div`
+const PwBox = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const PhoneImg = styled.img``;
+const PhoneBox = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+const PhoneImg = styled.img`
+  width: 24px;
+  height: 24px;
+`;
 const Phone = styled.span`
   font-weight: 500;
   font-size: 16px;
