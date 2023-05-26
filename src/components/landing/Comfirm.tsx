@@ -32,7 +32,6 @@ const Comfirm = () => {
         navigate('/enter');
       } catch (error) {
         setIsError(true);
-        alert('네트워크 통신이 불안정합니다.');
       }
     };
     confirmMail();
@@ -76,7 +75,9 @@ const Comfirm = () => {
           </ConfirmText>
           <Reply onClick={replyHandler}>인증메일이 오지 않았나요?재전송하기</Reply>
 
-          <CompleteBtn onClick={confirmHandler}>인증 완료</CompleteBtn>
+          <CompleteBtn className={code && 'complete'} onClick={confirmHandler}>
+            인증 완료
+          </CompleteBtn>
 
           <LoginDiv>
             <span>수신이 불가한 이메일 주소인가요?</span>
@@ -166,6 +167,9 @@ const CompleteBtn = styled.button`
   letter-spacing: 0em;
 
   color: #ffffff;
+  &.complete {
+    background: #066aff;
+  }
 `;
 const Reply = styled.div`
   cursor: pointer;

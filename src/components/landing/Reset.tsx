@@ -42,7 +42,7 @@ const Reset = () => {
               placeholder="이름을 입력해주세요"
               name="name"
             />
-            {!error && <Errormessage>일치하는 이름이 없습니다.</Errormessage>}
+
             <Input
               value={form.email}
               className={error ? '' : 'error'}
@@ -50,7 +50,11 @@ const Reset = () => {
               placeholder="회사이메일을 입력해주세요"
               name="email"
             />
-            {!error && <Errormessage>일치하는 이메일이 없습니다.</Errormessage>}
+            <Div>
+              {' '}
+              {!error && <Errormessage>일치하는 이름이 없습니다.</Errormessage>}
+              {!error && <Errormessage>일치하는 이메일이 없습니다.</Errormessage>}
+            </Div>
           </InputDiv>
           <ResetBtn className={form.name && form.email && 'complete'} onClick={transHandler}>
             인증메일 발송하기
@@ -74,6 +78,9 @@ export default Reset;
 
 const ResetImg = styled.img`
   margin-top: 164px;
+`;
+const Div = styled.div`
+  display: flex;
 `;
 const ResetDiv = styled.div`
   display: flex;

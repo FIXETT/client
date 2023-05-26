@@ -44,6 +44,7 @@ const Landing = () => {
     register,
     handleSubmit: onSubmit,
     formState: { errors },
+    getValues,
   } = useForm<FormValue>({
     defaultValues: {
       email: '',
@@ -52,6 +53,7 @@ const Landing = () => {
     resolver: yupResolver(schema),
     mode: 'all',
   });
+  const getFields = getValues();
 
   const signupHandler = () => {
     navigate('/signup');
@@ -118,7 +120,17 @@ const Landing = () => {
           </InputDiv>
 
           <BtnDiv>
-            <LoginBtn className={!errors?.email?.message && !errors?.password?.message ? 'complete' : ''} type="submit">
+            <LoginBtn
+              className={
+                !errors?.email?.message &&
+                !errors?.password?.message &&
+                getFields.email !== '' &&
+                getFields.password !== ''
+                  ? 'complete'
+                  : ''
+              }
+              type="submit"
+            >
               이메일로 로그인 하기
             </LoginBtn>
           </BtnDiv>
