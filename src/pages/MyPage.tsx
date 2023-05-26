@@ -11,6 +11,4 @@ const MyPage = () => {
 };
 
 export default MyPage;
-const Wrap = styled.div`
-  overflow: auto;
-`;
+const Wrap = styled.div``;
