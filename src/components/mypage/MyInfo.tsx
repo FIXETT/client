@@ -262,7 +262,7 @@ const MyInfo = () => {
                     <input id="email" placeholder="변경할 이메일주소를 입력해주세요" {...register('email')} />
 
                     <TransBtn
-                      className={errors.email?.message ? '' : 'complete'}
+                      className={!errors.email?.message && getFields.email !== '' ? 'complete' : ''}
                       onClick={() => transemailHandler()}
                       width="81px"
                       type="button"
@@ -275,7 +275,7 @@ const MyInfo = () => {
                     <input id="auth" placeholder="인증번호를 입력해주세요" {...register('auth')} />
 
                     <TransBtn
-                      className={!errors.auth?.message ? 'complete' : ''}
+                      className={!errors.auth?.message && getFields.auth !== '' ? 'complete' : ''}
                       onClick={() => transauthcodeHandler()}
                       width="58px"
                       type="button"
@@ -395,7 +395,7 @@ const MyInfo = () => {
 export default MyInfo;
 const Wrap = styled.div`
   width: 100%;
-  height: 100%;
+
   overflow: hidden;
 `;
 
