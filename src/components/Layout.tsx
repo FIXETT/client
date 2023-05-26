@@ -37,11 +37,11 @@ const LayoutContainer = styled.div`
   display: flex;
 `;
 const Footer = styled.div`
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-
+  padding-bottom: 94px;
   padding: 24px;
   background-color: #f4f4f4;
   display: flex;

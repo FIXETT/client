@@ -1,14 +1,14 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
 
-import { assetListType } from '../../types/asset';
+import { assetType } from '../../types/asset';
 import AssetRadioButton from './AssetRadioButton';
 
 import NotData from '../NotData';
 import Loading from '../Loading';
 
 type propsType = {
-  assetList: assetListType[] | [];
+  assetList: assetType[] | [];
   status: string;
   data: any;
 };

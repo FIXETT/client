@@ -1,5 +1,8 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { User } from './../recoil/userList';
+import { FormValue } from '../components/landing/Landing';
+import { InfoFormValue } from '../components/mypage/MyInfo';
+import { AxiosInstance } from './assetInstance';
 
 const token = window.localStorage.getItem('token');
 
@@ -18,12 +21,16 @@ export const UserApi = {
     instance.post('/user/signup', { email: info, password: password, name: name, agreePi: agreePi }),
   signin: (email: string, password: string) => instance.post('/user/signin', { email: email, password: password }),
   authmail: (email: string) => instance.post('/user/authmail', { email: email }),
-  authcode: (info: User[], code: string) => instance.post('/user/authcode', { email: info, code: code }),
+  authcode: (info: User[] | string, code: string | number) =>
+    instance.post('/user/authcode', { email: info, code: code }),
   replymail: (info: User[]) => instance.post('/user/authmail', { email: info }),
-  editprofile: (name: string, phone: string, company: string, job: string, email: string) =>
-    instance.patch('/user/', { email: email, name: name, phone: phone, company: company, job: job }),
+  editprofile: (data: Partial<InfoFormValue>) => AxiosInstance.patch('/user/', data),
   resetauth: (email: string, name: string) => instance.post('/user/authmail', { email: email, name: name }),
-  patchpw: (info: User[], password: string) =>
+  patchpw: (info: User[] | string, password: string) =>
     instance.patch('/user/resetpassword', { email: info, password: password }),
   checkuser: (email: string) => instance.post('/user/checkuserinfo', { email: email }),
+  authuser: (email: string, password: string) =>
+    instance.post('/user/checkuserinfo', { email: email, password: password }),
+  editemail: (email: string, editEmail: string) =>
+    AxiosInstance.patch('/user/email', { email: email, newemail: editEmail }),
 };

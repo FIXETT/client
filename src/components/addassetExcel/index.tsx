@@ -153,7 +153,7 @@ const ExcelModal = () => {
         <BtnWrap>
           <AddAssetBtn onClick={handleAddButtonClick} disabled={handleDisabled()}>
             <img src={upload} alt="등록아이콘" />
-            자산리스트를 이 내용으로 대체하기
+            자산리스트에 이 내용 추가하기
           </AddAssetBtn>
           <CancelBtn
             onClick={() => {

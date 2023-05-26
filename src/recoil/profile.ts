@@ -3,7 +3,7 @@ import { atom } from 'recoil';
 interface Profile {
   user: {
     agreePi: boolean;
-    company: null;
+    company: string;
     createdAt: string;
     email: string;
     identifier: number;

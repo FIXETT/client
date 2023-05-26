@@ -10,7 +10,7 @@ import {
   showModifyComponentState,
 } from '../recoil/assets';
 import { getAsset } from '../apis/asset';
-import { assetListType } from '../types/asset';
+import { assetListType, assetType } from '../types/asset';
 
 import Header from '../components/assetList/Header';
 import DeleteModal from '../components/assetList/DeleteModal';
@@ -32,7 +32,7 @@ const AssetList = () => {
   // 로그인 확인
   useAuth();
 
-  const [assetList, setAssetList] = useState<assetListType[]>([]);
+  const [assetList, setAssetList] = useState<assetType[]>([]);
   const [cursor, setCursor] = useState<number | string>(0);
   const [page, setPage] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { assetListType } from '../../types/asset';
+import { assetType } from '../../types/asset';
 
 const SelectCategory = ({ index, value, handleInputChange, assetListState }: any) => {
   const [showCategory, setShowCategory] = useState(false);
 
-  const categoryIcon = (value: assetListType) => {
+  const categoryIcon = (value: assetType) => {
     switch (value?.category) {
       case '노트북/데스크탑/서버':
         return <span>💻</span>;
