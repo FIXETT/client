@@ -32,7 +32,6 @@ const Comfirm = () => {
         navigate('/enter');
       } catch (error) {
         setIsError(true);
-        window.alert('인증번호 유효시간이 만료되었습니다. 다시 전송해주세요');
       }
     };
     confirmMail();
@@ -76,7 +75,9 @@ const Comfirm = () => {
           </ConfirmText>
           <Reply onClick={replyHandler}>인증메일이 오지 않았나요?재전송하기</Reply>
 
-          <CompleteBtn onClick={confirmHandler}>인증 완료</CompleteBtn>
+          <CompleteBtn className={code && 'complete'} onClick={confirmHandler}>
+            인증 완료
+          </CompleteBtn>
 
           <LoginDiv>
             <span>수신이 불가한 이메일 주소인가요?</span>
@@ -166,6 +167,9 @@ const CompleteBtn = styled.button`
   letter-spacing: 0em;
 
   color: #ffffff;
+  &.complete {
+    background: #066aff;
+  }
 `;
 const Reply = styled.div`
   cursor: pointer;

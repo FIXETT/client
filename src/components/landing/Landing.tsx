@@ -44,6 +44,7 @@ const Landing = () => {
     register,
     handleSubmit: onSubmit,
     formState: { errors },
+    getValues,
   } = useForm<FormValue>({
     defaultValues: {
       email: '',
@@ -52,6 +53,7 @@ const Landing = () => {
     resolver: yupResolver(schema),
     mode: 'all',
   });
+  const getFields = getValues();
 
   const signupHandler = () => {
     navigate('/signup');
@@ -70,6 +72,7 @@ const Landing = () => {
       const token = Token.token.accessToken;
 
       const Id = Token.token.user.userId;
+      const company = Token.token.user.company;
 
       const name = Token.token.user.name;
       const identifier = Token.token.user.identifier;
@@ -77,6 +80,7 @@ const Landing = () => {
       localStorage.setItem('userId', Id);
       localStorage.setItem('name', name);
       localStorage.setItem('identifier', identifier);
+      localStorage.setItem('company', company);
 
       navigate('/assetList');
     } catch (error: any) {
@@ -116,7 +120,17 @@ const Landing = () => {
           </InputDiv>
 
           <BtnDiv>
-            <LoginBtn className={!errors?.email?.message && !errors?.password?.message ? 'complete' : ''} type="submit">
+            <LoginBtn
+              className={
+                !errors?.email?.message &&
+                !errors?.password?.message &&
+                getFields.email !== '' &&
+                getFields.password !== ''
+                  ? 'complete'
+                  : ''
+              }
+              type="submit"
+            >
               이메일로 로그인 하기
             </LoginBtn>
           </BtnDiv>

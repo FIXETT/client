@@ -33,6 +33,7 @@ const Resetpw = () => {
     handleSubmit: onSubmit,
     watch,
     formState: { errors },
+    getValues,
   } = useForm<FormValue>({
     defaultValues: {
       name: '',
@@ -42,6 +43,7 @@ const Resetpw = () => {
     resolver: yupResolver(schema),
     mode: 'all',
   });
+  const getFields = getValues();
 
   const loginHandler = () => {
     navigate('/login');
@@ -94,7 +96,14 @@ const Resetpw = () => {
               />
               {errors.confirm?.message && <Errormessage>비밀번호가 일치하지 않습니다.</Errormessage>}
               <CompleteBtn
-                className={errors?.password?.message || errors?.confirm?.message ? '' : 'complete'}
+                className={
+                  !errors?.password?.message &&
+                  !errors?.confirm?.message &&
+                  getFields.password !== '' &&
+                  getFields.confirm !== ''
+                    ? 'complete'
+                    : ''
+                }
                 type="submit"
               >
                 인증완료

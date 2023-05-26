@@ -48,6 +48,7 @@ const EnterInfo = () => {
     handleSubmit: onSubmit,
     watch,
     formState: { errors },
+    getValues,
   } = useForm<FormValue>({
     defaultValues: {
       name: '',
@@ -57,6 +58,7 @@ const EnterInfo = () => {
     resolver: yupResolver(schema),
     mode: 'all',
   });
+  const getFields = getValues();
 
   const signupHandler: SubmitHandler<FormValue> = async (data) => {
     const name = data.name;
@@ -135,7 +137,22 @@ const EnterInfo = () => {
                 </Service>
               </Info>
 
-              <ManageBtn type="submit">관리어쩔 시작하기</ManageBtn>
+              <ManageBtn
+                className={
+                  !errors.name?.message &&
+                  !errors.password?.message &&
+                  !errors.confirm?.message &&
+                  getFields.name !== '' &&
+                  getFields.password !== '' &&
+                  getFields.confirm !== '' &&
+                  agreePi === true
+                    ? 'complete'
+                    : ''
+                }
+                type="submit"
+              >
+                회원가입 완료하기
+              </ManageBtn>
             </InfoBox>
           </>
         )}
@@ -294,4 +311,7 @@ const ManageBtn = styled.button`
 
   background: linear-gradient(0deg, rgba(255, 255, 255, 0.59), rgba(255, 255, 255, 0.59)), #066aff;
   color: #ffffff;
+  &.complete {
+    background: #066aff;
+  }
 `;
