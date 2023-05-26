@@ -340,10 +340,10 @@ const MyInfo = () => {
               <ProfileDiv>
                 <ProfileBox>
                   <Fixet src={profileImg} alt="fixet" />
-                  <Profile>
+                  <MypageProfile>
                     <Name>{profile?.user?.name}</Name>
                     <Company>{profile?.user?.company}</Company>
-                  </Profile>
+                  </MypageProfile>
                 </ProfileBox>
                 <EmailBox>
                   <EmailDiv>
@@ -587,7 +587,12 @@ const ProfileDiv = styled.div`
 const Profile = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 12px;
+`;
+const MypageProfile = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  gap: 8px;
 `;
 const ProfileBox = styled.div`
   display: flex;
