@@ -70,10 +70,9 @@ const MyInfo = () => {
       const { data: userData } = await readuser({ token, Id: userId });
       setProfile(userData);
     } catch (err) {
-      console.log(err);
+      return;
     }
   }
-  console.log(profile?.user?.email);
   const editpwHandler = () => {
     setEditMoadl(!editModal);
   };
@@ -87,7 +86,6 @@ const MyInfo = () => {
   const authHandler = async () => {
     try {
       const { data } = await UserApi.authuser(profile?.user?.email, password);
-      console.log(data);
       setError(false);
 
       setEditMoadl(!editModal);
@@ -119,22 +117,19 @@ const MyInfo = () => {
 
     mode: 'onChange',
   });
-  console.log(errors);
   const getFields = getValues();
   const watchedFields = watch();
   //변경 이메일 전송 핸들러
   const transemailHandler = async () => {
     const email = watchedFields.email;
-    console.log(watchedFields);
-    console.log(email);
     try {
       const { data } = await UserApi.authmail(email);
       alert(data.msg);
     } catch (err) {
-      console.log(err);
+      return;
     }
   };
-  console.log(getValues());
+
   //auth code 전송 핸들러
   const transauthcodeHandler = async () => {
     const authcode = watchedFields.auth;
@@ -142,9 +137,8 @@ const MyInfo = () => {
     try {
       const { data } = await UserApi.authcode(email, authcode);
       setComplete(true);
-      console.log(data);
     } catch (err) {
-      console.log(err);
+      return;
     }
   };
   //기본정보 수정 핸들러
@@ -155,15 +149,14 @@ const MyInfo = () => {
         const response = await UserApi.editprofile({ email: profile?.user?.email, name: formData.name });
         alert('기본정보가 수정 되었습니다.');
       } catch (err) {
-        console.log(err);
+        return;
       }
     }
     if (formData.company) {
       try {
         const response = await UserApi.editprofile({ email: profile?.user?.email, company: formData.company });
-        console.log(response);
       } catch (err) {
-        console.log(err);
+        return;
       }
     }
   };
@@ -175,7 +168,7 @@ const MyInfo = () => {
       const { data } = await UserApi.editemail(email, editEmail);
       alert('이메일이 정상적으로 변경 되었습니다');
     } catch (err) {
-      console.log(err);
+      return;
     }
   };
   //비밀번호 수정하기 핸들러
@@ -190,13 +183,13 @@ const MyInfo = () => {
         }
         const { data } = await UserApi.patchpw(email, password);
       } catch (err) {
-        console.log(err);
+        return;
       }
     }
   };
 
   const profilesubmitHandler = () => {
-    console.log('제출');
+    return;
   };
 
   return (
@@ -395,8 +388,9 @@ const MyInfo = () => {
 export default MyInfo;
 const Wrap = styled.div`
   width: 100%;
-
-  overflow: hidden;
+  height: 100vh;
+  padding-bottom: 100px;
+  overflow: visible;
 `;
 
 const Container = styled.div`
