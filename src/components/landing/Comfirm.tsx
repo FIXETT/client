@@ -32,7 +32,7 @@ const Comfirm = () => {
         navigate('/enter');
       } catch (error) {
         setIsError(true);
-        window.alert('인증번호 유효시간이 만료되었습니다. 다시 전송해주세요');
+        alert('네트워크 통신이 불안정합니다.');
       }
     };
     confirmMail();
