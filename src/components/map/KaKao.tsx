@@ -6,6 +6,7 @@ import { useFixState, usePagination } from '../../recoil/fix';
 import markerimg from '../../assets/icon/marker.svg';
 import previcon from '../../assets/icon/prev.png';
 import nexticon from '../../assets/icon/next.png';
+import lasticon from '../../assets/icon/last.png';
 interface placeType {
   place_name: string;
   road_address_name: string;
@@ -192,43 +193,64 @@ const KaKao = (props: propsType) => {
       const el = document.createElement('li');
       const itemStr = `
       
-          <div style="padding:16px 20px;
-          z-index:1;
+          <div style=
+          "padding:16px 20px;
           border: 1px solid #DDDDDD;
           box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
           border-radius: 16px; 
           margin-top:12px;
           margin-left:-10%;
           width: 100%;
+          padding:20px, 16px, 20px, 16px;
           max-width: 624px;
           min-width:624px;
           height:106px;
           display:flex;
-          align-items: center;
-          justify-content: space-between;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+
+         
           " class="info">
-<div style="display:flex">
-          <img style="width:29px;
-            height:29px;" src="${markerimg}"/>
+<div style="display:flex;align-items:center">
+          <div style="width:40px;
+            height:40px;
+           
+            border:1px solid #066AFF;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            border-radius: 12px;
+            font-family: Pretendard;
+font-size: 18px;
+font-weight: 500;
+color:#066AFF;
+
+
+
+
+            ">${index}</div>
             
             <div style="display:flex;
             flex-direction:column;
-            margin-left:4px;gap:4px;">
+            margin-left:16px;">
             
            
-              <h5 style="font-size:16px;color:#333333;" class="info-item place-name">${places.place_name}</h5>
+              <h5 style="font-size:16px; font-weight:700;color:#333333;" class="info-item place-name">${
+                places.place_name
+              }</h5>
               ${
                 places.road_address_name
-                  ? `<span style="font-size:14px;font-weight:500;color:#999999;" class="info-item road-address-name">
+                  ? `<span style="font-size:14px;margin-top:12px;font-weight:500;color:#999999;" class="info-item road-address-name">
                     ${places.road_address_name}
                    </span>
                   `
-                  : `<span style="font-size:14px;font-weight:500;color:#999999;" class="info-item address-name">
+                  : `<span style="font-size:14px;margin-top:12px;font-weight:500;color:#999999;" class="info-item address-name">
              	     ${places.address_name}
                   </span>`
               }
              
-              <span style="font-size:14px;color:#999999;" class="info-item tel">
+              <span style="font-size:14px;margin-top:8px;color:#999999;" class="info-item tel">
                 ${places.phone}
               </span>
             </a>
@@ -239,11 +261,7 @@ const KaKao = (props: propsType) => {
             
             
             
-            <button onclick="window.open('${places.place_url}')" id="btn" style="width:63px;
-            height:23px;color:#5A3092;
-            border:1px solid #5A3092;
             
-            border-radius:11.5px;font-size:10px "> 위치보기</button>
             
             </div>
           </div>
@@ -337,7 +355,20 @@ const KaKao = (props: propsType) => {
       const pageStatusEl = document.createElement('a') as HTMLAnchorElement;
       pageStatusEl.style.display = 'flex';
       pageStatusEl.style.flexDirection = 'row';
-      pageStatusEl.innerHTML = `<div style="color:#5A3092;display:flex;">${pagination.current}</div> / <div>${pagination.last}</div>`;
+      pageStatusEl.innerHTML = `<div style="height: 38px;
+      display:flex;
+      justify-content:center;
+      width: 38px;
+      border-radius: 8px;
+      padding: 12px;
+      background:#F4F4F4;
+      color:#999999;
+      ">${pagination.current}</div>  <div style="height: 38px;
+      width: 38px;
+      border-radius: 8px;
+      padding: 12px;
+      color:#CCCCCC;
+      ">${pagination.last}</div>`;
       paginationEl.appendChild(pageStatusEl);
       //다음페이지 가는 함수
       const nextEl = document.createElement('img') as HTMLImageElement;
@@ -350,6 +381,20 @@ const KaKao = (props: propsType) => {
         return false;
       };
       fragment.appendChild(nextEl);
+
+      paginationEl.appendChild(fragment);
+
+      //마지막 페이지 가는 함수
+      const lastEl = document.createElement('img') as HTMLImageElement;
+      lastEl.src = lasticon;
+      lastEl.style.cursor = 'pointer';
+      lastEl.onclick = function () {
+        if (pagination.current < pagination.last) {
+          pagination.gotoPage(pagination.last);
+        }
+        return false;
+      };
+      fragment.appendChild(lastEl);
 
       paginationEl.appendChild(fragment);
     }
@@ -412,8 +457,12 @@ const Mapcontainer = styled.div`
 const ResultList = styled.div``;
 
 const PlaceList = styled.ul`
-  width: 610px;
-  height: 70px;
+  height: 562px;
+  width: 624px;
+
+  border-radius: 0px;
+
+  border-radius: 0px;
 
   background-color: #ffffff;
 `;
@@ -421,15 +470,11 @@ const PlaceList = styled.ul`
 //Item Box
 
 const MapDiv = styled.div`
-  margin-left: -3%;
-  margin-top: 1%;
   border-radius: 10px;
 `;
 const Pagenation = styled.div`
   display: flex;
-  justify-content: center;
+
   align-items: center;
-  margin-top: 425px;
-  margin-left: -87px;
-  gap: 16px;
+  margin: 24px 0 0 32px;
 `;
