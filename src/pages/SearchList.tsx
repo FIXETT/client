@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { categoryState, searchTextState, searchlistState } from '../recoil/assets';
@@ -14,16 +14,98 @@ const SearchList = () => {
   const searchText = useRecoilValue(searchTextState);
   const [searchList, setSearList] = useRecoilState(searchlistState);
   const category = useRecoilValue(categoryState);
-
-  const { data, isLoading } = useQuery(['searchAsset', category, searchText], () => searchAsset(category, searchText));
+  const [cursor, setCursor] = useState<number | string>(0);
+  const [page, setPage] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data, isLoading } = useQuery(['searchAsset', cursor, page, searchText], () =>
+    searchAsset(cursor, page, category, searchText),
+  );
 
   useEffect(() => {
     setSearList([]);
     if (data) {
-      const newList = data?.result;
+      const newList = data?.sortedAssets;
       setSearList(newList);
     }
   }, [data]);
+
+  const handleVeryPrevClick = () => {
+    setPage('');
+    setSearList([]);
+    setCurrentPage(1);
+    setCursor('');
+  };
+  const handlePrevClick = () => {
+    setPage('');
+
+    if (data) {
+      const newCursor = Number(String(data?.nextCursor).split(',')[1]) - 20;
+      setCursor(newCursor);
+      setSearList([]);
+    }
+    setCurrentPage(currentPage - 1);
+  };
+
+  const handleVeryNextClick = () => {
+    setPage('backward');
+    setSearList([]);
+    if (data) {
+      setCurrentPage(Math.ceil(data?.totalCount / 10));
+    }
+    setCursor('');
+  };
+
+  const handleNextClick = () => {
+    setPage('');
+
+    if (data) {
+      const newCursor = Number(String(data?.nextCursor).split(',')[1]);
+      setCursor(newCursor);
+      setSearList([]);
+    }
+    setCurrentPage(currentPage + 1);
+  };
+  const renderPagination = () => {
+    return (
+      <PagenationContainer>
+        {currentPage > 1 && (
+          <>
+            <PagenationBtn onClick={handleVeryPrevClick} disabled={page === 'forward'}>
+              &lt;&lt;
+            </PagenationBtn>
+            <PagenationBtn
+              onClick={handlePrevClick}
+              disabled={data && Number(String(data?.nextCursor).split(',')[1]) < 11}
+            >
+              &lt;
+            </PagenationBtn>
+            <PagenationBtn
+              onClick={handlePrevClick}
+              disabled={data && Number(String(data?.nextCursor).split(',')[1]) < 11}
+            >
+              {currentPage - 1}
+            </PagenationBtn>
+          </>
+        )}
+        <CurrentPage>{currentPage}</CurrentPage>
+
+        {data?.totalCount / 10 > currentPage && (
+          <PagenationBtn onClick={handleNextClick} disabled={data?.totalCount && data?.totalCount / 10 < currentPage}>
+            {currentPage + 1}
+          </PagenationBtn>
+        )}
+        <PagenationBtn onClick={handleNextClick} disabled={data?.totalCount && data?.totalCount / 10 < currentPage}>
+          &gt;
+        </PagenationBtn>
+        <PagenationBtn
+          onClick={handleVeryNextClick}
+          disabled={page === 'backward' || (data?.totalCount && data?.totalCount / 10 < currentPage)}
+        >
+          &gt;&gt;
+        </PagenationBtn>
+      </PagenationContainer>
+    );
+  };
   const categoryIcon = (category: string) => {
     switch (category) {
       case '노트북/데스크탑/서버':
@@ -84,8 +166,8 @@ const SearchList = () => {
                     <AssetItem>{value?.name}</AssetItem> {/* 실사용자 */}
                     <AssetItem>{value?.product}</AssetItem> {/* 제품명 */}
                     <AssetItem>
-                      {categoryIcon(value?.Category?.category)}
-                      {value?.Category?.category}
+                      {categoryIcon(value?.category)}
+                      {value?.category}
                     </AssetItem>{' '}
                     {/* 품목 */}
                     <AssetItem>{value?.serialNumber}</AssetItem> {/* 시리얼번호 */}
@@ -94,8 +176,8 @@ const SearchList = () => {
                     <AssetItem>{value?.acquisitionDate}</AssetItem> {/* 취득일자 */}
                     <AssetItem>{value?.location}</AssetItem> {/* 자산위치 */}
                     <AssetItem>
-                      {statusIcon(value?.Status?.status)}
-                      {value?.Status?.status}
+                      {statusIcon(value?.status)}
+                      {value?.status}
                     </AssetItem>{' '}
                     {/* 상태 */}
                     <AssetItem>{value?.note}</AssetItem> {/* 비고 */}
@@ -107,6 +189,7 @@ const SearchList = () => {
         )}
         {isLoading && <Loading />}
         {!isLoading && !data && <NotData />}
+        {renderPagination()}
       </AssetListContainer>
     </AssetContainer>
   );
@@ -191,4 +274,29 @@ const AssetItem = styled.td`
   :nth-child(11) {
     width: 204px;
   }
+`;
+const PagenationContainer = styled.div`
+  margin-top: 16px;
+  display: flex;
+`;
+const CurrentPage = styled.p`
+  background-color: #f4f4f4;
+  width: 38px;
+  height: 38px;
+  font-size: 14px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #999;
+`;
+const PagenationBtn = styled.button<{ disabled: boolean }>`
+  color: #ccc;
+  width: 38px;
+  height: 38px;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: ${(props) => (props.disabled ? 'default' : 'cursor')};
 `;

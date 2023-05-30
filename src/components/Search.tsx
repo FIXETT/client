@@ -16,10 +16,6 @@ const Search = () => {
   const [searchText, setSearchText] = useRecoilState(searchTextState);
   const [category, setCategory] = useRecoilState(categoryState);
 
-  useEffect(() => {
-    setSearchText(text);
-  }, [searchText]);
-
   const searchOnchange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setText(e.target.value);

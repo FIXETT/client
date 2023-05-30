@@ -77,7 +77,7 @@ export const searchTextState = atom({
   default: '',
 });
 
-export const modifyState = atom<modifyListType[]>({
+export const modifyState = atom<modifyListType[] | any[]>({
   key: 'modify',
   default: [],
 });

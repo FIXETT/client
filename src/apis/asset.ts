@@ -67,12 +67,13 @@ export const getAsset = async (cursor: number | string, direction: string) => {
 
   return response.data;
 };
-export const searchAsset = async (category: string, value: string) => {
+export const searchAsset = async (cursor: number | string, direction: string, category: string, value: string) => {
   const identifier: string | null = window.localStorage.getItem('identifier');
   const params = {
+    cursor: cursor ? `${identifier},${cursor}` : `${identifier}`,
     category,
-    identifier,
     value,
+    direction,
   };
   const response = await AxiosInstance.get(`/asset/search`, { params, headers });
 
