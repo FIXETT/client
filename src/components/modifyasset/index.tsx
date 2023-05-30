@@ -87,12 +87,6 @@ const index = () => {
 
   // 실사용자, 제품명, 품목은 필수 입력값
   const handleModifyButtonClick = () => {
-    for (const asset of modifyList) {
-      if (!asset.name || !asset.product || !asset.category) {
-        alert('빈칸을 입력해주세요');
-        return;
-      }
-    }
     modifyAssetMutation.mutate();
     setShowModifyComponent(false);
   };

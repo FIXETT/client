@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { categoryState, searchTextState, searchlistState } from '../recoil/assets';
@@ -14,16 +14,149 @@ const SearchList = () => {
   const searchText = useRecoilValue(searchTextState);
   const [searchList, setSearList] = useRecoilState(searchlistState);
   const category = useRecoilValue(categoryState);
+  const [cursor, setCursor] = useState<number | string>(0);
+  const [page, setPage] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, isLoading } = useQuery(['searchAsset', category, searchText], () => searchAsset(category, searchText));
+  const { data, isLoading } = useQuery(['searchAsset', cursor, page, searchText], () =>
+    searchAsset(cursor, page, category, searchText),
+  );
+  console.log(category);
+  const searchTextChange = (searchText: string, category: string) => {
+    let transformedText = searchText;
+    if (category === 'category') {
+      switch (searchText) {
+        case '1':
+          transformedText = '노트북/데스크탑/서버';
+          break;
+        case '2':
+          transformedText = '모니터';
+          break;
+        case '3':
+          transformedText = '모바일기기';
+          break;
+        case '4':
+          transformedText = '사무기기';
+          break;
+        case '5':
+          transformedText = '기타장비';
+          break;
+        case '6':
+          transformedText = '소프트웨어';
+          break;
+        default:
+          break;
+      }
+    } else if (category === 'status') {
+      switch (searchText) {
+        case '1':
+          transformedText = '정상';
+          break;
+        case '2':
+          transformedText = '분실';
+          break;
+        case '3':
+          transformedText = '수리중';
+          break;
+        case '4':
+          transformedText = '수리완료';
+          break;
+        case '5':
+          transformedText = '수리필요';
+          break;
+        default:
+          break;
+      }
+    }
+    return transformedText;
+  };
 
+  console.log(searchText);
   useEffect(() => {
     setSearList([]);
     if (data) {
-      const newList = data?.result;
+      const newList = data?.sortedAssets;
       setSearList(newList);
     }
   }, [data]);
+
+  const handleVeryPrevClick = () => {
+    setPage('');
+    setSearList([]);
+    setCurrentPage(1);
+    setCursor('');
+  };
+  const handlePrevClick = () => {
+    setPage('');
+
+    if (data) {
+      const newCursor = Number(String(data?.nextCursor).split(',')[1]) - 20;
+      setCursor(newCursor);
+      setSearList([]);
+    }
+    setCurrentPage(currentPage - 1);
+  };
+
+  const handleVeryNextClick = () => {
+    setPage('backward');
+    setSearList([]);
+    if (data) {
+      setCurrentPage(Math.ceil(data?.totalCount / 10));
+    }
+    setCursor('');
+  };
+
+  const handleNextClick = () => {
+    setPage('');
+
+    if (data) {
+      const newCursor = Number(String(data?.nextCursor).split(',')[1]);
+      setCursor(newCursor);
+      setSearList([]);
+    }
+    setCurrentPage(currentPage + 1);
+  };
+  const renderPagination = () => {
+    return (
+      <PagenationContainer>
+        {currentPage > 1 && (
+          <>
+            <PagenationBtn onClick={handleVeryPrevClick} disabled={page === 'forward'}>
+              &lt;&lt;
+            </PagenationBtn>
+            <PagenationBtn
+              onClick={handlePrevClick}
+              disabled={data && Number(String(data?.nextCursor).split(',')[1]) < 11}
+            >
+              &lt;
+            </PagenationBtn>
+            <PagenationBtn
+              onClick={handlePrevClick}
+              disabled={data && Number(String(data?.nextCursor).split(',')[1]) < 11}
+            >
+              {currentPage - 1}
+            </PagenationBtn>
+          </>
+        )}
+        <CurrentPage>{currentPage}</CurrentPage>
+
+        {data?.totalCount / 10 > currentPage && (
+          <PagenationBtn onClick={handleNextClick} disabled={data?.totalCount && data?.totalCount / 10 < currentPage}>
+            {currentPage + 1}
+          </PagenationBtn>
+        )}
+        <PagenationBtn onClick={handleNextClick} disabled={data?.totalCount && data?.totalCount / 10 < currentPage}>
+          &gt;
+        </PagenationBtn>
+        <PagenationBtn
+          onClick={handleVeryNextClick}
+          disabled={page === 'backward' || (data?.totalCount && data?.totalCount / 10 < currentPage)}
+        >
+          &gt;&gt;
+        </PagenationBtn>
+      </PagenationContainer>
+    );
+  };
   const categoryIcon = (category: string) => {
     switch (category) {
       case '노트북/데스크탑/서버':
@@ -66,7 +199,7 @@ const SearchList = () => {
       </AssetWrap>
       {searchText && (
         <SerchText>
-          <span>&#39;{searchText}&#39;</span> 검색 결과{'  '}
+          <span>&#39;{searchTextChange(searchText, category)}&#39;</span> 검색 결과{'  '}
           {searchList.length > 0 ? String(searchList.length).padStart(2, '0') : ''}
         </SerchText>
       )}
@@ -80,25 +213,55 @@ const SearchList = () => {
                 return (
                   <tr key={value?.assetNumber}>
                     <AssetRadioButton assetList={searchList} value={value} />
-                    <AssetItem>{value?.assetNumber}</AssetItem>
-                    <AssetItem>{value?.name}</AssetItem> {/* 실사용자 */}
-                    <AssetItem>{value?.product}</AssetItem> {/* 제품명 */}
                     <AssetItem>
-                      {categoryIcon(value?.Category?.category)}
-                      {value?.Category?.category}
+                      <p>{value?.assetNumber}</p>
+                    </AssetItem>
+                    <AssetItem>
+                      <p>{value?.name}</p>
                     </AssetItem>{' '}
+                    {/* 실사용자 */}
+                    <AssetItem>
+                      <p>{value?.product}</p>
+                    </AssetItem>
+                    {/* 제품명 */}
+                    <AssetItem>
+                      <p>
+                        {categoryIcon(value?.category)}
+                        {value?.category}
+                      </p>
+                    </AssetItem>
                     {/* 품목 */}
-                    <AssetItem>{value?.serialNumber}</AssetItem> {/* 시리얼번호 */}
-                    <AssetItem>{value?.team}</AssetItem> {/* 팀 */}
-                    <AssetItem>{value?.manufacturer}</AssetItem> {/* 제조사 */}
-                    <AssetItem>{value?.acquisitionDate}</AssetItem> {/* 취득일자 */}
-                    <AssetItem>{value?.location}</AssetItem> {/* 자산위치 */}
                     <AssetItem>
-                      {statusIcon(value?.Status?.status)}
-                      {value?.Status?.status}
-                    </AssetItem>{' '}
+                      <p>{value?.serialNumber}</p>
+                    </AssetItem>
+                    {/* 시리얼번호 */}
+                    <AssetItem>
+                      <p>{value?.team}</p>
+                    </AssetItem>
+                    {/* 팀 */}
+                    <AssetItem>
+                      <p>{value?.manufacturer}</p>
+                    </AssetItem>
+                    {/* 제조사 */}
+                    <AssetItem>
+                      <p>{value?.acquisitionDate}</p>
+                    </AssetItem>
+                    {/* 취득일자 */}
+                    <AssetItem>
+                      <p>{value?.location}</p>
+                    </AssetItem>
+                    {/* 자산위치 */}
+                    <AssetItem>
+                      <p>
+                        {statusIcon(value?.status)}
+                        {value?.status}
+                      </p>
+                    </AssetItem>
                     {/* 상태 */}
-                    <AssetItem>{value?.note}</AssetItem> {/* 비고 */}
+                    <AssetItem>
+                      <p>{value?.note}</p>
+                    </AssetItem>
+                    {/* 비고 */}
                   </tr>
                 );
               })}
@@ -107,6 +270,7 @@ const SearchList = () => {
         )}
         {isLoading && <Loading />}
         {!isLoading && !data && <NotData />}
+        {renderPagination()}
       </AssetListContainer>
     </AssetContainer>
   );
@@ -157,38 +321,69 @@ const AssetWrap = styled.div`
   padding: 0 8px;
 `;
 const AssetItem = styled.td`
-  text-overflow: ellipsis;
-  white-space: nowrap;
   color: #999;
   font-size: 14px;
-  :nth-child(2) {
+  p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  :nth-child(2) p {
     width: 64px;
   }
-  :nth-child(3) {
-    width: 112px;
+  :nth-child(3) p {
+    width: 83px;
   }
-  :nth-child(4) {
-    width: 188px;
+  :nth-child(4) p {
+    width: 202px;
   }
-  :nth-child(5) {
-    width: 196px;
+  :nth-child(5) p {
+    width: 150px;
   }
-  :nth-child(6) {
-    width: 132px;
+  :nth-child(6) p {
+    width: 140px;
   }
-  :nth-child(7) {
-    width: 132px;
+  :nth-child(7) p {
+    width: 140px;
   }
-  :nth-child(8) {
+  :nth-child(8) p {
     width: 104px;
   }
-  :nth-child(9) {
-    width: 132px;
+  :nth-child(9) p {
+    width: 140px;
   }
-  :nth-child(10) {
+  :nth-child(10) p {
     width: 104px;
   }
-  :nth-child(11) {
-    width: 204px;
+  :nth-child(11) p {
+    width: 75px;
   }
+  :nth-child(12) p {
+    width: 200px;
+  }
+`;
+const PagenationContainer = styled.div`
+  margin-top: 16px;
+  display: flex;
+`;
+const CurrentPage = styled.p`
+  background-color: #f4f4f4;
+  width: 38px;
+  height: 38px;
+  font-size: 14px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #999;
+`;
+const PagenationBtn = styled.button<{ disabled: boolean }>`
+  color: #ccc;
+  width: 38px;
+  height: 38px;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: ${(props) => (props.disabled ? 'default' : 'cursor')};
 `;

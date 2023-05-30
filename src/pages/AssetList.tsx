@@ -10,7 +10,7 @@ import {
   showModifyComponentState,
 } from '../recoil/assets';
 import { getAsset } from '../apis/asset';
-import { assetListType } from '../types/asset';
+import { assetType } from '../types/asset';
 
 import Header from '../components/assetList/Header';
 import DeleteModal from '../components/assetList/DeleteModal';
@@ -32,11 +32,11 @@ const AssetList = () => {
   // 로그인 확인
   useAuth();
 
-  const [assetList, setAssetList] = useState<assetListType[]>([]);
+  const [assetList, setAssetList] = useState<assetType[]>([]);
   const [cursor, setCursor] = useState<number | string>(0);
   const [page, setPage] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, status } = useQuery(['getAsset', cursor, page], () => getAsset(cursor, page));
+  const { data, status } = useQuery(['getAsset', cursor, page, currentPage], () => getAsset(cursor, page));
 
   useEffect(() => {
     if (data) {
@@ -52,6 +52,8 @@ const AssetList = () => {
     setCursor('');
   };
   const handlePrevClick = () => {
+    setPage('');
+
     if (data) {
       const newCursor = Number(String(data.asset.nextCursor).split(',')[1]) - 20;
       setCursor(newCursor);
@@ -64,12 +66,14 @@ const AssetList = () => {
     setPage('backward');
     setAssetList([]);
     if (data) {
-      setCurrentPage(data.asset.totalCount / 10);
+      setCurrentPage(Math.ceil(data.asset.totalCount / 10));
     }
     setCursor('');
   };
 
   const handleNextClick = () => {
+    setPage('');
+
     if (data) {
       const newCursor = Number(String(data.asset.nextCursor).split(',')[1]);
       setCursor(newCursor);
@@ -132,10 +136,10 @@ const AssetList = () => {
           <TableHead assetList={assetList} />
           <tbody>
             <TableItemList assetList={assetList} status={status} data={data} />
-            {status === 'loading' && <Loading />}
-            {data && data.asset === 'does not exist asset' && <NotData />}
           </tbody>
         </table>
+        {status === 'loading' && <Loading />}
+        {data && data.asset === 'does not exist asset' && <NotData />}
         {renderPagination()}
       </AssetListContainer>
       {showAddComponent && <AddAsset />}

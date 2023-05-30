@@ -79,11 +79,21 @@ const ExcelModal = () => {
 
         const headers = [];
         const result = [];
-        for (let C = range.s.c; C <= range.e.c; ++C) {
-          const cell = sheet[XLSX.utils.encode_cell({ r: 8, c: C })];
-          headers.push(cell?.v ?? null);
-        }
         for (let R = 10; R <= range.e.r; ++R) {
+          let isEmptyRow = true; // Flag to track if the row is empty
+
+          // Check if columns A to J are all empty
+          for (let C = 0; C <= 9; ++C) {
+            const cell = sheet[XLSX.utils.encode_cell({ r: R, c: C })];
+            if (cell?.v) {
+              isEmptyRow = false;
+              break;
+            }
+          }
+
+          if (isEmptyRow) {
+            continue; // Skip this row and move to the next iteration
+          }
           const aCell = sheet[XLSX.utils.encode_cell({ r: R, c: 0 })];
           const bCell = sheet[XLSX.utils.encode_cell({ r: R, c: 1 })];
           const cCell = sheet[XLSX.utils.encode_cell({ r: R, c: 2 })];
@@ -143,7 +153,7 @@ const ExcelModal = () => {
         <BtnWrap>
           <AddAssetBtn onClick={handleAddButtonClick} disabled={handleDisabled()}>
             <img src={upload} alt="등록아이콘" />
-            자산리스트를 이 내용으로 대체하기
+            자산리스트에 이 내용 추가하기
           </AddAssetBtn>
           <CancelBtn
             onClick={() => {

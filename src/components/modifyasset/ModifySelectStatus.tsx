@@ -147,7 +147,7 @@ const ModifySelectBtn = styled.button<{ checked: boolean }>`
 const ModifyAssetLabel = styled.label`
   width: 100%;
   display: block;
-  padding: 5px;
+  padding: 15px 10px;
   cursor: pointer;
   border-radius: 5px;
   font-size: 12px;

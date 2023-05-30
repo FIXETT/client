@@ -10,10 +10,12 @@ const Dashboard = () => {
   const [cursor, setCursor] = useState<number | string>(0);
   const [page, setPage] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
-  const { data } = useQuery(['getDashboard', cursor, page], () => getDashboard(cursor, page));
+  const { data } = useQuery(['getDashboard', cursor, page, currentPage], () => getDashboard(cursor, page));
 
   // 로그인 확인
   useAuth();
+
+  // 새로고침버튼
   const queryClient = useQueryClient();
   const handleRefreshClick = () => {
     queryClient.invalidateQueries(['getDashboard']);
@@ -33,6 +35,7 @@ const Dashboard = () => {
     setCursor('');
   };
   const handlePrevClick = () => {
+    setPage('');
     if (data) {
       const newCursor = Number(String(data.nextCursor).split(',')[1]) - 20;
       setCursor(newCursor);
@@ -45,12 +48,13 @@ const Dashboard = () => {
     setPage('backward');
     setAssetList([]);
     if (data) {
-      setCurrentPage(data?.totalCount / 10);
+      setCurrentPage(Math.ceil(data?.totalCount / 10));
     }
     setCursor('');
   };
 
   const handleNextClick = () => {
+    setPage('');
     if (data) {
       const newCursor = Number(String(data.nextCursor).split(',')[1]);
       setCursor(newCursor);

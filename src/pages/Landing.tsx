@@ -18,7 +18,19 @@ import { ReactComponent as Logo } from '../assets/logo.svg';
 const Landing = () => {
   const navigate = useNavigate();
   const [reachedBottom, setReachedBottom] = useState(false);
+  const [fadeOut, setFadeOut] = useState(false);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollHeight = window.pageYOffset || document.documentElement.scrollTop;
+      setFadeOut(scrollHeight !== 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.innerHeight + window.pageYOffset;
@@ -64,16 +76,16 @@ const Landing = () => {
         </BtnWrap>
       </Header>
       <LandingFirst>
-        <div>
+        <LandingFirstWrap>
           <TextWrap>
             <MainText>귀찮은 자산관리, 우리회사 자산 수리...</MainText>
-            <SubText>
+            <SubText fadeOut={fadeOut}>
               픽셋은 <span>자산관리부터</span>
               <br />
               수리업체 찾기까지 <br />
               <span>다 가능</span>해요!
             </SubText>
-            <SubText>
+            <SubText fadeOut={fadeOut}>
               픽셋은 자산관리부터
               <br />
               <span> 수리업체 찾기까지 </span>
@@ -90,7 +102,7 @@ const Landing = () => {
           >
             무료로 fixet 시작하기
           </LinkBtn>
-        </div>
+        </LandingFirstWrap>
         <ImgWrap>
           <img src={chat01} alt="채팅화면01" />
           <img src={chat02} alt="채팅화면02" />
@@ -129,19 +141,21 @@ const Landing = () => {
         </AssetListWrap>
       </AssetListContainer>
       <AssetListAddContainer>
-        <AssetListAddMainText>자산등록</AssetListAddMainText>
-        <AssetListAddSubText>
-          신규등록도,{' '}
-          <span>
-            기존에 갖고 있던 <br />
-            자산관리 파일도 간편하게
-          </span>
-        </AssetListAddSubText>
-        <AssetListAddText>
-          신규로 등록하는 자산도, 기존에 갖고있던 자산관리 파일도 <br />
-          쉽고 간편하게 등록하세요.
-        </AssetListAddText>
-        <img src={addAssetList} alt="자산등록이미지" />
+        <div>
+          <AssetListAddMainText>자산등록</AssetListAddMainText>
+          <AssetListAddSubText>
+            신규등록도,{' '}
+            <span>
+              기존에 갖고 있던 <br />
+              자산관리 파일도 간편하게
+            </span>
+          </AssetListAddSubText>
+          <AssetListAddText>
+            신규로 등록하는 자산도, 기존에 갖고있던 자산관리 파일도 <br />
+            쉽고 간편하게 등록하세요.
+          </AssetListAddText>
+          <img src={addAssetList} alt="자산등록이미지" />
+        </div>
       </AssetListAddContainer>
       <AssetSearchContainer>
         <img src={search} alt="자산검색이미지" />
@@ -207,15 +221,22 @@ const SignInBtn = styled.button`
   font-size: 14px;
   color: #ffffff;
 `;
+
+const LandingFirstWrap = styled.div`
+  width: 480px;
+`;
+
 const LandingFirst = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 56px;
   width: 100vw;
   height: 100vh;
   background: linear-gradient(98.68deg, #dfe7f2 0%, #c0dbff 80.93%);
 `;
 const MainText = styled.p`
+  width: 100%;
   font-weight: 600;
   font-size: 32px;
   color: rgba(0, 0, 0, 0.4);
@@ -257,10 +278,11 @@ const fadeInAnimation = keyframes`
   }
 `;
 
-const SubText = styled.p`
+const SubText = styled.p<{ fadeOut: boolean }>`
+  width: 100%;
   position: absolute;
   top: 54px;
-  left: 240px;
+  left: 0;
   line-height: 72px;
   font-weight: 700;
   font-size: 56px;
@@ -269,20 +291,20 @@ const SubText = styled.p`
     color: #066aff;
   }
   :nth-child(2) {
-    animation: ${fadeOutAnimation} 3s linear 3s infinite alternate;
+    animation: ${({ fadeOut }) => (fadeOut ? fadeOutAnimation : fadeInAnimation)} 3s linear 3s infinite alternate;
   }
   :nth-child(3) {
-    animation: ${fadeInAnimation} 3s linear 3s infinite alternate;
+    animation: ${({ fadeOut }) => (fadeOut ? fadeOutAnimation : fadeInAnimation)} 3s linear 3s infinite alternate;
   }
 `;
 
 const TextWrap = styled.div`
+  width: 100%;
   height: 462px;
-  padding-left: 240px;
   position: relative;
   img {
     position: absolute;
-    left: 240px;
+    left: 0;
     bottom: 0;
     :nth-child(4) {
       animation: ${fadeOutAnimation} 3s linear 3s infinite alternate;
@@ -301,7 +323,6 @@ const LinkBtn = styled.button`
   font-weight: 700;
   font-size: 24px;
   color: #ffffff;
-  margin-left: 240px;
   margin-top: 40px;
 `;
 const ImgWrap = styled.div`
@@ -511,12 +532,14 @@ const AssetListAddContainer = styled.div`
   height: 1431px;
   background: linear-gradient(0deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)),
     linear-gradient(90deg, #066aff 0%, #21a366 100%);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 160px 240px;
+  padding: 160px 0;
+  > div {
+    width: 1440px;
+    margin: 0 auto;
+  }
   img {
     margin-top: 56px;
+    width: 100%;
   }
 `;
 const AssetListAddMainText = styled.p`
