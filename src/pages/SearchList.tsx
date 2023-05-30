@@ -162,25 +162,55 @@ const SearchList = () => {
                 return (
                   <tr key={value?.assetNumber}>
                     <AssetRadioButton assetList={searchList} value={value} />
-                    <AssetItem>{value?.assetNumber}</AssetItem>
-                    <AssetItem>{value?.name}</AssetItem> {/* 실사용자 */}
-                    <AssetItem>{value?.product}</AssetItem> {/* 제품명 */}
                     <AssetItem>
-                      {categoryIcon(value?.category)}
-                      {value?.category}
+                      <p>{value?.assetNumber}</p>
+                    </AssetItem>
+                    <AssetItem>
+                      <p>{value?.name}</p>
                     </AssetItem>{' '}
+                    {/* 실사용자 */}
+                    <AssetItem>
+                      <p>{value?.product}</p>
+                    </AssetItem>
+                    {/* 제품명 */}
+                    <AssetItem>
+                      <p>
+                        {categoryIcon(value?.category)}
+                        {value?.category}
+                      </p>
+                    </AssetItem>
                     {/* 품목 */}
-                    <AssetItem>{value?.serialNumber}</AssetItem> {/* 시리얼번호 */}
-                    <AssetItem>{value?.team}</AssetItem> {/* 팀 */}
-                    <AssetItem>{value?.manufacturer}</AssetItem> {/* 제조사 */}
-                    <AssetItem>{value?.acquisitionDate}</AssetItem> {/* 취득일자 */}
-                    <AssetItem>{value?.location}</AssetItem> {/* 자산위치 */}
                     <AssetItem>
-                      {statusIcon(value?.status)}
-                      {value?.status}
-                    </AssetItem>{' '}
+                      <p>{value?.serialNumber}</p>
+                    </AssetItem>
+                    {/* 시리얼번호 */}
+                    <AssetItem>
+                      <p>{value?.team}</p>
+                    </AssetItem>
+                    {/* 팀 */}
+                    <AssetItem>
+                      <p>{value?.manufacturer}</p>
+                    </AssetItem>
+                    {/* 제조사 */}
+                    <AssetItem>
+                      <p>{value?.acquisitionDate}</p>
+                    </AssetItem>
+                    {/* 취득일자 */}
+                    <AssetItem>
+                      <p>{value?.location}</p>
+                    </AssetItem>
+                    {/* 자산위치 */}
+                    <AssetItem>
+                      <p>
+                        {statusIcon(value?.status)}
+                        {value?.status}
+                      </p>
+                    </AssetItem>
                     {/* 상태 */}
-                    <AssetItem>{value?.note}</AssetItem> {/* 비고 */}
+                    <AssetItem>
+                      <p>{value?.note}</p>
+                    </AssetItem>
+                    {/* 비고 */}
                   </tr>
                 );
               })}
@@ -240,39 +270,45 @@ const AssetWrap = styled.div`
   padding: 0 8px;
 `;
 const AssetItem = styled.td`
-  text-overflow: ellipsis;
-  white-space: nowrap;
   color: #999;
   font-size: 14px;
-  :nth-child(2) {
+  p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  :nth-child(2) p {
     width: 64px;
   }
-  :nth-child(3) {
-    width: 112px;
+  :nth-child(3) p {
+    width: 83px;
   }
-  :nth-child(4) {
-    width: 188px;
+  :nth-child(4) p {
+    width: 202px;
   }
-  :nth-child(5) {
-    width: 196px;
+  :nth-child(5) p {
+    width: 150px;
   }
-  :nth-child(6) {
-    width: 132px;
+  :nth-child(6) p {
+    width: 140px;
   }
-  :nth-child(7) {
-    width: 132px;
+  :nth-child(7) p {
+    width: 140px;
   }
-  :nth-child(8) {
+  :nth-child(8) p {
     width: 104px;
   }
-  :nth-child(9) {
-    width: 132px;
+  :nth-child(9) p {
+    width: 140px;
   }
-  :nth-child(10) {
+  :nth-child(10) p {
     width: 104px;
   }
-  :nth-child(11) {
-    width: 204px;
+  :nth-child(11) p {
+    width: 75px;
+  }
+  :nth-child(12) p {
+    width: 200px;
   }
 `;
 const PagenationContainer = styled.div`

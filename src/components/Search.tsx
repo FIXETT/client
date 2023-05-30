@@ -221,7 +221,6 @@ const Search = () => {
       <AssetSearchInput
         id="search"
         type="text"
-        maxLength={10}
         placeholder="등록된 업무용 자산 / 팀명 / 사용자명 / 제품명 등을 조회해 보세요"
         onChange={searchOnchange}
         onKeyDown={handleOnKeyPress}

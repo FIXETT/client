@@ -54,23 +54,45 @@ const TableItemList = ({ assetList, status, data }: propsType) => {
         return (
           <tr key={value?.assetNumber}>
             <AssetRadioButton assetList={assetList} value={value} />
-            <TableItem>{value?.assetNumber?.toString().padStart(5, '0')}</TableItem>
-            <TableItem>{value?.name}</TableItem>
-            <TableItem>{value?.product}</TableItem>
             <TableItem>
-              {categoryIcon(value?.category)}
-              {value?.category}
+              <p>{value?.assetNumber?.toString().padStart(5, '0')}</p>
             </TableItem>
-            <TableItem>{value?.serialNumber}</TableItem>
-            <TableItem>{value?.team}</TableItem>
-            <TableItem>{value?.manufacturer}</TableItem>
-            <TableItem>{value?.acquisitionDate}</TableItem>
-            <TableItem>{value?.location}</TableItem>
             <TableItem>
-              {statusIcon(value?.status)}
-              {value?.status}
+              <p>{value?.name}</p>
             </TableItem>
-            <TableItem>{value?.note}</TableItem>
+            <TableItem>
+              <p>{value?.product}</p>
+            </TableItem>
+            <TableItem>
+              <p>
+                {categoryIcon(value?.category)}
+                {value?.category}
+              </p>
+            </TableItem>
+            <TableItem>
+              <p>{value?.serialNumber}</p>
+            </TableItem>
+            <TableItem>
+              <p>{value?.team}</p>
+            </TableItem>
+            <TableItem>
+              <p>{value?.manufacturer}</p>
+            </TableItem>
+            <TableItem>
+              <p>{value?.acquisitionDate}</p>
+            </TableItem>
+            <TableItem>
+              <p>{value?.location}</p>
+            </TableItem>
+            <TableItem>
+              <p>
+                {statusIcon(value?.status)}
+                {value?.status}
+              </p>
+            </TableItem>
+            <TableItem>
+              <p>{value?.note}</p>
+            </TableItem>
           </tr>
         );
       })}
@@ -84,38 +106,44 @@ const TableItemList = ({ assetList, status, data }: propsType) => {
 export default TableItemList;
 
 const TableItem = styled.td`
-  text-overflow: ellipsis;
-  white-space: nowrap;
   color: #999;
   font-size: 14px;
-  :nth-child(2) {
+  p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  :nth-child(2) p {
     width: 64px;
   }
-  :nth-child(3) {
-    width: 112px;
+  :nth-child(3) p {
+    width: 83px;
   }
-  :nth-child(4) {
-    width: 188px;
+  :nth-child(4) p {
+    width: 202px;
   }
-  :nth-child(5) {
-    width: 196px;
+  :nth-child(5) p {
+    width: 150px;
   }
-  :nth-child(6) {
-    width: 132px;
+  :nth-child(6) p {
+    width: 140px;
   }
-  :nth-child(7) {
-    width: 132px;
+  :nth-child(7) p {
+    width: 140px;
   }
-  :nth-child(8) {
+  :nth-child(8) p {
     width: 104px;
   }
-  :nth-child(9) {
-    width: 132px;
+  :nth-child(9) p {
+    width: 140px;
   }
-  :nth-child(10) {
+  :nth-child(10) p {
     width: 104px;
   }
-  :nth-child(11) {
-    width: 204px;
+  :nth-child(11) p {
+    width: 75px;
+  }
+  :nth-child(12) p {
+    width: 200px;
   }
 `;

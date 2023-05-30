@@ -1,5 +1,12 @@
 import React from 'react';
-export type assetObjType = { title: string; type: string; inputType: string; img?: string; essential: boolean };
+export type assetObjType = {
+  title: string;
+  type: string;
+  inputType: string;
+  img?: string;
+  essential: boolean;
+  length?: number;
+};
 export type handleChangeType = (e: React.ChangeEvent<HTMLInputElement>) => void;
 export type inputParameterType = {
   assetType: assetObjType;
@@ -54,11 +61,5 @@ export type subNavListType = {
   title: string;
 };
 export interface modifyListType {
-  name: string;
-  product: string;
-  category: string | number;
-
-  assetId: number;
-  assetNumber: number;
   [key: string]: string | number;
 }
