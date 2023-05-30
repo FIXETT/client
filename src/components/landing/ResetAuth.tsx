@@ -65,7 +65,9 @@ const ResetAuth = () => {
           <CodeInput placeholder="인증번호를 입력해주세요" type="text" name="code" value={code} onChange={onChange} />
         </ConfirmText>
         <Reply onClick={replyHandler}>인증메일이 오지 않았나요?재전송하기</Reply>
-        <CompleteBtn onClick={confirmHandler}>인증 완료</CompleteBtn>
+        <CompleteBtn className={code && 'complete'} onClick={confirmHandler}>
+          인증 완료
+        </CompleteBtn>
       </Modal>
       <Footer>
         <div>
@@ -142,6 +144,9 @@ const CompleteBtn = styled.button`
   letter-spacing: 0em;
 
   color: #ffffff;
+  &.complete {
+    background: #066aff;
+  }
 `;
 const Reply = styled.span`
   cursor: pointer;

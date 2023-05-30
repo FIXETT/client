@@ -63,6 +63,11 @@ const MyInfo = () => {
   const [{ password }, onChange, reset] = useInputs({
     password: '',
   });
+  const mypageHandler = () => {
+    setEdit(!edit);
+    getprofile();
+    window.location.reload();
+  };
 
   //유저 정보 가져오는 핸들러
   async function getprofile() {
@@ -70,10 +75,9 @@ const MyInfo = () => {
       const { data: userData } = await readuser({ token, Id: userId });
       setProfile(userData);
     } catch (err) {
-      console.log(err);
+      return;
     }
   }
-  console.log(profile?.user?.email);
   const editpwHandler = () => {
     setEditMoadl(!editModal);
   };
@@ -87,7 +91,6 @@ const MyInfo = () => {
   const authHandler = async () => {
     try {
       const { data } = await UserApi.authuser(profile?.user?.email, password);
-      console.log(data);
       setError(false);
 
       setEditMoadl(!editModal);
@@ -119,34 +122,32 @@ const MyInfo = () => {
 
     mode: 'onChange',
   });
-  console.log(errors);
   const getFields = getValues();
   const watchedFields = watch();
   //변경 이메일 전송 핸들러
   const transemailHandler = async () => {
     const email = watchedFields.email;
-    console.log(watchedFields);
-    console.log(email);
     try {
       const { data } = await UserApi.authmail(email);
       alert(data.msg);
     } catch (err) {
-      console.log(err);
+      return;
     }
   };
-  console.log(getValues());
+
   //auth code 전송 핸들러
   const transauthcodeHandler = async () => {
     const authcode = watchedFields.auth;
     const email = watchedFields.email;
     try {
       const { data } = await UserApi.authcode(email, authcode);
+      alert('인증이 되었습니다');
       setComplete(true);
-      console.log(data);
     } catch (err) {
-      console.log(err);
+      setComplete(false);
     }
   };
+
   //기본정보 수정 핸들러
   const editprofileHandler = async () => {
     const formData = getValues();
@@ -155,48 +156,46 @@ const MyInfo = () => {
         const response = await UserApi.editprofile({ email: profile?.user?.email, name: formData.name });
         alert('기본정보가 수정 되었습니다.');
       } catch (err) {
-        console.log(err);
+        return;
       }
     }
     if (formData.company) {
       try {
         const response = await UserApi.editprofile({ email: profile?.user?.email, company: formData.company });
-        console.log(response);
+        alert('기본정보가 수정 되었습니다.');
       } catch (err) {
-        console.log(err);
+        return;
       }
     }
   };
   //이메일 수정하기 핸들러
   const editemailhandler = async () => {
-    const email = profile?.user?.email;
-    const editEmail = watchedFields.email;
-    try {
-      const { data } = await UserApi.editemail(email, editEmail);
-      alert('이메일이 정상적으로 변경 되었습니다');
-    } catch (err) {
-      console.log(err);
+    const email = profile.user.email;
+    const editEmail = getFields.email;
+    if (!errors.email?.message && getFields.email !== null && complete === true && !errors.auth?.message) {
+      try {
+        const { data } = await UserApi.editemail(email, editEmail);
+      } catch (err) {
+        return;
+      }
     }
   };
+
   //비밀번호 수정하기 핸들러
   const editpasswordHandler = async () => {
     if (!errors.confirm?.message) {
+      const email = profile.user.email;
+      const password = getFields.password;
       try {
-        const password = watchedFields.password;
-        if (watchedFields.email) {
-          const email = watchedFields.email;
-        } else {
-          const email = profile.user.email;
-        }
         const { data } = await UserApi.patchpw(email, password);
       } catch (err) {
-        console.log(err);
+        return;
       }
     }
   };
 
   const profilesubmitHandler = () => {
-    console.log('제출');
+    return;
   };
 
   return (
@@ -206,7 +205,7 @@ const MyInfo = () => {
           <>
             <MypageBox>
               <Span>개인정보 수정</Span>
-              <MypageBtn onClick={() => setEdit(!edit)}>마이페이지로 가기</MypageBtn>
+              <MypageBtn onClick={() => mypageHandler()}>마이페이지로 가기</MypageBtn>
             </MypageBox>
             <SubSpan margin="32px">기본정보 수정</SubSpan>
             <InfoForm autoComplete="off" onSubmit={handleSubmit(profilesubmitHandler)}>
@@ -228,7 +227,7 @@ const MyInfo = () => {
                       id="company"
                       margin="0px"
                       width="304px"
-                      placeholder={profile?.user?.company}
+                      placeholder={profile?.user?.company === null ? '회사를 입력해주세요' : profile.user.company}
                       {...register('company')}
                     />
                     <Errormessage>{errors.company?.message}</Errormessage>
@@ -285,7 +284,16 @@ const MyInfo = () => {
                   </EditEmail>
                   {errors.auth?.message && <Errormessage>{errors.auth?.message}</Errormessage>}
                 </EmailBox>
-                <EditInfoBtn className={complete ? 'complete' : ''} onClick={editemailhandler} type="button">
+                <EditInfoBtn
+                  disabled={
+                    !errors.email?.message && getFields.email !== null && complete === true && !errors.auth?.message
+                      ? false
+                      : true
+                  }
+                  className={complete ? 'complete' : ''}
+                  onClick={editemailhandler}
+                  type="button"
+                >
                   이메일 수정하기
                 </EditInfoBtn>
               </InfoEditEmailBox>
@@ -395,8 +403,9 @@ const MyInfo = () => {
 export default MyInfo;
 const Wrap = styled.div`
   width: 100%;
-
-  overflow: hidden;
+  height: 100vh;
+  padding-bottom: 100px;
+  overflow: visible;
 `;
 
 const Container = styled.div`

@@ -31,7 +31,7 @@ const Signup = () => {
       setError(error?.response?.data?.error);
     }
   }
-  console.log(complete);
+
   //정규표현식 검증 함수
 
   // 이메일 인증번호 함수
@@ -50,7 +50,7 @@ const Signup = () => {
     try {
       checkuserinfo();
     } catch (err) {
-      console.log(err);
+      return;
     }
   };
   return (
