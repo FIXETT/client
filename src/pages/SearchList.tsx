@@ -17,10 +17,61 @@ const SearchList = () => {
   const [cursor, setCursor] = useState<number | string>(0);
   const [page, setPage] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
+
   const { data, isLoading } = useQuery(['searchAsset', cursor, page, searchText], () =>
     searchAsset(cursor, page, category, searchText),
   );
+  console.log(category);
+  const searchTextChange = (searchText: string, category: string) => {
+    let transformedText = searchText;
+    if (category === 'category') {
+      switch (searchText) {
+        case '1':
+          transformedText = '노트북/데스크탑/서버';
+          break;
+        case '2':
+          transformedText = '모니터';
+          break;
+        case '3':
+          transformedText = '모바일기기';
+          break;
+        case '4':
+          transformedText = '사무기기';
+          break;
+        case '5':
+          transformedText = '기타장비';
+          break;
+        case '6':
+          transformedText = '소프트웨어';
+          break;
+        default:
+          break;
+      }
+    } else if (category === 'status') {
+      switch (searchText) {
+        case '1':
+          transformedText = '정상';
+          break;
+        case '2':
+          transformedText = '분실';
+          break;
+        case '3':
+          transformedText = '수리중';
+          break;
+        case '4':
+          transformedText = '수리완료';
+          break;
+        case '5':
+          transformedText = '수리필요';
+          break;
+        default:
+          break;
+      }
+    }
+    return transformedText;
+  };
 
+  console.log(searchText);
   useEffect(() => {
     setSearList([]);
     if (data) {
@@ -148,7 +199,7 @@ const SearchList = () => {
       </AssetWrap>
       {searchText && (
         <SerchText>
-          <span>&#39;{searchText}&#39;</span> 검색 결과{'  '}
+          <span>&#39;{searchTextChange(searchText, category)}&#39;</span> 검색 결과{'  '}
           {searchList.length > 0 ? String(searchList.length).padStart(2, '0') : ''}
         </SerchText>
       )}
