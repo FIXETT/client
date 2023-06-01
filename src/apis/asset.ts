@@ -79,11 +79,11 @@ export const searchAsset = async (cursor: number | string, direction: string, ca
 
   return response.data;
 };
-export const getDashboard = async (cursor: number | string, direction: string) => {
+export const getDashboard = async (page: number) => {
   const identifier = Number(window.localStorage.getItem('identifier'));
   const params = {
-    cursor: cursor ? `${identifier},${cursor}` : `${identifier}`,
-    direction,
+    identifier,
+    page,
   };
   const response = await AxiosInstance.get('/asset/dashboard', { params, headers });
   return response.data;
