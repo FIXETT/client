@@ -96,10 +96,8 @@ const TableItemList = ({ assetList, status, data }: propsType) => {
           </tr>
         );
       })}
-      <tr>
-        {status === 'loading' && <Loading />}
-        {data?.Assets === 'does not exist asset' && <NotData />}
-      </tr>
+      {status === 'loading' && <Loading />}
+      {data?.Assets === 'does not exist asset' && <NotData />}
     </Fragment>
   );
 };

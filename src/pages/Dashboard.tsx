@@ -7,10 +7,8 @@ import restart from '../assets/icon/restart.png';
 
 const Dashboard = () => {
   const [assetList, setAssetList] = useState([]);
-  const [cursor, setCursor] = useState<number | string>(0);
-  const [page, setPage] = useState<string>('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const { data } = useQuery(['getDashboard', cursor, page, currentPage], () => getDashboard(cursor, page));
+  const [page, setPage] = useState<number>(1);
+  const { data } = useQuery(['getDashboard', page], () => getDashboard(page));
 
   // 로그인 확인
   useAuth();
@@ -23,86 +21,70 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (data) {
-      const newList = data.Assets;
+      const newList = data?.Assets;
       setAssetList(newList);
     }
   }, [data]);
 
   const handleVeryPrevClick = () => {
-    setPage('');
+    setPage(1);
     setAssetList([]);
-    setCurrentPage(1);
-    setCursor('');
   };
   const handlePrevClick = () => {
-    setPage('');
+    setPage(page - 1);
     if (data) {
-      const newCursor = Number(String(data.nextCursor).split(',')[1]) - 20;
-      setCursor(newCursor);
       setAssetList([]);
     }
-    setCurrentPage(currentPage - 1);
   };
 
   const handleVeryNextClick = () => {
-    setPage('backward');
+    setPage(Math.ceil(data?.totalCount / 10));
     setAssetList([]);
-    if (data) {
-      setCurrentPage(Math.ceil(data?.totalCount / 10));
-    }
-    setCursor('');
   };
 
   const handleNextClick = () => {
-    setPage('');
+    setPage(page + 1);
     if (data) {
-      const newCursor = Number(String(data.nextCursor).split(',')[1]);
-      setCursor(newCursor);
       setAssetList([]);
     }
-    setCurrentPage(currentPage + 1);
   };
+
   const renderPagination = () => {
     return (
       <PagenationContainer>
-        {currentPage > 1 && (
+        {page > 1 && (
           <>
-            <PagenationBtn onClick={handleVeryPrevClick} disabled={page === 'forward'}>
+            <PagenationBtn onClick={handleVeryPrevClick} disabled={page === 1}>
               &lt;&lt;
             </PagenationBtn>
-            <PagenationBtn
-              onClick={handlePrevClick}
-              disabled={data && Number(String(data.nextCursor).split(',')[1]) < 11}
-            >
+            <PagenationBtn onClick={handlePrevClick} disabled={data && Math.ceil(data?.totalCount / 10) < page}>
               &lt;
             </PagenationBtn>
-            <PagenationBtn
-              onClick={handlePrevClick}
-              disabled={data && Number(String(data.nextCursor).split(',')[1]) < 11}
-            >
-              {currentPage - 1}
+            <PagenationBtn onClick={handlePrevClick} disabled={data && Math.ceil(data?.totalCount / 10) < page}>
+              {page - 1}
             </PagenationBtn>
           </>
         )}
-        <CurrentPage>{currentPage}</CurrentPage>
+        <CurrentPage>{page}</CurrentPage>
 
-        {data?.totalCount / 10 > currentPage && (
-          <PagenationBtn onClick={handleNextClick} disabled={data?.totalCount && data?.totalCount / 10 < currentPage}>
-            {currentPage + 1}
+        {Math.ceil(data?.totalCount / 10) > page && (
+          <PagenationBtn
+            onClick={handleNextClick}
+            disabled={data?.totalCount && Math.ceil(data?.totalCount / 10) < page}
+          >
+            {page + 1}
           </PagenationBtn>
         )}
-        <PagenationBtn onClick={handleNextClick} disabled={data?.totalCount && data?.totalCount / 10 < currentPage}>
+        <PagenationBtn onClick={handleNextClick} disabled={data?.totalCount && Math.ceil(data?.totalCount / 10) < page}>
           &gt;
         </PagenationBtn>
-        <PagenationBtn
-          onClick={handleVeryNextClick}
-          disabled={page === 'backward' || (data?.totalCount && data?.totalCount / 10 < currentPage)}
-        >
+        <PagenationBtn onClick={handleVeryNextClick} disabled={page === Math.ceil(data?.totalCount / 10)}>
           &gt;&gt;
         </PagenationBtn>
       </PagenationContainer>
     );
   };
+
   const categoryIcon = (category: string) => {
     switch (category) {
       case '노트북/데스크탑/서버':
@@ -121,6 +103,7 @@ const Dashboard = () => {
         return;
     }
   };
+
   return (
     <AssetContainer>
       <Title>
@@ -145,20 +128,20 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {assetList &&
-              assetList?.map((value: any) => {
-                return (
-                  <tr key={value?.dashboardId}>
-                    <TableItem>{value?.name}</TableItem>
-                    <TableItem>
-                      {categoryIcon(value.category)}
-                      {value.category}
-                    </TableItem>
-                    <TableItem>{value?.note}</TableItem>
-                    <TableItem>{new Date(value?.updateDate)?.toISOString().replace('T', ' ').slice(0, 10)}</TableItem>
-                  </tr>
-                );
-              })}
+            {assetList?.map((value: any) => {
+              return (
+                <tr key={value?.dashboardId}>
+                  <TableItem>{value?.name}</TableItem>
+                  <TableItem>
+                    {categoryIcon(value.Category.category)} {value.Category.category}
+                  </TableItem>
+                  <TableItem>{value?.note}</TableItem>
+                  <TableItem>
+                    {value?.updatedAt.split('T')[0]} {value?.updatedAt.split('T')[1].slice(0, 5)}
+                  </TableItem>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         {renderPagination()}
@@ -168,6 +151,7 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
 const AssetContainer = styled.div`
   width: 668px;
   height: 100%;
@@ -255,6 +239,7 @@ const PagenationContainer = styled.div`
   margin-top: 16px;
   display: flex;
 `;
+
 const CurrentPage = styled.p`
   background-color: #f4f4f4;
   width: 38px;
@@ -266,6 +251,7 @@ const CurrentPage = styled.p`
   align-items: center;
   color: #999;
 `;
+
 const PagenationBtn = styled.button<{ disabled: boolean }>`
   color: #ccc;
   width: 38px;
