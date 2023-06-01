@@ -151,6 +151,7 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
 const AssetContainer = styled.div`
   width: 668px;
   height: 100%;
@@ -238,6 +239,7 @@ const PagenationContainer = styled.div`
   margin-top: 16px;
   display: flex;
 `;
+
 const CurrentPage = styled.p`
   background-color: #f4f4f4;
   width: 38px;
@@ -249,6 +251,7 @@ const CurrentPage = styled.p`
   align-items: center;
   color: #999;
 `;
+
 const PagenationBtn = styled.button<{ disabled: boolean }>`
   color: #ccc;
   width: 38px;

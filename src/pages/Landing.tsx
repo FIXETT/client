@@ -14,6 +14,7 @@ import assetMap from '../assets/landing/assetMap.png';
 import fixet from '../assets/landing/fixet.png';
 import logo_g from '../assets/icon/logo_g.png';
 import { ReactComponent as Logo } from '../assets/logo.svg';
+import { ReactComponent as Profile } from '../assets/profile.svg';
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -31,10 +32,11 @@ const Landing = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.innerHeight + window.pageYOffset;
-      if (scrollPosition >= 2329) {
+      if (scrollPosition >= 1922) {
         setReachedBottom(true);
       } else {
         setReachedBottom(false);
@@ -113,6 +115,9 @@ const Landing = () => {
         <LandingScrollImg src={group01} alt="텍스트이미지" reachedBottom={reachedBottom} />
         <LandingScrollImg src={group02} alt="텍스트이미지" reachedBottom={reachedBottom} />
         <BottomText reachedBottom={reachedBottom}>이제 fixet으로 이 고민들을 해결할 시간이에요!</BottomText>
+        <BouncingBox reachedBottom={reachedBottom}>
+          <Profile width="200px" height="200px" />
+        </BouncingBox>
       </LandingScroll>
       <AssetListContainer>
         <p>자산 대시보드</p>
@@ -291,10 +296,10 @@ const SubText = styled.p<{ fadeOut: boolean }>`
     color: #066aff;
   }
   :nth-child(2) {
-    animation: ${({ fadeOut }) => (fadeOut ? fadeOutAnimation : fadeInAnimation)} 3s linear 3s infinite alternate;
+    animation: ${fadeOutAnimation} 3s linear 3s infinite alternate;
   }
   :nth-child(3) {
-    animation: ${({ fadeOut }) => (fadeOut ? fadeOutAnimation : fadeInAnimation)} 3s linear 3s infinite alternate;
+    animation: ${fadeInAnimation} 3s linear 3s infinite alternate;
   }
 `;
 
@@ -346,6 +351,7 @@ const LandingScroll = styled.div<{ reachedBottom: boolean }>`
   width: 100vw;
   height: 1400px;
   position: relative;
+  overflow: hidden;
   background: ${(props) =>
     props.reachedBottom
       ? css`linear-gradient(180deg, #066AFF 0%, rgba(6, 106, 255, 0) 100%)`
@@ -616,6 +622,18 @@ const AssetMapBtn = styled.button`
   border-radius: 32px;
   margin-top: 56px;
 `;
+const gradientAnimationAssetMapBtnText = keyframes`
+  0% {
+    background-position: 200% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+`;
+
 const AssetMapBtnText = styled.p`
   font-weight: 700;
   font-size: 28px;
@@ -625,6 +643,8 @@ const AssetMapBtnText = styled.p`
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-fill-color: transparent;
+  animation: ${gradientAnimationAssetMapBtnText} 2s ease-in-out infinite;
+  background-size: 200% auto;
 `;
 
 const Footer = styled.div`
@@ -640,4 +660,31 @@ const Flex = styled.div`
   color: #999;
   font-size: 14px;
   gap: 16px;
+`;
+
+// 애니메이션 추락
+const bounceAnimation = keyframes`
+  0% {
+    top: -100px;
+  }
+  25% {
+    top: 0;
+  }
+  50% {
+    top: 60%;
+  }
+  75% {
+    top: 55%;
+  }
+  100% {
+    top: 60%;
+  }
+`;
+
+const BouncingBox = styled.div<{ reachedBottom: boolean }>`
+  display: ${(props) => (props.reachedBottom ? 'block' : 'none')};
+  position: absolute;
+  animation: ${bounceAnimation} 2s ease-in-out forwards;
+  left: 50%;
+  transform: translateX(-50%);
 `;
