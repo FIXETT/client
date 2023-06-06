@@ -83,10 +83,6 @@ const Search = () => {
             alert('잘못된 검색어입니다');
             return;
         }
-      } else {
-        // Handle invalid category
-        alert('잘못된 카테고리입니다');
-        return;
       }
 
       setSearchText(transformedText);
