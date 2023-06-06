@@ -57,23 +57,23 @@ type assetType = {
 interface AssetResponse {
   asset: assetType | string;
 }
-export const getAsset = async (cursor: number | string, direction: string) => {
+export const getAsset = async (page: number) => {
   const identifier = Number(window.localStorage.getItem('identifier'));
   const params = {
-    cursor: cursor ? `${identifier},${cursor}` : `${identifier}`,
-    direction,
+    identifier,
+    page,
   };
   const response = await AxiosInstance.get('/asset', { params, headers });
 
   return response.data;
 };
-export const searchAsset = async (cursor: number | string, direction: string, category: string, value: string) => {
+export const searchAsset = async (category: string, value: string, page: number) => {
   const identifier: string | null = window.localStorage.getItem('identifier');
   const params = {
-    cursor: cursor ? `${identifier},${cursor}` : `${identifier}`,
+    identifier,
     category,
     value,
-    direction,
+    page,
   };
   const response = await AxiosInstance.get(`/asset/search`, { params, headers });
 

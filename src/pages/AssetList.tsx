@@ -33,96 +33,69 @@ const AssetList = () => {
   useAuth();
 
   const [assetList, setAssetList] = useState<assetType[]>([]);
-  const [cursor, setCursor] = useState<number | string>(0);
-  const [page, setPage] = useState<string>('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const { data, status } = useQuery(['getAsset', cursor, page, currentPage], () => getAsset(cursor, page));
+  const [page, setPage] = useState<number>(1);
+  const { data, status } = useQuery(['getAsset', page], () => getAsset(page));
 
   useEffect(() => {
     if (data) {
-      const newList = data.asset.Assets;
+      const newList = data?.asset?.Assets;
       setAssetList(newList);
     }
   }, [data]);
 
   const handleVeryPrevClick = () => {
-    setPage('');
+    setPage(1);
     setAssetList([]);
-    setCurrentPage(1);
-    setCursor('');
   };
   const handlePrevClick = () => {
-    setPage('');
-
-    if (data) {
-      const newCursor = Number(String(data.asset.nextCursor).split(',')[1]) - 20;
-      setCursor(newCursor);
-      setAssetList([]);
-    }
-    setCurrentPage(currentPage - 1);
+    setPage(page - 1);
+    setAssetList([]);
   };
 
   const handleVeryNextClick = () => {
-    setPage('backward');
+    setPage(Math.ceil(data?.asset?.totalCount / 10));
     setAssetList([]);
-    if (data) {
-      setCurrentPage(Math.ceil(data.asset.totalCount / 10));
-    }
-    setCursor('');
   };
 
   const handleNextClick = () => {
-    setPage('');
-
-    if (data) {
-      const newCursor = Number(String(data.asset.nextCursor).split(',')[1]);
-      setCursor(newCursor);
-      setAssetList([]);
-    }
-    setCurrentPage(currentPage + 1);
+    setPage(page + 1);
+    setAssetList([]);
   };
   const renderPagination = () => {
     return (
       <PagenationContainer>
-        {currentPage > 1 && (
+        {page > 1 && (
           <>
-            <PagenationBtn onClick={handleVeryPrevClick} disabled={page === 'forward'}>
+            <PagenationBtn onClick={handleVeryPrevClick} disabled={page === 1}>
               &lt;&lt;
             </PagenationBtn>
-            <PagenationBtn
-              onClick={handlePrevClick}
-              disabled={data && Number(String(data.asset.nextCursor).split(',')[1]) < 11}
-            >
+            <PagenationBtn onClick={handlePrevClick} disabled={page === 1}>
               &lt;
             </PagenationBtn>
             <PagenationBtn
               onClick={handlePrevClick}
-              disabled={data && Number(String(data.asset.nextCursor).split(',')[1]) < 11}
+              disabled={page === 1 || Math.ceil(data?.asset?.totalCount / 10) < page}
             >
-              {currentPage - 1}
+              {page - 1}
             </PagenationBtn>
           </>
         )}
-        <CurrentPage>{currentPage}</CurrentPage>
+        <CurrentPage>{page}</CurrentPage>
 
-        {data?.asset.totalCount / 10 > currentPage && (
+        {data?.asset.totalCount / 10 > page && (
           <PagenationBtn
             onClick={handleNextClick}
-            disabled={data?.asset.totalCount && data?.asset.totalCount / 10 < currentPage}
+            disabled={
+              page === Math.ceil(data?.asset?.totalCount / 10) || Math.ceil(data?.asset?.totalCount / 10) < page
+            }
           >
-            {currentPage + 1}
+            {page + 1}
           </PagenationBtn>
         )}
-        <PagenationBtn
-          onClick={handleNextClick}
-          disabled={data?.asset.totalCount && data?.asset.totalCount / 10 < currentPage}
-        >
+        <PagenationBtn onClick={handleNextClick} disabled={page === Math.ceil(data?.asset?.totalCount / 10)}>
           &gt;
         </PagenationBtn>
-        <PagenationBtn
-          onClick={handleVeryNextClick}
-          disabled={page === 'backward' || (data?.asset.totalCount && data?.asset.totalCount / 10 < currentPage)}
-        >
+        <PagenationBtn onClick={handleVeryNextClick} disabled={page === Math.ceil(data?.asset?.totalCount / 10)}>
           &gt;&gt;
         </PagenationBtn>
       </PagenationContainer>
