@@ -32,9 +32,7 @@ const Dashboard = () => {
   };
   const handlePrevClick = () => {
     setPage(page - 1);
-    if (data) {
-      setAssetList([]);
-    }
+    setAssetList([]);
   };
 
   const handleVeryNextClick = () => {
@@ -44,9 +42,7 @@ const Dashboard = () => {
 
   const handleNextClick = () => {
     setPage(page + 1);
-    if (data) {
-      setAssetList([]);
-    }
+    setAssetList([]);
   };
 
   const renderPagination = () => {
@@ -57,10 +53,10 @@ const Dashboard = () => {
             <PagenationBtn onClick={handleVeryPrevClick} disabled={page === 1}>
               &lt;&lt;
             </PagenationBtn>
-            <PagenationBtn onClick={handlePrevClick} disabled={data && Math.ceil(data?.totalCount / 10) < page}>
+            <PagenationBtn onClick={handlePrevClick} disabled={page === 1}>
               &lt;
             </PagenationBtn>
-            <PagenationBtn onClick={handlePrevClick} disabled={data && Math.ceil(data?.totalCount / 10) < page}>
+            <PagenationBtn onClick={handlePrevClick} disabled={page === 1 || Math.ceil(data?.totalCount / 10) < page}>
               {page - 1}
             </PagenationBtn>
           </>
@@ -70,12 +66,12 @@ const Dashboard = () => {
         {Math.ceil(data?.totalCount / 10) > page && (
           <PagenationBtn
             onClick={handleNextClick}
-            disabled={data?.totalCount && Math.ceil(data?.totalCount / 10) < page}
+            disabled={page === Math.ceil(data?.totalCount / 10) || Math.ceil(data?.totalCount / 10) < page}
           >
             {page + 1}
           </PagenationBtn>
         )}
-        <PagenationBtn onClick={handleNextClick} disabled={data?.totalCount && Math.ceil(data?.totalCount / 10) < page}>
+        <PagenationBtn onClick={handleNextClick} disabled={page === Math.ceil(data?.totalCount / 10)}>
           &gt;
         </PagenationBtn>
         <PagenationBtn onClick={handleVeryNextClick} disabled={page === Math.ceil(data?.totalCount / 10)}>
