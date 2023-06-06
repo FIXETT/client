@@ -14,14 +14,13 @@ const SearchList = () => {
   const searchText = useRecoilValue(searchTextState);
   const [searchList, setSearList] = useRecoilState(searchlistState);
   const category = useRecoilValue(categoryState);
-  const [cursor, setCursor] = useState<number | string>(0);
-  const [page, setPage] = useState<string>('');
+  const [page, setPage] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, isLoading } = useQuery(['searchAsset', cursor, page, searchText], () =>
-    searchAsset(cursor, page, category, searchText),
+  const { data, isLoading } = useQuery(['searchAsset', category, searchText, page], () =>
+    searchAsset(category, searchText, page),
   );
-  console.log(category);
+
   const searchTextChange = (searchText: string, category: string) => {
     let transformedText = searchText;
     if (category === 'category') {
@@ -71,87 +70,62 @@ const SearchList = () => {
     return transformedText;
   };
 
-  console.log(searchText);
   useEffect(() => {
     setSearList([]);
     if (data) {
-      const newList = data?.sortedAssets;
+      const newList = data?.Assets;
       setSearList(newList);
     }
   }, [data]);
 
   const handleVeryPrevClick = () => {
-    setPage('');
+    setPage(1);
     setSearList([]);
-    setCurrentPage(1);
-    setCursor('');
   };
   const handlePrevClick = () => {
-    setPage('');
-
-    if (data) {
-      const newCursor = Number(String(data?.nextCursor).split(',')[1]) - 20;
-      setCursor(newCursor);
-      setSearList([]);
-    }
-    setCurrentPage(currentPage - 1);
+    setPage(page - 1);
+    setSearList([]);
   };
 
   const handleVeryNextClick = () => {
-    setPage('backward');
+    setPage(Math.ceil(data?.totalCount / 10));
     setSearList([]);
-    if (data) {
-      setCurrentPage(Math.ceil(data?.totalCount / 10));
-    }
-    setCursor('');
   };
 
   const handleNextClick = () => {
-    setPage('');
-
-    if (data) {
-      const newCursor = Number(String(data?.nextCursor).split(',')[1]);
-      setCursor(newCursor);
-      setSearList([]);
-    }
-    setCurrentPage(currentPage + 1);
+    setPage(page + 1);
+    setSearList([]);
   };
   const renderPagination = () => {
     return (
       <PagenationContainer>
         {currentPage > 1 && (
           <>
-            <PagenationBtn onClick={handleVeryPrevClick} disabled={page === 'forward'}>
+            <PagenationBtn onClick={handleVeryPrevClick} disabled={page === 1}>
               &lt;&lt;
             </PagenationBtn>
-            <PagenationBtn
-              onClick={handlePrevClick}
-              disabled={data && Number(String(data?.nextCursor).split(',')[1]) < 11}
-            >
+            <PagenationBtn onClick={handlePrevClick} disabled={page === 1}>
               &lt;
             </PagenationBtn>
-            <PagenationBtn
-              onClick={handlePrevClick}
-              disabled={data && Number(String(data?.nextCursor).split(',')[1]) < 11}
-            >
+            <PagenationBtn onClick={handlePrevClick} disabled={page === 1 || Math.ceil(data?.totalCount / 10) < page}>
               {currentPage - 1}
             </PagenationBtn>
           </>
         )}
         <CurrentPage>{currentPage}</CurrentPage>
 
-        {data?.totalCount / 10 > currentPage && (
-          <PagenationBtn onClick={handleNextClick} disabled={data?.totalCount && data?.totalCount / 10 < currentPage}>
+        {Math.ceil(data?.totalCount / 10) > page && (
+          <PagenationBtn
+            onClick={handleNextClick}
+            disabled={page === Math.ceil(data?.totalCount / 10) || Math.ceil(data?.totalCount / 10) < page}
+          >
             {currentPage + 1}
           </PagenationBtn>
         )}
-        <PagenationBtn onClick={handleNextClick} disabled={data?.totalCount && data?.totalCount / 10 < currentPage}>
+        <PagenationBtn onClick={handleNextClick} disabled={page === Math.ceil(data?.totalCount / 10)}>
           &gt;
         </PagenationBtn>
-        <PagenationBtn
-          onClick={handleVeryNextClick}
-          disabled={page === 'backward' || (data?.totalCount && data?.totalCount / 10 < currentPage)}
-        >
+        <PagenationBtn onClick={handleVeryNextClick} disabled={page === Math.ceil(data?.totalCount / 10)}>
           &gt;&gt;
         </PagenationBtn>
       </PagenationContainer>
@@ -214,7 +188,7 @@ const SearchList = () => {
                   <tr key={value?.assetNumber}>
                     <AssetRadioButton assetList={searchList} value={value} />
                     <AssetItem>
-                      <p>{value?.assetNumber}</p>
+                      <p>{value?.assetId}</p>
                     </AssetItem>
                     <AssetItem>
                       <p>{value?.name}</p>
@@ -226,8 +200,8 @@ const SearchList = () => {
                     {/* 제품명 */}
                     <AssetItem>
                       <p>
-                        {categoryIcon(value?.category)}
-                        {value?.category}
+                        {categoryIcon(value?.Category?.category)}
+                        {value?.Category?.category}
                       </p>
                     </AssetItem>
                     {/* 품목 */}
@@ -253,8 +227,8 @@ const SearchList = () => {
                     {/* 자산위치 */}
                     <AssetItem>
                       <p>
-                        {statusIcon(value?.status)}
-                        {value?.status}
+                        {statusIcon(value?.Status?.status)}
+                        {value?.Status?.status}
                       </p>
                     </AssetItem>
                     {/* 상태 */}
@@ -268,9 +242,9 @@ const SearchList = () => {
             </tbody>
           </table>
         )}
+        {renderPagination()}
         {isLoading && <Loading />}
         {!isLoading && !data && <NotData />}
-        {renderPagination()}
       </AssetListContainer>
     </AssetContainer>
   );
