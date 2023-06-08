@@ -4,11 +4,13 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getDashboard } from '../apis/asset';
 import useAuth from '../hooks/isLogin';
 import restart from '../assets/icon/restart.png';
+import Loading from '../components/Loading';
+import NotData from '../components/NotData';
 
 const Dashboard = () => {
   const [assetList, setAssetList] = useState([]);
   const [page, setPage] = useState<number>(1);
-  const { data } = useQuery(['getDashboard', page], () => getDashboard(page));
+  const { data, status } = useQuery(['getDashboard', page], () => getDashboard(page));
 
   // 로그인 확인
   useAuth();
@@ -129,7 +131,7 @@ const Dashboard = () => {
                 <tr key={value?.dashboardId}>
                   <TableItem>{value?.name}</TableItem>
                   <TableItem>
-                    {categoryIcon(value.Category.category)} {value.Category.category}
+                    {categoryIcon(value?.Category?.category)} {value?.Category?.category}
                   </TableItem>
                   <TableItem>{value?.note}</TableItem>
                   <TableItem>
@@ -140,8 +142,10 @@ const Dashboard = () => {
             })}
           </tbody>
         </table>
-        {renderPagination()}
       </AssetListContainer>
+      {status === 'loading' && <Loading />}
+      {data && data.Assets === 'does not exist asset' && <NotData />}
+      {data && renderPagination()}
     </AssetContainer>
   );
 };
