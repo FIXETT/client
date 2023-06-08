@@ -81,6 +81,10 @@ export const modifyState = atom<modifyListType[] | any[]>({
   key: 'modify',
   default: [],
 });
+export const editListState = atom<modifyListType>({
+  key: 'editList',
+  default: {},
+});
 export const allCheckedState = atom({
   key: 'allChecked',
   default: false,
