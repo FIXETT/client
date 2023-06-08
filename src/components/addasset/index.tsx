@@ -82,11 +82,19 @@ const index = () => {
       }
     }
 
-    return {
-      ...cleanedAsset,
-      category: updatedCategory,
-      status: updatedStatus,
-    };
+    if (updatedCategory || updatedStatus) {
+      const updatedAsset = {
+        ...cleanedAsset,
+        category: updatedCategory,
+        status: updatedStatus,
+      };
+      return updatedAsset;
+    } else {
+      const updatedAsset = {
+        ...cleanedAsset,
+      };
+      return updatedAsset;
+    }
   });
   const addAssetMutation = useMutation(() => postAsset(updatedAssetList), {
     onSuccess: () => {

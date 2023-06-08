@@ -8,7 +8,7 @@ import NotData from '../NotData';
 import Loading from '../Loading';
 
 type propsType = {
-  assetList: assetType[] | [];
+  assetList: assetType[] | any[];
   status: string;
   data: any;
 };
@@ -49,7 +49,7 @@ const TableItemList = ({ assetList, status, data }: propsType) => {
     }
   };
   return (
-    <Fragment>
+    <tbody>
       {assetList?.map((value) => {
         return (
           <tr key={value?.assetNumber}>
@@ -65,8 +65,8 @@ const TableItemList = ({ assetList, status, data }: propsType) => {
             </TableItem>
             <TableItem>
               <p>
-                {categoryIcon(value?.category)}
-                {value?.category}
+                {categoryIcon(value?.Category?.category)}
+                {value?.Category?.category}
               </p>
             </TableItem>
             <TableItem>
@@ -86,8 +86,8 @@ const TableItemList = ({ assetList, status, data }: propsType) => {
             </TableItem>
             <TableItem>
               <p>
-                {statusIcon(value?.status)}
-                {value?.status}
+                {statusIcon(value?.Status?.status)}
+                {value?.Status?.status}
               </p>
             </TableItem>
             <TableItem>
@@ -96,9 +96,7 @@ const TableItemList = ({ assetList, status, data }: propsType) => {
           </tr>
         );
       })}
-      {status === 'loading' && <Loading />}
-      {data?.Assets === 'does not exist asset' && <NotData />}
-    </Fragment>
+    </tbody>
   );
 };
 export default TableItemList;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { postAsset } from '../../apis/asset';
+import { excelPostAsset } from '../../apis/asset';
 import * as XLSX from 'xlsx';
 import { useSetRecoilState } from 'recoil';
 import { showAddExcelComponentState } from '../../recoil/assets';
@@ -26,7 +26,7 @@ const ExcelModal = () => {
       return false;
     }
   };
-  const addAssetMutation = useMutation(postAsset, {
+  const addAssetMutation = useMutation(excelPostAsset, {
     onSuccess: () => {
       queryClient.invalidateQueries(['getAsset']);
     },

@@ -106,8 +106,8 @@ const Landing = () => {
           </LinkBtn>
         </LandingFirstWrap>
         <ImgWrap>
-          <img src={chat01} alt="채팅화면01" />
           <img src={chat02} alt="채팅화면02" />
+          <img src={chat01} alt="채팅화면01" />
         </ImgWrap>
       </LandingFirst>
       <LandingScroll reachedBottom={reachedBottom}>
@@ -251,33 +251,27 @@ const fadeOutAnimation = keyframes`
   0% {
     opacity: 1;
   }
-  25% {
-    opacity: 0.75;
-  }
+ 
   50% {
-    opacity: 0.5;
+    opacity: 0;
   }
-  75% {
-    opacity: 0.25;
-  }
+  
   100% {
     opacity: 0;
+    display: none;
   }
 `;
 
 const fadeInAnimation = keyframes`
   0% {
     opacity: 0;
+    display: none;
   }
-  25% {
-    opacity: 0.25;
-  }
+  
   50% {
-    opacity: 0.5;
+    opacity: 0;
   }
-  75% {
-    opacity: 0.75;
-  }
+  
   100% {
     opacity: 1;
   }
@@ -296,10 +290,10 @@ const SubText = styled.p<{ fadeOut: boolean }>`
     color: #066aff;
   }
   :nth-child(2) {
-    animation: ${fadeOutAnimation} 3s linear 3s infinite alternate;
+    animation: ${fadeOutAnimation} 3s linear infinite alternate;
   }
   :nth-child(3) {
-    animation: ${fadeInAnimation} 3s linear 3s infinite alternate;
+    animation: ${fadeInAnimation} 3s linear infinite alternate;
   }
 `;
 
@@ -312,13 +306,14 @@ const TextWrap = styled.div`
     left: 0;
     bottom: 0;
     :nth-child(4) {
-      animation: ${fadeOutAnimation} 3s linear 3s infinite alternate;
+      animation: ${fadeOutAnimation} 3s linear infinite alternate;
     }
     :nth-child(5) {
-      animation: ${fadeInAnimation} 3s linear 3s infinite alternate;
+      animation: ${fadeInAnimation} 3s linear infinite alternate;
     }
   }
 `;
+
 const LinkBtn = styled.button`
   padding: 24px;
   width: 255px;
@@ -569,7 +564,6 @@ const AssetListAddSubText = styled.p`
 `;
 const AssetListAddText = styled.p`
   text-align: left;
-
   font-weight: 500;
   font-size: 24px;
   color: #999999;

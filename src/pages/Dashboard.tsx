@@ -4,11 +4,13 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getDashboard } from '../apis/asset';
 import useAuth from '../hooks/isLogin';
 import restart from '../assets/icon/restart.png';
+import Loading from '../components/Loading';
+import NotData from '../components/NotData';
 
 const Dashboard = () => {
   const [assetList, setAssetList] = useState([]);
   const [page, setPage] = useState<number>(1);
-  const { data } = useQuery(['getDashboard', page], () => getDashboard(page));
+  const { data, status } = useQuery(['getDashboard', page], () => getDashboard(page));
 
   // 로그인 확인
   useAuth();
@@ -32,9 +34,7 @@ const Dashboard = () => {
   };
   const handlePrevClick = () => {
     setPage(page - 1);
-    if (data) {
-      setAssetList([]);
-    }
+    setAssetList([]);
   };
 
   const handleVeryNextClick = () => {
@@ -44,9 +44,7 @@ const Dashboard = () => {
 
   const handleNextClick = () => {
     setPage(page + 1);
-    if (data) {
-      setAssetList([]);
-    }
+    setAssetList([]);
   };
 
   const renderPagination = () => {
@@ -57,10 +55,10 @@ const Dashboard = () => {
             <PagenationBtn onClick={handleVeryPrevClick} disabled={page === 1}>
               &lt;&lt;
             </PagenationBtn>
-            <PagenationBtn onClick={handlePrevClick} disabled={data && Math.ceil(data?.totalCount / 10) < page}>
+            <PagenationBtn onClick={handlePrevClick} disabled={page === 1}>
               &lt;
             </PagenationBtn>
-            <PagenationBtn onClick={handlePrevClick} disabled={data && Math.ceil(data?.totalCount / 10) < page}>
+            <PagenationBtn onClick={handlePrevClick} disabled={page === 1 || Math.ceil(data?.totalCount / 10) < page}>
               {page - 1}
             </PagenationBtn>
           </>
@@ -70,12 +68,12 @@ const Dashboard = () => {
         {Math.ceil(data?.totalCount / 10) > page && (
           <PagenationBtn
             onClick={handleNextClick}
-            disabled={data?.totalCount && Math.ceil(data?.totalCount / 10) < page}
+            disabled={page === Math.ceil(data?.totalCount / 10) || Math.ceil(data?.totalCount / 10) < page}
           >
             {page + 1}
           </PagenationBtn>
         )}
-        <PagenationBtn onClick={handleNextClick} disabled={data?.totalCount && Math.ceil(data?.totalCount / 10) < page}>
+        <PagenationBtn onClick={handleNextClick} disabled={page === Math.ceil(data?.totalCount / 10)}>
           &gt;
         </PagenationBtn>
         <PagenationBtn onClick={handleVeryNextClick} disabled={page === Math.ceil(data?.totalCount / 10)}>
@@ -133,7 +131,7 @@ const Dashboard = () => {
                 <tr key={value?.dashboardId}>
                   <TableItem>{value?.name}</TableItem>
                   <TableItem>
-                    {categoryIcon(value.Category.category)} {value.Category.category}
+                    {categoryIcon(value?.Category?.category)} {value?.Category?.category}
                   </TableItem>
                   <TableItem>{value?.note}</TableItem>
                   <TableItem>
@@ -144,8 +142,10 @@ const Dashboard = () => {
             })}
           </tbody>
         </table>
-        {renderPagination()}
       </AssetListContainer>
+      {status === 'loading' && <Loading />}
+      {data && data.Assets === 'does not exist asset' && <NotData />}
+      {data && renderPagination()}
     </AssetContainer>
   );
 };
