@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
-import { modifyState, postAssetTypeState, showModifyComponentState } from '../../recoil/assets';
-import { handleChangeType } from '../../types/asset';
+import { editListState, modifyState, postAssetTypeState, showModifyComponentState } from '../../recoil/assets';
+import { handleChangeType, patchAssetDataType } from '../../types/asset';
 
 import upload from '../../assets/icon/upload.svg';
 import undo from '../../assets/icon/undo.svg';
@@ -17,10 +17,11 @@ const index = () => {
   const postAssetType = useRecoilValue(postAssetTypeState);
   const [modifyList, setModifyList] = useRecoilState(modifyState);
   const setShowModifyComponent = useSetRecoilState(showModifyComponentState);
+  const [editList, setEditList] = useRecoilState(editListState);
 
   const queryClient = useQueryClient();
 
-  const newList = [...modifyList];
+  const newList = [editList];
 
   const updatedAssetList = newList.map((asset) => {
     const cleanedAsset = Object.fromEntries(
@@ -71,36 +72,43 @@ const index = () => {
           break;
       }
     }
-
-    return {
-      ...cleanedAsset,
-      category: updatedCategory,
-      status: updatedStatus,
-    };
+    if (updatedCategory || updatedStatus) {
+      const updatedAsset = {
+        ...cleanedAsset,
+        category: updatedCategory,
+        status: updatedStatus,
+      };
+      return updatedAsset;
+    } else {
+      const updatedAsset = {
+        ...cleanedAsset,
+      };
+      return updatedAsset;
+    }
   });
-
-  const modifyAssetMutation = useMutation(() => patchAsset(updatedAssetList), {
+  const modifyAssetMutation = useMutation(() => patchAsset({ ...updatedAssetList }[0]), {
     onSuccess: () => {
       queryClient.invalidateQueries(['getAsset']);
     },
   });
-
   // 실사용자, 제품명, 품목은 필수 입력값
   const handleModifyButtonClick = () => {
     modifyAssetMutation.mutate();
     setShowModifyComponent(false);
   };
   const handleChange: handleChangeType = (e) => {
-    const identifier = Number(window.localStorage.getItem('identifier'));
     const type = e.target.name;
     const value: string | number = e.target.value; // Allow value to be either a string or number
-    const newList = [...modifyList];
-    newList[0] = {
+    const transformedData = modifyList.map((item) => ({
+      assetNumber: item.assetNumber,
+      identifier: item.identifier,
+      ...editList,
+    }));
+    const newList = [...transformedData];
+    setEditList({
       ...newList[0],
       [type]: value as string,
-      identifier,
-    };
-    setModifyList(newList);
+    });
   };
 
   const assetInput = (assetType: {
