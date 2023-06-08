@@ -107,9 +107,7 @@ const AssetList = () => {
       <AssetListContainer>
         <table>
           <TableHead assetList={assetList} />
-          <tbody>
-            <TableItemList assetList={assetList} status={status} data={data} />
-          </tbody>
+          <TableItemList assetList={assetList} status={status} data={data} />
         </table>
         {status === 'loading' && <Loading />}
         {data && data.asset === 'does not exist asset' && <NotData />}
