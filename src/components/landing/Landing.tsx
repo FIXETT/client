@@ -62,7 +62,6 @@ const Landing = () => {
     localStorage.clear();
     navigate('/reset');
   };
-  console.log(schema);
 
   const loginHandler: SubmitHandler<FormValue> = async (data) => {
     const email = data.email;
