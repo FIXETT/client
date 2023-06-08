@@ -28,6 +28,12 @@ AxiosInstance.interceptors.response.use(
   },
 );
 
+export const excelPostAsset = async (assetlist: any) => {
+  const identifier = Number(window.localStorage.getItem('identifier'));
+
+  const response = await AxiosInstance.post(`/asset/excel/${identifier}`, assetlist, { headers });
+  return response;
+};
 export const postAsset = async (assetlist: any) => {
   const response = await AxiosInstance.post('/asset', assetlist, { headers });
   return response;
