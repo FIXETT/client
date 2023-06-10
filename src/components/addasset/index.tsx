@@ -96,7 +96,7 @@ const index = () => {
       return updatedAsset;
     }
   });
-  const addAssetMutation = useMutation(() => postAsset(updatedAssetList), {
+  const addAssetMutation = useMutation(() => postAsset({ ...updatedAssetList }[0]), {
     onSuccess: () => {
       queryClient.invalidateQueries(['getAsset']);
     },
