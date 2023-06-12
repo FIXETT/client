@@ -21,6 +21,7 @@ export interface FormValue {
   password: string;
   email: string;
   confirm: string;
+  company: string;
 }
 
 const Landing = () => {
