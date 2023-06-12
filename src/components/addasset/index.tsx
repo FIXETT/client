@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
 import { assetlistState, postAssetTypeState, showAddComponentState } from '../../recoil/assets';
-import { handleChangeType } from '../../types/asset';
+import { assetObjType, handleChangeType } from '../../types/asset';
 
 import upload from '../../assets/icon/upload.svg';
 import undo from '../../assets/icon/undo.svg';
@@ -82,13 +82,21 @@ const index = () => {
       }
     }
 
-    return {
-      ...cleanedAsset,
-      category: updatedCategory,
-      status: updatedStatus,
-    };
+    if (updatedCategory || updatedStatus) {
+      const updatedAsset = {
+        ...cleanedAsset,
+        category: updatedCategory,
+        status: updatedStatus,
+      };
+      return updatedAsset;
+    } else {
+      const updatedAsset = {
+        ...cleanedAsset,
+      };
+      return updatedAsset;
+    }
   });
-  const addAssetMutation = useMutation(() => postAsset(updatedAssetList), {
+  const addAssetMutation = useMutation(() => postAsset({ ...updatedAssetList }[0]), {
     onSuccess: () => {
       queryClient.invalidateQueries(['getAsset']);
     },
@@ -118,13 +126,7 @@ const index = () => {
     setassetlist(newList);
   };
 
-  const assetInput = (assetType: {
-    title: string;
-    type: string;
-    inputType: string;
-    img?: string;
-    essential: boolean;
-  }) => {
+  const assetInput = (assetType: assetObjType) => {
     switch (assetType.title) {
       case '품목':
         return <SelectCategory assetType={assetType} handleChange={handleChange} />;

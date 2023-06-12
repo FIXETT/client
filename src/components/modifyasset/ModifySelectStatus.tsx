@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 
-import { modifyState } from '../../recoil/assets';
+import { editListState, modifyState } from '../../recoil/assets';
 import { inputParameterType } from '../../types/asset';
 
-import arrowBttom from '../../assets/icon/arrow-bottom.svg';
+import arrowBottom from '../../assets/icon/arrow-bottom.svg';
 
 const ModifySelectStatus = ({ assetType, handleChange }: inputParameterType) => {
   const [showStatus, setShowStatus] = useState(false);
   const modifyList = useRecoilValue(modifyState);
+  const editList = useRecoilValue(editListState);
 
   const icon = () => {
-    switch (modifyList[0]?.status) {
+    switch (editList.status || modifyList[0]?.Status?.status) {
       case '정상':
         return <span>🟢</span>;
       case '분실':
@@ -27,6 +28,8 @@ const ModifySelectStatus = ({ assetType, handleChange }: inputParameterType) => 
         return;
     }
   };
+  const status = editList.status || modifyList[0]?.Status?.status || '선택';
+  const showArrowIcon = !modifyList[0]?.Status?.status && !editList.status;
   return (
     <ModifySelectContainer>
       <TitleWrap>
@@ -44,8 +47,8 @@ const ModifySelectStatus = ({ assetType, handleChange }: inputParameterType) => 
         }}
       >
         {icon()}
-        {modifyList[0]?.status ? modifyList[0]?.status : ' 선택'}
-        {!modifyList[0]?.category && <img src={arrowBttom} alt="화살표아이콘" />}
+        {status}
+        {showArrowIcon && <img src={arrowBottom} alt="화살표아이콘" />}
       </ModifySelectBtn>
       {showStatus && (
         <ModifySlectList>
@@ -147,7 +150,7 @@ const ModifySelectBtn = styled.button<{ checked: boolean }>`
 const ModifyAssetLabel = styled.label`
   width: 100%;
   display: block;
-  padding: 5px;
+  padding: 15px 10px;
   cursor: pointer;
   border-radius: 5px;
   font-size: 12px;

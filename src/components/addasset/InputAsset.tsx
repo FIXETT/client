@@ -33,7 +33,7 @@ const InputAsset = ({ assetType, handleChange }: inputParameterType) => {
       </TitleWrap>
       <InputAssetContainer
         type={assetType.inputType}
-        maxLength={10}
+        maxLength={assetType.length}
         onChange={handleChange}
         name={assetType.type}
         onContextMenu={(e) => {

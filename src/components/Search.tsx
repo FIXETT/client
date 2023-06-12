@@ -16,10 +16,6 @@ const Search = () => {
   const [searchText, setSearchText] = useRecoilState(searchTextState);
   const [category, setCategory] = useRecoilState(categoryState);
 
-  useEffect(() => {
-    setSearchText(text);
-  }, [searchText]);
-
   const searchOnchange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setText(e.target.value);
@@ -37,11 +33,64 @@ const Search = () => {
         alert('검색어를 입력해주세요');
         return;
       }
-      setSearchText(text);
+
+      let transformedText = text;
+
+      if (category === 'category') {
+        switch (text) {
+          case '노트북/데스크탑/서버':
+            transformedText = '1';
+            break;
+          case '모니터':
+            transformedText = '2';
+            break;
+          case '모바일기기':
+            transformedText = '3';
+            break;
+          case '사무기기':
+            transformedText = '4';
+            break;
+          case '기타장비':
+            transformedText = '5';
+            break;
+          case '소프트웨어':
+            transformedText = '6';
+            break;
+          default:
+            // Handle invalid text
+            alert('잘못된 검색어입니다');
+            return;
+        }
+      } else if (category === 'status') {
+        switch (text) {
+          case '정상':
+            transformedText = '1';
+            break;
+          case '분실':
+            transformedText = '2';
+            break;
+          case '수리중':
+            transformedText = '3';
+            break;
+          case '수리완료':
+            transformedText = '4';
+            break;
+          case '수리필요':
+            transformedText = '5';
+            break;
+          default:
+            // Handle invalid text
+            alert('잘못된 검색어입니다');
+            return;
+        }
+      }
+
+      setSearchText(transformedText);
       navigate('/searchlist');
       return;
     }
   };
+
   return (
     <AssetSearchContainer>
       <SearchImg width={20} hanging={20} />
@@ -225,7 +274,6 @@ const Search = () => {
       <AssetSearchInput
         id="search"
         type="text"
-        maxLength={10}
         placeholder="등록된 업무용 자산 / 팀명 / 사용자명 / 제품명 등을 조회해 보세요"
         onChange={searchOnchange}
         onKeyDown={handleOnKeyPress}
