@@ -80,31 +80,34 @@ const Assetcategory = styled.th`
     width: 64px;
   }
   :nth-child(3) {
-    width: 112px;
+    width: 83px;
   }
   :nth-child(4) {
-    width: 188px;
+    width: 202px;
   }
   :nth-child(5) {
-    width: 196px;
+    width: 150px;
   }
   :nth-child(6) {
-    width: 132px;
+    width: 140px;
   }
   :nth-child(7) {
-    width: 132px;
+    width: 140px;
   }
   :nth-child(8) {
     width: 104px;
   }
   :nth-child(9) {
-    width: 132px;
+    width: 140px;
   }
   :nth-child(10) {
     width: 104px;
   }
   :nth-child(11) {
-    width: 204px;
+    width: 75px;
+  }
+  :nth-child(12) {
+    width: 200px;
   }
 `;
 

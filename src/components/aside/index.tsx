@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-import profile from '../../assets/icon/profile.png';
+import profile from '../../assets/icon/profile.svg';
 import logo from '../../assets/logo.svg';
 import user from '../../assets/icon/user.png';
 import logout from '../../assets/icon/logout.png';
@@ -132,6 +132,7 @@ const ImgWrap = styled.div`
   background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #066aff;
   position: relative;
   img {
+    width: 32px;
     position: absolute;
     top: 50%;
     left: 50%;

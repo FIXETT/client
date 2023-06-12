@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 
-import { modifyState } from '../../recoil/assets';
+import { editListState, modifyState } from '../../recoil/assets';
 import { inputParameterType } from '../../types/asset';
 
-import arrowBttom from '../../assets/icon/arrow-bottom.svg';
+import arrowBottom from '../../assets/icon/arrow-bottom.svg';
 
 const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
   const [showCategory, setShowCategory] = useState(false);
   const modifyList = useRecoilValue(modifyState);
+  const editList = useRecoilValue(editListState);
 
   const icon = () => {
-    switch (modifyList[0]?.category) {
+    switch (editList.category || modifyList[0]?.Category?.category) {
       case '노트북/데스크탑/서버':
         return <span>💻</span>;
       case '모니터':
@@ -29,6 +30,8 @@ const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
         return;
     }
   };
+  const category = editList.category || modifyList[0]?.Category?.category || '선택';
+  const showArrowIcon = !modifyList[0]?.Category?.category && !editList.category;
 
   return (
     <SelectContainer>
@@ -37,7 +40,7 @@ const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
         {assetType.essential && <EssentialCircle />}
       </TitleWrap>
       <SelectBtn
-        checked={!!modifyList[0]?.category}
+        checked={!!modifyList[0]?.Category.category}
         onClick={(e) => {
           e.preventDefault();
           setShowCategory(!showCategory);
@@ -47,8 +50,8 @@ const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
         }}
       >
         {icon()}
-        {modifyList[0]?.category ? modifyList[0]?.category : '선택 '}
-        {!modifyList[0]?.category && <img src={arrowBttom} alt="화살표아이콘" />}
+        {category}
+        {showArrowIcon && <img src={arrowBottom} alt="화살표아이콘" />}
       </SelectBtn>
       {showCategory && (
         <SlectList>
@@ -165,7 +168,7 @@ const SelectBtn = styled.button<{ checked: boolean }>`
 const AssetLabel = styled.label`
   width: 100%;
   display: block;
-  padding: 5px;
+  padding: 15px 10px;
   cursor: pointer;
   border-radius: 5px;
   font-size: 12px;

@@ -14,15 +14,29 @@ import assetMap from '../assets/landing/assetMap.png';
 import fixet from '../assets/landing/fixet.png';
 import logo_g from '../assets/icon/logo_g.png';
 import { ReactComponent as Logo } from '../assets/logo.svg';
+import { ReactComponent as Profile } from '../assets/profile.svg';
 
 const Landing = () => {
   const navigate = useNavigate();
   const [reachedBottom, setReachedBottom] = useState(false);
+  const [fadeOut, setFadeOut] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollHeight = window.pageYOffset || document.documentElement.scrollTop;
+      setFadeOut(scrollHeight !== 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.innerHeight + window.pageYOffset;
-      if (scrollPosition >= 2329) {
+      if (scrollPosition >= 1922) {
         setReachedBottom(true);
       } else {
         setReachedBottom(false);
@@ -64,16 +78,16 @@ const Landing = () => {
         </BtnWrap>
       </Header>
       <LandingFirst>
-        <div>
+        <LandingFirstWrap>
           <TextWrap>
             <MainText>귀찮은 자산관리, 우리회사 자산 수리...</MainText>
-            <SubText>
+            <SubText fadeOut={fadeOut}>
               픽셋은 <span>자산관리부터</span>
               <br />
               수리업체 찾기까지 <br />
               <span>다 가능</span>해요!
             </SubText>
-            <SubText>
+            <SubText fadeOut={fadeOut}>
               픽셋은 자산관리부터
               <br />
               <span> 수리업체 찾기까지 </span>
@@ -90,10 +104,10 @@ const Landing = () => {
           >
             무료로 fixet 시작하기
           </LinkBtn>
-        </div>
+        </LandingFirstWrap>
         <ImgWrap>
-          <img src={chat01} alt="채팅화면01" />
           <img src={chat02} alt="채팅화면02" />
+          <img src={chat01} alt="채팅화면01" />
         </ImgWrap>
       </LandingFirst>
       <LandingScroll reachedBottom={reachedBottom}>
@@ -101,6 +115,9 @@ const Landing = () => {
         <LandingScrollImg src={group01} alt="텍스트이미지" reachedBottom={reachedBottom} />
         <LandingScrollImg src={group02} alt="텍스트이미지" reachedBottom={reachedBottom} />
         <BottomText reachedBottom={reachedBottom}>이제 fixet으로 이 고민들을 해결할 시간이에요!</BottomText>
+        <BouncingBox reachedBottom={reachedBottom}>
+          <Profile width="200px" height="200px" />
+        </BouncingBox>
       </LandingScroll>
       <AssetListContainer>
         <p>자산 대시보드</p>
@@ -129,19 +146,21 @@ const Landing = () => {
         </AssetListWrap>
       </AssetListContainer>
       <AssetListAddContainer>
-        <AssetListAddMainText>자산등록</AssetListAddMainText>
-        <AssetListAddSubText>
-          신규등록도,{' '}
-          <span>
-            기존에 갖고 있던 <br />
-            자산관리 파일도 간편하게
-          </span>
-        </AssetListAddSubText>
-        <AssetListAddText>
-          신규로 등록하는 자산도, 기존에 갖고있던 자산관리 파일도 <br />
-          쉽고 간편하게 등록하세요.
-        </AssetListAddText>
-        <img src={addAssetList} alt="자산등록이미지" />
+        <div>
+          <AssetListAddMainText>자산등록</AssetListAddMainText>
+          <AssetListAddSubText>
+            신규등록도,{' '}
+            <span>
+              기존에 갖고 있던 <br />
+              자산관리 파일도 간편하게
+            </span>
+          </AssetListAddSubText>
+          <AssetListAddText>
+            신규로 등록하는 자산도, 기존에 갖고있던 자산관리 파일도 <br />
+            쉽고 간편하게 등록하세요.
+          </AssetListAddText>
+          <img src={addAssetList} alt="자산등록이미지" />
+        </div>
       </AssetListAddContainer>
       <AssetSearchContainer>
         <img src={search} alt="자산검색이미지" />
@@ -207,15 +226,22 @@ const SignInBtn = styled.button`
   font-size: 14px;
   color: #ffffff;
 `;
+
+const LandingFirstWrap = styled.div`
+  width: 480px;
+`;
+
 const LandingFirst = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 56px;
   width: 100vw;
   height: 100vh;
   background: linear-gradient(98.68deg, #dfe7f2 0%, #c0dbff 80.93%);
 `;
 const MainText = styled.p`
+  width: 100%;
   font-weight: 600;
   font-size: 32px;
   color: rgba(0, 0, 0, 0.4);
@@ -225,42 +251,37 @@ const fadeOutAnimation = keyframes`
   0% {
     opacity: 1;
   }
-  25% {
-    opacity: 0.75;
-  }
+ 
   50% {
-    opacity: 0.5;
+    opacity: 0;
   }
-  75% {
-    opacity: 0.25;
-  }
+  
   100% {
     opacity: 0;
+    display: none;
   }
 `;
 
 const fadeInAnimation = keyframes`
   0% {
     opacity: 0;
+    display: none;
   }
-  25% {
-    opacity: 0.25;
-  }
+  
   50% {
-    opacity: 0.5;
+    opacity: 0;
   }
-  75% {
-    opacity: 0.75;
-  }
+  
   100% {
     opacity: 1;
   }
 `;
 
-const SubText = styled.p`
+const SubText = styled.p<{ fadeOut: boolean }>`
+  width: 100%;
   position: absolute;
   top: 54px;
-  left: 240px;
+  left: 0;
   line-height: 72px;
   font-weight: 700;
   font-size: 56px;
@@ -269,29 +290,30 @@ const SubText = styled.p`
     color: #066aff;
   }
   :nth-child(2) {
-    animation: ${fadeOutAnimation} 3s linear 3s infinite alternate;
+    animation: ${fadeOutAnimation} 3s linear infinite alternate;
   }
   :nth-child(3) {
-    animation: ${fadeInAnimation} 3s linear 3s infinite alternate;
+    animation: ${fadeInAnimation} 3s linear infinite alternate;
   }
 `;
 
 const TextWrap = styled.div`
+  width: 100%;
   height: 462px;
-  padding-left: 240px;
   position: relative;
   img {
     position: absolute;
-    left: 240px;
+    left: 0;
     bottom: 0;
     :nth-child(4) {
-      animation: ${fadeOutAnimation} 3s linear 3s infinite alternate;
+      animation: ${fadeOutAnimation} 3s linear infinite alternate;
     }
     :nth-child(5) {
-      animation: ${fadeInAnimation} 3s linear 3s infinite alternate;
+      animation: ${fadeInAnimation} 3s linear infinite alternate;
     }
   }
 `;
+
 const LinkBtn = styled.button`
   padding: 24px;
   width: 255px;
@@ -301,7 +323,6 @@ const LinkBtn = styled.button`
   font-weight: 700;
   font-size: 24px;
   color: #ffffff;
-  margin-left: 240px;
   margin-top: 40px;
 `;
 const ImgWrap = styled.div`
@@ -325,6 +346,7 @@ const LandingScroll = styled.div<{ reachedBottom: boolean }>`
   width: 100vw;
   height: 1400px;
   position: relative;
+  overflow: hidden;
   background: ${(props) =>
     props.reachedBottom
       ? css`linear-gradient(180deg, #066AFF 0%, rgba(6, 106, 255, 0) 100%)`
@@ -511,12 +533,14 @@ const AssetListAddContainer = styled.div`
   height: 1431px;
   background: linear-gradient(0deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)),
     linear-gradient(90deg, #066aff 0%, #21a366 100%);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 160px 240px;
+  padding: 160px 0;
+  > div {
+    width: 1440px;
+    margin: 0 auto;
+  }
   img {
     margin-top: 56px;
+    width: 100%;
   }
 `;
 const AssetListAddMainText = styled.p`
@@ -540,7 +564,6 @@ const AssetListAddSubText = styled.p`
 `;
 const AssetListAddText = styled.p`
   text-align: left;
-
   font-weight: 500;
   font-size: 24px;
   color: #999999;
@@ -593,6 +616,18 @@ const AssetMapBtn = styled.button`
   border-radius: 32px;
   margin-top: 56px;
 `;
+const gradientAnimationAssetMapBtnText = keyframes`
+  0% {
+    background-position: 200% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+`;
+
 const AssetMapBtnText = styled.p`
   font-weight: 700;
   font-size: 28px;
@@ -602,6 +637,8 @@ const AssetMapBtnText = styled.p`
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-fill-color: transparent;
+  animation: ${gradientAnimationAssetMapBtnText} 2s ease-in-out infinite;
+  background-size: 200% auto;
 `;
 
 const Footer = styled.div`
@@ -617,4 +654,31 @@ const Flex = styled.div`
   color: #999;
   font-size: 14px;
   gap: 16px;
+`;
+
+// 애니메이션 추락
+const bounceAnimation = keyframes`
+  0% {
+    top: -100px;
+  }
+  25% {
+    top: 0;
+  }
+  50% {
+    top: 60%;
+  }
+  75% {
+    top: 55%;
+  }
+  100% {
+    top: 60%;
+  }
+`;
+
+const BouncingBox = styled.div<{ reachedBottom: boolean }>`
+  display: ${(props) => (props.reachedBottom ? 'block' : 'none')};
+  position: absolute;
+  animation: ${bounceAnimation} 2s ease-in-out forwards;
+  left: 50%;
+  transform: translateX(-50%);
 `;
