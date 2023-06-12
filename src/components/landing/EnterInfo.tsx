@@ -211,7 +211,7 @@ const InfoBox = styled.form`
   gap: 10px;
 `;
 const Img = styled.img`
-  margin-top: 93px;
+  margin-top: 50px;
 `;
 
 const CompleteImg = styled.img`
