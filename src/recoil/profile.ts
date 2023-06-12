@@ -24,3 +24,9 @@ const useProfileState = atom({
 });
 
 export { useProfileState };
+
+const company = localStorage.getItem('company');
+export const companyState = atom({
+  key: 'company',
+  default: company,
+});

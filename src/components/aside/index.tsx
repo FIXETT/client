@@ -1,21 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-import profile from '../../assets/icon/profile.svg';
+import profileImg from '../../assets/icon/profile.svg';
 import logo from '../../assets/logo.svg';
 import user from '../../assets/icon/user.png';
 import logout from '../../assets/icon/logout.png';
 
 import NavList from './NavList';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useLogoutState } from '../../recoil/userList';
+import { companyState } from '../../recoil/profile';
 
 const Aside = () => {
   const name = window.localStorage.getItem('name') as string;
+  const company = useRecoilValue(companyState);
+
   const navigate = useNavigate();
   const setIslogout = useSetRecoilState(useLogoutState);
   const [contextMenu, setContextMenu] = useState(false);
+
   return (
     <>
       <AsideContainer>
@@ -33,11 +37,11 @@ const Aside = () => {
           }}
         >
           <ImgWrap>
-            <img src={profile} alt="프로필" />
+            <img src={profileImg} alt="프로필" />
           </ImgWrap>
           <TextWrap>
             <Name>{name}</Name>
-            <Company>비누랩스</Company>
+            <Company>{company}</Company>
           </TextWrap>
           {contextMenu && (
             <ContextMenu>

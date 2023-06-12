@@ -3,8 +3,12 @@ import styled from 'styled-components';
 
 import AssetButton from './AssetButton';
 import Search from './../Search';
+import { useRecoilValue } from 'recoil';
+import { companyState } from '../../recoil/profile';
 
 const Header = ({ assetList }: any) => {
+  const company = useRecoilValue(companyState);
+
   const categoryIcon = (value: string) => {
     switch (value) {
       case '노트북/데스크탑/서버':
@@ -20,9 +24,10 @@ const Header = ({ assetList }: any) => {
       case '소프트웨어':
         return <span>🧑‍💻</span>;
       default:
-        return;
+        return null;
     }
   };
+
   const equipmentCounts = [
     { name: '노트북/데스크탑/서버', count: assetList?.ldsTotalCount },
     { name: '모바일기기', count: assetList?.mobileTotalCount },
@@ -37,8 +42,12 @@ const Header = ({ assetList }: any) => {
       <AssetWrap>
         <div>
           <AssetNumber>
-            비누랩스의 <span>{assetList?.totalCount ? String(assetList?.totalCount).padStart(2, '0') : '00'}</span>개
-            자산
+            {company && (
+              <>
+                {company}의 <span>{assetList?.totalCount ? String(assetList?.totalCount).padStart(2, '0') : '00'}</span>
+                개 자산
+              </>
+            )}
           </AssetNumber>
           <CategoryCountList>
             {equipmentCounts.map((equipment, index) => (
