@@ -1,17 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { UserApi } from '../../apis/axiosInstance';
-import landingimage from '../../assets/ladingimage.svg';
-import landinglogo from '../../assets/landinglogo.svg';
-import closeModal from '../../assets/closemodal.svg';
-import useInputs from '../../hooks/useInput';
-import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { readuser } from '../../apis/auth';
-import { useRecoilState } from 'recoil';
-import { useProfileState } from '../../recoil/profile';
 import Modal from '../modal/Modal';
 import loginimg from '../../assets/login/login.svg';
 import fixetimg from '../../assets/login/fixet.svg';
@@ -25,8 +18,6 @@ export interface FormValue {
 }
 
 const Landing = () => {
-  const [ismodal, setIsModal] = useState(true);
-
   const navigate = useNavigate();
   //yup schema
   const schema = yup.object().shape({

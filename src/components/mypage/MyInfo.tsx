@@ -4,8 +4,8 @@ import profileImg from '../../assets/icon/profile.svg';
 import email from '../../assets/icon/email.svg';
 import auth from '../../assets/icon/auth.svg';
 import locker from '../../assets/icon/locker.svg';
-import { useRecoilState } from 'recoil';
-import { useProfileState } from '../../recoil/profile';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { companyState, useProfileState } from '../../recoil/profile';
 import { readuser } from '../../apis/auth';
 import EditInfo from '../modal/EditInfo';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -28,6 +28,8 @@ export interface InfoFormValue {
 }
 const MyInfo = () => {
   const [profile, setProfile] = useRecoilState(useProfileState);
+  const setCompany = useSetRecoilState(companyState);
+
   const token = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
   const profilEmail = localStorage.getItem('email');
@@ -154,6 +156,7 @@ const MyInfo = () => {
     if (formData.name) {
       try {
         const response = await UserApi.editprofile({ email: profile?.user?.email, name: formData.name });
+
         alert('기본정보가 수정 되었습니다.');
       } catch (err) {
         return;
@@ -162,6 +165,7 @@ const MyInfo = () => {
     if (formData.company) {
       try {
         const response = await UserApi.editprofile({ email: profile?.user?.email, company: formData.company });
+        setCompany(formData.company);
         alert('기본정보가 수정 되었습니다.');
       } catch (err) {
         return;
@@ -404,13 +408,12 @@ export default MyInfo;
 const Wrap = styled.div`
   width: 100%;
   height: 100vh;
-  padding-bottom: 100px;
   overflow: visible;
 `;
 
 const Container = styled.div`
-  margin-left: 40px;
-  margin-top: 40px;
+  padding: 40px;
+  padding-bottom: 140px;
   display: flex;
   flex-direction: column;
 `;
