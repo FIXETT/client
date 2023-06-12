@@ -9,6 +9,8 @@ import Modal from '../modal/Modal';
 import loginimg from '../../assets/login/login.svg';
 import fixetimg from '../../assets/login/fixet.svg';
 import logo_g from '../../assets/icon/logo_g.png';
+import { useSetRecoilState } from 'recoil';
+import { companyState } from '../../recoil/profile';
 export interface FormValue {
   name: string;
   password: string;
@@ -19,6 +21,8 @@ export interface FormValue {
 
 const Landing = () => {
   const navigate = useNavigate();
+  const setCompany = useSetRecoilState(companyState);
+
   //yup schema
   const schema = yup.object().shape({
     email: yup
@@ -72,7 +76,7 @@ const Landing = () => {
       localStorage.setItem('name', name);
       localStorage.setItem('identifier', identifier);
       localStorage.setItem('company', company);
-
+      setCompany(company);
       navigate('/assetList');
     } catch (error: any) {
       if (error.response) {
