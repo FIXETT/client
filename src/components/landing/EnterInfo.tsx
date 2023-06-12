@@ -33,6 +33,11 @@ const EnterInfo = () => {
 
       .matches(/^[가-힣a-zA-Z]{2,20}$/, '이름에 특수기호는 사용 할 수 없어요')
       .required('이름을 입력해주세요.'),
+    company: yup
+      .string()
+
+      .matches(/^[가-힣a-zA-Z]{1,20}$/, '회사 이름은 20글자 이내로 작성해주세요.')
+      .required('회사이름을 작성해주세요.'),
     password: yup
       .string()
 
@@ -54,6 +59,7 @@ const EnterInfo = () => {
       name: '',
       password: '',
       confirm: '',
+      company: '',
     },
     resolver: yupResolver(schema),
     mode: 'all',
@@ -63,9 +69,10 @@ const EnterInfo = () => {
   const signupHandler: SubmitHandler<FormValue> = async (data) => {
     const name = data.name;
     const password = data.password;
+    const company = data.company;
     setnickname(name);
     try {
-      await UserApi.signup(info, password, name, agreePi);
+      await UserApi.signup(info, password, name, company, agreePi);
       alert(`안녕하세요😊 ${name}님 FIXET에 오신걸 환영합니다.`);
       SetIsComplete(true);
     } catch (error: any) {
@@ -112,6 +119,14 @@ const EnterInfo = () => {
               />
               <Errormessage>{errors.name?.message}</Errormessage>
               <Input
+                className={errors.company?.message && 'error'}
+                {...register('company')}
+                id="company"
+                name="company"
+                placeholder="회사 이름을 작성해주세요."
+              />
+              <Errormessage>{errors.company?.message}</Errormessage>
+              <Input
                 className={errors.password?.message && 'error'}
                 {...register('password')}
                 id="password"
@@ -142,9 +157,11 @@ const EnterInfo = () => {
                   !errors.name?.message &&
                   !errors.password?.message &&
                   !errors.confirm?.message &&
+                  !errors.company?.message &&
                   getFields.name !== '' &&
                   getFields.password !== '' &&
                   getFields.confirm !== '' &&
+                  getFields.company !== '' &&
                   agreePi === true
                     ? 'complete'
                     : ''
