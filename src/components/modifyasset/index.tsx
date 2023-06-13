@@ -72,10 +72,22 @@ const index = () => {
           break;
       }
     }
-    if (updatedCategory || updatedStatus) {
+    if (updatedCategory && updatedStatus) {
       const updatedAsset = {
         ...cleanedAsset,
         category: updatedCategory,
+        status: updatedStatus,
+      };
+      return updatedAsset;
+    } else if (updatedCategory) {
+      const updatedAsset = {
+        ...cleanedAsset,
+        category: updatedCategory,
+      };
+      return updatedAsset;
+    } else if (updatedStatus) {
+      const updatedAsset = {
+        ...cleanedAsset,
         status: updatedStatus,
       };
       return updatedAsset;
@@ -102,6 +114,9 @@ const index = () => {
     const transformedData = modifyList.map((item) => ({
       assetNumber: item.assetNumber,
       identifier: item.identifier,
+      name: item.name,
+      product: item.product,
+      category: item.category,
       ...editList,
     }));
     const newList = [...transformedData];
