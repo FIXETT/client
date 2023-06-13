@@ -135,7 +135,7 @@ const Dashboard = () => {
                   </TableItem>
                   <TableItem>{value?.note}</TableItem>
                   <TableItem>
-                    {value?.updatedAt.split('T')[0]} {value?.updatedAt.split('T')[1].slice(0, 5)}
+                    {value?.createdAt?.split?.('T')[0]} {value?.createdAt?.split?.('T')[1]?.slice(0, 5)}
                   </TableItem>
                 </tr>
               );
