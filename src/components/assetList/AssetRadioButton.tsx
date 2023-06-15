@@ -45,7 +45,7 @@ const AssetRadioButton = ({ assetList, value }: any) => {
 export default AssetRadioButton;
 const CheckboxInputContainer = styled.td`
   width: 36px;
-  padding: 10px 8px;
+  padding: 16px 8px;
 `;
 
 const CheckboxInput = styled.input`
