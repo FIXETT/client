@@ -144,7 +144,9 @@ const AssetListContainer = styled.div`
       align-items: center;
       justify-content: flex-start;
     }
-    padding: 9px 0;
+    :not(:first-child) {
+      padding: 9px 0;
+    }
     input,
     button {
       padding: 8px 16px;

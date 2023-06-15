@@ -65,8 +65,6 @@ export default TableHead;
 const InputWrap = styled.th`
   width: 36px;
   padding: 16px 8px;
-  display: flex;
-  justify-content: center;
 `;
 const Assetcategory = styled.th`
   font-weight: 500;
