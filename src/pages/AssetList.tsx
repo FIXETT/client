@@ -111,7 +111,7 @@ const AssetList = () => {
         </table>
         {status === 'loading' && <Loading />}
         {data && data.asset === 'does not exist asset' && <NotData />}
-        {renderPagination()}
+        {assetList.length !== 0 && renderPagination()}
       </AssetListContainer>
       {showAddComponent && <AddAsset />}
       {showAddExcelComponent && <ExcelModal />}
@@ -144,7 +144,9 @@ const AssetListContainer = styled.div`
       align-items: center;
       justify-content: flex-start;
     }
-    padding: 9px 0;
+    :not(:first-child) {
+      padding: 9px 0;
+    }
     input,
     button {
       padding: 8px 16px;
