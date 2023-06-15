@@ -18,7 +18,7 @@ const Aside = () => {
 
   const navigate = useNavigate();
   const setIslogout = useSetRecoilState(useLogoutState);
-  const [contextMenu, setContextMenu] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <>
@@ -30,12 +30,7 @@ const Aside = () => {
             navigate('/assetlist');
           }}
         />
-        <ProfileWrap
-          onContextMenu={(e) => {
-            e.preventDefault();
-            setContextMenu(true);
-          }}
-        >
+        <ProfileWrap onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
           <ImgWrap>
             <img src={profileImg} alt="프로필" />
           </ImgWrap>
@@ -43,12 +38,12 @@ const Aside = () => {
             <Name>{name}</Name>
             <Company>{company}</Company>
           </TextWrap>
-          {contextMenu && (
+          {isHovered && (
             <ContextMenu>
               <button
                 onClick={() => {
                   navigate('/mypage');
-                  setContextMenu(false);
+                  setIsHovered(false);
                 }}
               >
                 <img src={user} alt="프로필아이콘" />
@@ -59,7 +54,7 @@ const Aside = () => {
                   localStorage.clear();
                   setIslogout(false);
                   navigate('/login');
-                  setContextMenu(false);
+                  setIsHovered(false);
                 }}
               >
                 <img src={logout} alt="로그아웃아이콘" />
