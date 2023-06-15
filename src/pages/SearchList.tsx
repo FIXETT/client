@@ -188,7 +188,7 @@ const SearchList = () => {
                   <tr key={value?.assetNumber}>
                     <AssetRadioButton assetList={searchList} value={value} />
                     <AssetItem>
-                      <p>{value?.assetId}</p>
+                      <p>{value?.assetNumber}</p>
                     </AssetItem>
                     <AssetItem>
                       <p>{value?.name}</p>
@@ -242,9 +242,9 @@ const SearchList = () => {
             </tbody>
           </table>
         )}
-        {renderPagination()}
         {isLoading && <Loading />}
         {!isLoading && !data && <NotData />}
+        {searchList.length !== 0 && renderPagination()}
       </AssetListContainer>
     </AssetContainer>
   );
