@@ -93,7 +93,7 @@ const Search = () => {
 
   return (
     <AssetSearchContainer>
-      <SearchImg width={20} hanging={20} />
+      <SearchImg width={20} height={20} />
       <SelectContainer>
         <SelectBtn
           onClick={() => {

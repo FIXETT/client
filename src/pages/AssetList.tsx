@@ -111,7 +111,7 @@ const AssetList = () => {
         </table>
         {status === 'loading' && <Loading />}
         {data && data.asset === 'does not exist asset' && <NotData />}
-        {renderPagination()}
+        {assetList.length !== 0 && renderPagination()}
       </AssetListContainer>
       {showAddComponent && <AddAsset />}
       {showAddExcelComponent && <ExcelModal />}
