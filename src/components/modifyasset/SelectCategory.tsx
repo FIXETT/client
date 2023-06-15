@@ -11,9 +11,29 @@ const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
   const [showCategory, setShowCategory] = useState(false);
   const modifyList = useRecoilValue(modifyState);
   const editList = useRecoilValue(editListState);
+  const initialCategory = (initialCategory: number) => {
+    if (initialCategory) {
+      switch (initialCategory) {
+        case 1:
+          return '노트북/데스크탑/서버';
+        case 2:
+          return '모니터';
+        case 3:
+          return '모바일기기';
+        case 4:
+          return '사무기기';
+        case 5:
+          return '기타장비';
+        case 6:
+          return '소프트웨어';
+      }
+    }
+
+    return;
+  };
 
   const icon = () => {
-    switch (editList.category || modifyList[0]?.Category?.category) {
+    switch (initialCategory(editList.category as number) || modifyList[0]?.Category?.category) {
       case '노트북/데스크탑/서버':
         return <span>💻</span>;
       case '모니터':
@@ -30,7 +50,7 @@ const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
         return;
     }
   };
-  const category = editList.category || modifyList[0]?.Category?.category || '선택';
+  const category = initialCategory(editList.category as number) || modifyList[0]?.Category?.category || '선택';
   const showArrowIcon = !modifyList[0]?.Category?.category && !editList.category;
 
   return (
@@ -44,9 +64,6 @@ const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
         onClick={(e) => {
           e.preventDefault();
           setShowCategory(!showCategory);
-        }}
-        onContextMenu={(e) => {
-          e.preventDefault();
         }}
       >
         {icon()}

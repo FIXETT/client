@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
 import { editListState, modifyState, postAssetTypeState, showModifyComponentState } from '../../recoil/assets';
@@ -21,9 +21,7 @@ const index = () => {
 
   const queryClient = useQueryClient();
 
-  const newList = [editList];
-
-  const updatedAssetList = newList.map((asset) => {
+  const updatedAssetList = [editList].map((asset) => {
     const cleanedAsset = Object.fromEntries(
       Object.entries(asset)
         .filter(([_, value]) => value !== '')
@@ -103,14 +101,14 @@ const index = () => {
       queryClient.invalidateQueries(['getAsset']);
     },
   });
-  // 실사용자, 제품명, 품목은 필수 입력값
   const handleModifyButtonClick = () => {
     modifyAssetMutation.mutate();
+    setEditList({});
     setShowModifyComponent(false);
   };
   const handleChange: handleChangeType = (e) => {
     const type = e.target.name;
-    const value: string | number = e.target.value; // Allow value to be either a string or number
+    const value: string | number = e.target.value;
     const transformedData = modifyList.map((item) => ({
       assetNumber: item.assetNumber,
       identifier: item.identifier,
