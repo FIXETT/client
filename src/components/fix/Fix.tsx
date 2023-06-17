@@ -102,10 +102,7 @@ const FixBox = styled.div`
 `;
 const MapBox = styled.div`
   margin-top: 12px;
-  width: 1660px;
-  height: 562px;
-
-  margin-left: 55px;
+  margin-left: 40px;
 `;
 const TotalCt = styled.span`
   height: 16px;
