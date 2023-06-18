@@ -5,7 +5,7 @@ import email from '../../assets/icon/email.svg';
 import auth from '../../assets/icon/auth.svg';
 import locker from '../../assets/icon/locker.svg';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { companyState, useProfileState } from '../../recoil/profile';
+import { companyState, nameState, useProfileState } from '../../recoil/profile';
 import { readuser } from '../../apis/auth';
 import EditInfo from '../modal/EditInfo';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -29,6 +29,7 @@ export interface InfoFormValue {
 const MyInfo = () => {
   const [profile, setProfile] = useRecoilState(useProfileState);
   const setCompany = useSetRecoilState(companyState);
+  const setName = useSetRecoilState(nameState);
 
   const token = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
@@ -101,6 +102,11 @@ const MyInfo = () => {
       setError(true);
     }
   };
+  const handleKeyDown = (event: any) => {
+    if (event.key === 'Enter') {
+      authHandler();
+    }
+  };
 
   //react-hook-form
   const {
@@ -157,7 +163,7 @@ const MyInfo = () => {
     if (formData.name) {
       try {
         const response = await UserApi.editprofile({ email: profile?.user?.email, name: formData.name });
-
+        setName(formData.name);
         alert('기본정보가 수정 되었습니다.');
       } catch (err) {
         return;
@@ -396,9 +402,16 @@ const MyInfo = () => {
             {error && <Errormessage>비밀번호를 올바르게 입력해주세요.</Errormessage>}
 
             <ButtonBox>
-              <OK className={password && 'active'} onClick={authHandler}>
+              <OK
+                className={password && 'active'}
+                onClick={authHandler}
+                onKeyDown={handleKeyDown}
+                role="button"
+                tabIndex={0}
+              >
                 본인인증 완료
               </OK>
+
               <Cancel onClick={cancelHandler}>
                 <img src={cancle} alt="cancle" />
                 취소하기

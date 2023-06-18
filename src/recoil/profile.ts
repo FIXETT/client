@@ -29,3 +29,7 @@ export const companyState = atom({
   key: 'company',
   default: '',
 });
+export const nameState = atom({
+  key: 'name',
+  default: '',
+});
