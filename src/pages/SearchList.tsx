@@ -253,7 +253,7 @@ const SearchList = () => {
 export default SearchList;
 
 const AssetContainer = styled.div`
-  width: 100%;
+  width: calc(100% - 196px);
   height: 100%;
   padding: 42px 40px;
 `;
