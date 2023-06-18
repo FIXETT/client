@@ -121,7 +121,7 @@ const KeywordBox = styled.div`
   flex-direction: row;
   align-content: space-around;
   align-items: center;
-  margin-top: 1%;
+  margin-top: 1rem;
 `;
 const Select = styled.div`
   margin-top: 14px;
@@ -136,7 +136,7 @@ const PC = styled.button`
   align-items: center;
   font-weight: 500;
   font-size: 14px;
-  background-color: #e7e7e7;
+  background-color: #f4f4f4;
   color: #999999;
   border-radius: 12px;
 
