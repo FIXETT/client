@@ -36,7 +36,7 @@ export default NavList;
 const ListItemContainer = styled.li`
   border-radius: 5px;
   overflow: hidden;
-  padding: 0 16px;
+  padding: 0 24px;
 `;
 const ListItemLink = styled(Link)<{ match?: string }>`
   font-weight: 500;

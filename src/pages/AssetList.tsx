@@ -111,7 +111,7 @@ const AssetList = () => {
         </table>
         {status === 'loading' && <Loading />}
         {data && data.asset === 'does not exist asset' && <NotData />}
-        {assetList.length !== 0 && renderPagination()}
+        {assetList?.length !== 0 && renderPagination()}
       </AssetListContainer>
       {showAddComponent && <AddAsset />}
       {showAddExcelComponent && <ExcelModal />}
@@ -126,7 +126,7 @@ export default AssetList;
 const AssetContainer = styled.div`
   width: 100%;
   height: 100%;
-  padding: 32px;
+  padding: 42px 40px;
 `;
 const AssetListContainer = styled.div`
   margin-top: 8px;

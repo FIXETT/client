@@ -78,7 +78,7 @@ const Title = styled.span`
   line-height: 36px;
   text-align: left;
 
-  margin-top: 40px;
+  margin-top: 42px;
   margin-left: 40px;
   font-size: 32px;
   font-weight: 700;
