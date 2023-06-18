@@ -42,11 +42,16 @@ const Header = ({ assetList }: any) => {
       <AssetWrap>
         <div>
           <AssetNumber>
-            {company && (
+            {company && assetList?.asset?.totalCount ? (
               <>
-                {company}의 <span>{assetList?.totalCount ? String(assetList?.totalCount).padStart(2, '0') : '00'}</span>
+                {company}의{' '}
+                <span>
+                  {assetList?.asset?.totalCount ? String(assetList?.asset?.totalCount).padStart(2, '0') : '00'}
+                </span>
                 개 자산
               </>
+            ) : (
+              '자산리스트'
             )}
           </AssetNumber>
           <CategoryCountList>
@@ -88,7 +93,7 @@ const CategoryCountList = styled.ul`
 const CategoryCount = styled.li`
   background: #f4f4f4;
   border-radius: 8px;
-  padding: 8px;
+  padding: 12px;
   font-weight: bold;
   color: var(--gray);
 `;

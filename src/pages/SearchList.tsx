@@ -244,7 +244,7 @@ const SearchList = () => {
         )}
         {isLoading && <Loading />}
         {!isLoading && !data && <NotData />}
-        {searchList.length !== 0 && renderPagination()}
+        {searchList?.length !== 0 && renderPagination()}
       </AssetListContainer>
     </AssetContainer>
   );
@@ -255,7 +255,7 @@ export default SearchList;
 const AssetContainer = styled.div`
   width: 100%;
   height: 100%;
-  padding: 40px;
+  padding: 42px 40px;
 `;
 const SerchText = styled.p`
   font-weight: 700;
