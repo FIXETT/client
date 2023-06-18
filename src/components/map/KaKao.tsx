@@ -197,8 +197,8 @@ const KaKao = (props: propsType) => {
           "padding:16px 20px;
           border: 1px solid #DDDDDD;
           border-radius: 16px; 
-          margin-top:12px;
-          margin-left:-10%;
+         
+          
           width: 100%;
           padding:20px, 16px, 20px, 16px;
           max-width: 624px;
@@ -448,9 +448,9 @@ export default KaKao;
 const Mapcontainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin-left: 59px;
-  width: 1029px;
-  height: 514px;
+  gap: 24px;
+  width: 100%;
+  height: 100%;
   margin-top: 10px;
 `;
 const ResultList = styled.div``;
@@ -458,6 +458,9 @@ const ResultList = styled.div``;
 const PlaceList = styled.ul`
   height: 562px;
   width: 624px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 
   border-radius: 0px;
 
@@ -473,7 +476,7 @@ const MapDiv = styled.div`
 `;
 const Pagenation = styled.div`
   display: flex;
+  margin-top: 24px;
 
   align-items: center;
-  margin: 24px 0 0 32px;
 `;

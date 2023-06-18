@@ -141,6 +141,7 @@ const MyInfo = () => {
   const transauthcodeHandler = async () => {
     const authcode = watchedFields.auth;
     const email = watchedFields.email;
+    console.log(authcode);
     try {
       const { data } = await UserApi.authcode(email, authcode);
       alert('인증이 되었습니다');
@@ -179,6 +180,9 @@ const MyInfo = () => {
     if (!errors.email?.message && getFields.email !== null && complete === true && !errors.auth?.message) {
       try {
         const { data } = await UserApi.editemail(email, editEmail);
+        if (data) {
+          alert('이메일 정상적으로 수정 되었습니다.');
+        }
       } catch (err) {
         return;
       }
@@ -192,6 +196,9 @@ const MyInfo = () => {
       const password = getFields.password;
       try {
         const { data } = await UserApi.patchpw(email, password);
+        if (data) {
+          alert('비밀번호가 정상적으로 수정 되었습니다.');
+        }
       } catch (err) {
         return;
       }
