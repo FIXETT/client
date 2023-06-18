@@ -5,30 +5,39 @@ import Aside from '../components/aside';
 import Layout from '../components/Layout';
 import Dashboard from '../pages/Dashboard';
 import LandingPage from '../pages/LandingPage';
-import AddAsset from '../pages/AddAsset';
-import ModifyAsset from '../pages/ModifyAsset';
+
 import ConfirmPage from '../pages/ConfirmPage';
 import FixPage from '../pages/FixPage';
 import SignupPage from '../pages/SignupPage';
 import EnterInfoPage from '../pages/EnterInfoPage';
+import AssetList from '../pages/AssetList';
+import SearchList from '../pages/SearchList';
+import MyPage from '../pages/MyPage';
+import Landing from '../pages/Landing';
+import ResetPage from '../pages/ResetPage';
+import ResetAuthPage from '../pages/ResetAuthPage';
+import NewSet from '../pages/NewSet';
 function Router() {
   return (
-    <div>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/confirm" element={<ConfirmPage />} />
-        <Route path="/enter" element={<EnterInfoPage />} />
-        <Route element={<Layout />}>
-          <Route element={<Aside />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/addasset" element={<AddAsset />} />
-            <Route path="/modifyasset" element={<ModifyAsset />} />
-            <Route path="/fix" element={<FixPage />} />
-          </Route>
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      <Route path="/login" element={<LandingPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route path="/confirm" element={<ConfirmPage />} />
+      <Route path="/enter" element={<EnterInfoPage />} />
+      <Route path="/reset" element={<ResetPage />} />
+      <Route path="/resetauth" element={<ResetAuthPage />} />
+      <Route path="/newsetpw" element={<NewSet />} />
+      <Route element={<Layout />}>
+        <Route element={<Aside />}>
+          <Route path="/assetlist" element={<AssetList />} />
+          <Route path="/searchlist" element={<SearchList />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/fix" element={<FixPage />} />
+          <Route path="/mypage" element={<MyPage />} />
         </Route>
-      </Routes>
-    </div>
+      </Route>
+    </Routes>
   );
 }
 export default Router;

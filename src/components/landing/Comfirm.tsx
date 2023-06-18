@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import confirm from '../../assets/confirm.svg';
+import confirm from '../../assets/login/auth.svg';
 import useInputs from '../../hooks/useInput';
 import axios from 'axios';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -8,16 +8,21 @@ import { useInfoState, useUserState } from '../../recoil/userList';
 import { User } from '../../recoil/userList';
 import { useNavigate } from 'react-router-dom';
 import { UserApi } from '../../apis/axiosInstance';
-
+import { Errormessage, Flex, Footer, Wrap } from './Landing';
+import Modal from '../modal/Modal';
+import { Fixet } from './Signup';
+import fixetimg from '../../assets/login/fixet.svg';
+import logo_g from '../../assets/icon/logo_g.png';
 const Comfirm = () => {
   const [{ email, code }, onChange, Reset] = useInputs({
     email: '',
     code: '',
   });
+  const [iserror, setIsError] = useState<boolean>(false);
   const navigate = useNavigate();
   const [info, setInfo] = useRecoilState(useUserState);
   const thisemail = useRecoilValue(useUserState);
-  console.log(thisemail);
+
   //본인 이메일 인증하기 핸들러
   const confirmHandler = () => {
     const confirmMail = async () => {
@@ -26,7 +31,7 @@ const Comfirm = () => {
         window.alert(data.msg);
         navigate('/enter');
       } catch (error) {
-        window.alert('인증번호가 잘못 되었습니다. 제대로 확인해주세요!');
+        setIsError(true);
       }
     };
     confirmMail();
@@ -37,8 +42,6 @@ const Comfirm = () => {
         const { data } = await UserApi.replymail(info);
         if (data) {
           window.alert('인증 메일이 발송 되었습니다');
-        } else {
-          window.alert('이메일 형식이 맞지 않습니다. 다시 한번 확인해주세요.');
         }
       } catch (error) {
         window.alert(error);
@@ -46,23 +49,50 @@ const Comfirm = () => {
     };
     authMail();
   };
+  const signinHandler = () => {
+    navigate(-1);
+  };
 
   return (
     <>
       <Wrap>
-        <img src={confirm} alt={''}></img>
-        <ConfirmText>본인 인증 메일 확인해 주세요.</ConfirmText>
-        <Email>{`인증 메일을 ${info} 로 발송했습니다.`}</Email>
-        <Email>본인 인증 완료 후 가입 절차를 진행해 주세요.</Email>
-        <Reply>
-          혹시 인증 메일을 받지 못하셨나요?
-          <br />
-          스팸메일로 분류된 경우, 메일을 받지 못할 수 있으니 <br />
-          스팸함을 확인해 보세요.
-        </Reply>
-        <CodeInput type="text" name="code" value={code} onChange={onChange}></CodeInput>
-        <ConfirmBtn onClick={confirmHandler}>본인 이메일 인증하기</ConfirmBtn>
-        <button onClick={replyHandler}>재 요청 보내기</button>
+        <Fixet onClick={() => navigate('/')} src={fixetimg} />
+        <Modal>
+          <Auth src={confirm} alt="" />
+          <ConfirmText className={iserror ? 'error' : ''}>
+            회사 이메일로
+            <br />
+            인증번호를 보내드렸어요!
+            <CodeInput
+              className={iserror ? 'error' : ''}
+              placeholder="인증번호를 입력해주세요"
+              type="text"
+              name="code"
+              value={code}
+              onChange={onChange}
+            />
+            {iserror && <Errormessage>인증번호가 일치하지 않습니다.</Errormessage>}
+          </ConfirmText>
+          <Reply onClick={replyHandler}>인증메일이 오지 않았나요?재전송하기</Reply>
+
+          <CompleteBtn className={code && 'complete'} onClick={confirmHandler}>
+            인증 완료
+          </CompleteBtn>
+
+          <LoginDiv>
+            <span>수신이 불가한 이메일 주소인가요?</span>
+            <ConfirmBtn onClick={signinHandler}>다른계정으로 가입하기</ConfirmBtn>
+          </LoginDiv>
+        </Modal>
+        <Footer>
+          <div>
+            <img src={logo_g} alt="로고" />
+          </div>
+          <Flex>
+            <p>Copyright 2023 UZ. All rights reserved</p>
+            <p>Team UZ Contact. Eojjeoji@gmail.com</p>
+          </Flex>
+        </Footer>
       </Wrap>
       ;
     </>
@@ -70,48 +100,123 @@ const Comfirm = () => {
 };
 
 export default Comfirm;
-const Wrap = styled.div`
-  width: 100vw;
 
-  /* margin: 0 auto; */
+const ConfirmText = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-const ConfirmText = styled.span`
+  margin-top: 24px;
+  width: 322px;
+  height: 136px;
+  gap: 10px;
+  font-family: Pretendard;
+  font-size: 32px;
   font-weight: 700;
-  font-size: 48px;
-  line-height: 72px;
-  text-align: center;
-  color: #5a3092;
+  line-height: 40px;
+
+  text-align: left;
+  &.error {
+    width: 327px;
+    height: 148px;
+  }
 `;
-const Email = styled.span`
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 30px;
-  text-align: center;
-  color: #000000;
+const CodeInput = styled.input`
+  color: #333333;
+  width: 322px;
+  height: 48px;
+  border-radius: 12px;
+  padding: 16px;
+  background-color: #f4f4f4;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: left;
+  &.error {
+    border: 1px solid #ff0000;
+  }
 `;
-const CodeInput = styled.input``;
+const Auth = styled.img`
+  margin-top: 150px;
+`;
+
 const ConfirmBtn = styled.button`
-  width: 429px;
-  height: 49px;
-  background-color: #5a3092;
+  height: 38px;
+  width: 149px;
+
+  border-radius: 8px;
+  padding: 12px;
+  background: #066aff;
   color: #ffffff;
-  border-radius: 10px;
-  margin-top: 40px;
+
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 14px;
+`;
+const CompleteBtn = styled.button`
+  margin-top: 9px;
+  width: 322px;
+  height: 47px;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), #066aff;
+  border-radius: 12px;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0em;
+
+  color: #ffffff;
+  &.complete {
+    background: #066aff;
+  }
 `;
 const Reply = styled.div`
-  width: 522px;
-  height: 106px;
-  background-color: #ffffff;
-  font-weight: 400;
-  line-height: 30px;
-  text-align: center;
-  font-size: 20px;
-  border-top: 1px solid #8f8f8f;
+  cursor: pointer;
+  width: 322px;
+  height: 14px;
+  color: #999999;
+  margin-top: 24px;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0em;
+  text-align: left;
   display: flex;
-  align-items: center;
-  margin-top: 61px;
+  flex-direction: column;
+`;
+const ReplyBtn = styled.button`
+  height: 38px;
+  width: 137px;
+  background-color: #066aff;
+  border-radius: 8px;
+  padding: 12px;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 14px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #ffffff;
+  margin-top: 8px;
+`;
+const LoginDiv = styled.div`
+  gap: 8px;
+  width: 322px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 15px;
+  color: #999999;
+
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0em;
+
+  display: flex;
+  flex-direction: column;
 `;

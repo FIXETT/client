@@ -1,59 +1,83 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { modifyAssetlistState, modifyState } from '../../recoil/assets';
-import ContextMenu from './ContextMenu';
+import { inputParameterType } from '../../types/asset';
+import { modifyState } from '../../recoil/assets';
+import { useRecoilValue } from 'recoil';
 
-const InputAsset = ({ modifyAssetType, handleChange }: any) => {
-  const [showContextMenu, setShowContextMenu] = useState(false);
-  const [modifyassetlist, setModifyassetlist] = useRecoilState(modifyAssetlistState);
-
-  // 초기값
-  const modify = useRecoilValue(modifyState);
-  const keyToFind = modifyAssetType.type;
-  const defaultValue = modify[0][keyToFind];
-
-  // 초기화
+const InputAsset = ({ assetType, handleChange }: inputParameterType) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const onclickDeleteText = () => {
-    const inputEl = inputRef.current;
-    if (inputEl) {
-      inputEl.value = '';
+  const modifyList = useRecoilValue(modifyState);
+
+  const placeholder = () => {
+    switch (assetType.type) {
+      case 'name':
+        return '이름';
+      case 'product':
+        return 'ex)맥북프로 2022 14`';
+      case 'serialNumber':
+        return '109MZRP033662';
+      case 'team':
+        return '마케팅';
+      case 'manufacturer':
+        return 'ex)Apple';
+      case 'acquisitionDate':
+        return '날짜선택';
+      case 'location':
+        return '31층';
+      case 'note':
+        return '작성하기';
+      default:
+        return '';
     }
-    const deleteTable = [...modifyassetlist];
-    deleteTable[0] = {
-      ...deleteTable[0],
-      [modifyAssetType.type]: '',
-    };
-    setModifyassetlist(deleteTable);
-    setShowContextMenu(false);
   };
+  const foundItem = modifyList.find((modify) => modify[assetType.type] !== undefined);
+  const value = foundItem ? foundItem[assetType.type] : '';
+
   return (
-    <>
+    <div>
+      <TitleWrap>
+        {assetType.title}
+        {assetType.essential && <EssentialCircle />}
+      </TitleWrap>
       <InputAssetContainer
-        type={modifyAssetType.inputType}
-        maxLength={10}
+        type={assetType.inputType}
+        maxLength={assetType.length}
         onChange={handleChange}
-        name={modifyAssetType.type}
-        onClick={() => {
-          setShowContextMenu(false);
-        }}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          setShowContextMenu(true);
-        }}
+        name={assetType.type}
+        defaultValue={value}
         ref={inputRef}
-        defaultValue={defaultValue}
+        placeholder={placeholder()}
       />
-      {showContextMenu && <ContextMenu modifyAssetType={modifyAssetType} onclickDeleteText={onclickDeleteText} />}
-    </>
+    </div>
   );
 };
 
 export default InputAsset;
+
 const InputAssetContainer = styled.input`
+  background: #f4f4f4;
   width: 100%;
-  height: 100%;
-  padding: 0 10px;
-  text-align: center;
+  padding: 13px;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #333;
+  ::placeholder {
+    font-weight: 500;
+    font-size: 14px;
+    color: #cccccc;
+  }
+`;
+
+const TitleWrap = styled.h3`
+  display: flex;
+  align-items: center;
+  gap: 3px;
+`;
+const EssentialCircle = styled.p`
+  width: 6px;
+  height: 6px;
+  background: #eb5757;
+  border-radius: 100%;
 `;

@@ -1,28 +1,70 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+
+import profileImg from '../../assets/icon/profile.svg';
+import logo from '../../assets/logo.svg';
+import user from '../../assets/icon/user.png';
+import logout from '../../assets/icon/logout.png';
+
 import NavList from './NavList';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useLogoutState } from '../../recoil/userList';
+import { companyState } from '../../recoil/profile';
 
 const Aside = () => {
   const name = window.localStorage.getItem('name') as string;
-  const [islogout, setIslogout] = useRecoilState(useLogoutState);
-  const logoutHandler = () => {
-    setIslogout(!islogout);
-  };
+  const company = useRecoilValue(companyState);
+
+  const navigate = useNavigate();
+  const setIslogout = useSetRecoilState(useLogoutState);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <>
       <AsideContainer>
-        <WelcomTitle>
-          <LogoIcon>{name?.slice(0, 1)}</LogoIcon>
-          {name}(관리자)님
-        </WelcomTitle>
+        <LogoImg
+          src={logo}
+          alt="로고"
+          onClick={() => {
+            navigate('/assetlist');
+          }}
+        />
+        <ProfileWrap onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+          <ImgWrap>
+            <img src={profileImg} alt="프로필" />
+          </ImgWrap>
+          <TextWrap>
+            <Name>{name}</Name>
+            <Company>{company}</Company>
+          </TextWrap>
+          {isHovered && (
+            <ContextMenu>
+              <button
+                onClick={() => {
+                  navigate('/mypage');
+                  setIsHovered(false);
+                }}
+              >
+                <img src={user} alt="프로필아이콘" />
+                프로필 바로가기
+              </button>
+              <button
+                onClick={() => {
+                  localStorage.clear();
+                  setIslogout(false);
+                  navigate('/login');
+                  setIsHovered(false);
+                }}
+              >
+                <img src={logout} alt="로그아웃아이콘" />
+                로그아웃
+              </button>
+            </ContextMenu>
+          )}
+        </ProfileWrap>
         <NavListContainer>
-          <AsideTitle>대시보드</AsideTitle>
           <NavList />
-          <LogoutBtn onClick={logoutHandler}>로그아웃</LogoutBtn>
         </NavListContainer>
       </AsideContainer>
       <Outlet />
@@ -33,48 +75,86 @@ const Aside = () => {
 export default Aside;
 
 const AsideContainer = styled.div`
-  width: 16%;
-  min-width: 260px;
+  width: 196px;
   height: 100%;
-  padding: 24px;
-  box-shadow: var(--box-shadow);
   background-color: #fff;
+  border-right: 1px solid #eee;
 `;
-const WelcomTitle = styled.div`
+const LogoImg = styled.img`
+  margin-top: 42px;
+  margin-bottom: 16px;
+  padding: 0 24px;
+
+  cursor: pointer;
+`;
+const ProfileWrap = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
-  font-size: var(--heading4);
-  padding: 20px 0;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #f4f7fe;
+  gap: 8px;
+  padding: 16px 24px;
+  :hover {
+    background-color: #f4f4f4;
+    border-radius: 16px;
+  }
 `;
-const LogoIcon = styled.div`
-  width: 35px;
-  height: 35px;
-  border-radius: 8px;
-  background-color: var(--gray2);
-  color: #fff;
+
+const ContextMenu = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background-color: #fff;
+  padding: 4px;
+  width: 100%;
+  font-weight: 500;
+  font-size: 14px;
+  color: #666;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    text-align: left;
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    :hover {
+      background: #f4f4f4;
+    }
+  }
+`;
+const ImgWrap = styled.div`
+  width: 56px;
+  height: 56px;
+  border-radius: 100%;
+  overflow: hidden;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #066aff;
+  position: relative;
+  img {
+    width: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+`;
+const TextWrap = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 10px;
+  flex-direction: column;
+  gap: 8px;
 `;
-const AsideTitle = styled.p`
-  color: var(--primary);
-  font-size: var(--heading4);
-  margin: 10px 0;
-  font-weight: bold;
+
+const Company = styled.p`
+  font-weight: 500;
+  font-size: var(--heading6);
+  color: #999;
 `;
+const Name = styled.p`
+  font-weight: 700;
+  font-size: var(--heading5);
+`;
+
 const NavListContainer = styled.ul`
   display: flex;
   flex-direction: column;
-`;
-const LogoutBtn = styled.button`
-  background-color: var(--gray);
-  border-radius: 8px;
-  color: var(--black2);
-  font-weight: 700;
-  font-size: 15px;
-  height: 44px;
-  margin-top: 356px;
 `;

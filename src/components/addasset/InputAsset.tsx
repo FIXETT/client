@@ -1,56 +1,76 @@
-import React, { useState, useRef } from 'react';
-import { useRecoilState } from 'recoil';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { assetlistState } from '../../recoil/assets';
 import { inputParameterType } from '../../types/asset';
-import ContextMenu from './ContextMenu';
 
-const InputAsset = ({ assetType, index, handleChange }: inputParameterType) => {
-  const [showContextMenu, setShowContextMenu] = useState(false);
-  const [assetlist, setassetlist] = useRecoilState(assetlistState);
+const InputAsset = ({ assetType, handleChange }: inputParameterType) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const onclickDeleteText = () => {
-    const inputEl = inputRef.current;
-    if (inputEl) {
-      inputEl.value = '';
+  const placeholder = () => {
+    switch (assetType.type) {
+      case 'name':
+        return '이름';
+      case 'product':
+        return 'ex)맥북프로 2022 14`';
+      case 'serialNumber':
+        return '109MZRP033662';
+      case 'team':
+        return '마케팅';
+      case 'manufacturer':
+        return 'ex)Apple';
+      case 'acquisitionDate':
+        return 'YYYY-MM-DD';
+      case 'location':
+        return '31층';
+      case 'note':
+        return '작성하기';
     }
-    const deleteTable = [...assetlist];
-    deleteTable[index] = {
-      ...deleteTable[index],
-      [assetType.type]: '',
-    };
-    setassetlist(deleteTable);
-    setShowContextMenu(false);
   };
-
   return (
-    <>
+    <div>
+      <TitleWrap>
+        {assetType.title}
+        {assetType.essential && <EssentialCircle />}
+      </TitleWrap>
       <InputAssetContainer
         type={assetType.inputType}
-        maxLength={10}
-        id={String(index)}
+        maxLength={assetType.length}
         onChange={handleChange}
         name={assetType.type}
-        onClick={() => {
-          setShowContextMenu(false);
-        }}
         onContextMenu={(e) => {
           e.preventDefault();
-          setShowContextMenu(true);
         }}
         ref={inputRef}
+        placeholder={placeholder()}
       />
-      {showContextMenu && <ContextMenu assetType={assetType} index={index} onclickDeleteText={onclickDeleteText} />}
-    </>
+    </div>
   );
 };
 
 export default InputAsset;
 
 const InputAssetContainer = styled.input`
+  background: #f4f4f4;
   width: 100%;
-  height: 100%;
-  padding: 0 10px;
-  text-align: center;
+  padding: 13px;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #333;
+  ::placeholder {
+    font-weight: 500;
+    font-size: 14px;
+    color: #cccccc;
+  }
+`;
+const TitleWrap = styled.h3`
+  display: flex;
+  align-items: center;
+  gap: 3px;
+`;
+const EssentialCircle = styled.p`
+  width: 6px;
+  height: 6px;
+  background: #eb5757;
+  border-radius: 100%;
 `;

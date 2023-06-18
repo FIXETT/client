@@ -2,10 +2,13 @@ import { atom } from 'recoil';
 import localStorageEffect from '../utilities/localStorage';
 export interface User {
   email: string; // 이메일
-  name: string; // 이름
-  password: string; // 비밀번호
+  name: string;
+  company: string; // 이름
+  password: string;
+  confirm: string; // 비밀번호
   code: string;
   token: string;
+  auth: number | string;
   agreePi?: boolean;
 }
 export interface Logout {

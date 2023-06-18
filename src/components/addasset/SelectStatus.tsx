@@ -1,32 +1,18 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
+
 import { assetlistState } from '../../recoil/assets';
 import { inputParameterType } from '../../types/asset';
-import ContextMenu from './ContextMenu';
 
-const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) => {
-  const [showContextMenu, setShowContextMenu] = useState(false);
+import arrowBttom from '../../assets/icon/arrow-bottom.svg';
+
+const SelectStatus = ({ assetType, handleChange }: inputParameterType) => {
   const [showStatus, setShowStatus] = useState(false);
-  const [assetlist, setassetlist] = useRecoilState(assetlistState);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const onclickDeleteText = () => {
-    const inputEl = inputRef.current;
-    if (inputEl) {
-      inputEl.value = '';
-    }
-    const deleteTable = [...assetlist];
-    deleteTable[index] = {
-      ...deleteTable[index],
-      [assetType.type]: '',
-    };
-    setassetlist(deleteTable);
-    setShowContextMenu(false);
-  };
+  const assetlist = useRecoilValue(assetlistState);
 
   const icon = () => {
-    switch (assetlist[index]?.status) {
+    switch (assetlist[0]?.status) {
       case '정상':
         return <span>🟢</span>;
       case '분실':
@@ -35,33 +21,37 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
         return <span>🟡</span>;
       case '수리완료':
         return <span>🔵</span>;
+      case '수리필요':
+        return <span>🟠</span>;
       default:
-        return <span />;
+        return;
     }
   };
   return (
     <SelectContainer>
-      {showContextMenu && <ContextMenu assetType={assetType} index={index} onclickDeleteText={onclickDeleteText} />}
+      <TitleWrap>
+        {assetType.title}
+        {assetType.essential && <EssentialCircle />}
+      </TitleWrap>
       <SelectBtn
+        checked={!!assetlist[0]?.status}
         onClick={(e) => {
           e.preventDefault();
-          setShowContextMenu(false);
           setShowStatus(!showStatus);
         }}
         onContextMenu={(e) => {
           e.preventDefault();
-          setShowContextMenu(true);
         }}
       >
         {icon()}
-        {assetlist[index]?.status ? assetlist[index]?.status : '선택하기 🔽'}
+        {assetlist[0]?.status ? assetlist[0]?.status : ' 선택'}
+        {!assetlist[0]?.category && <img src={arrowBttom} alt="화살표아이콘" />}
       </SelectBtn>
       {showStatus && (
         <SlectList>
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
               name={assetType.type}
               value="정상"
               onChange={handleChange}
@@ -74,7 +64,6 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
               name={assetType.type}
               value="분실"
               onChange={handleChange}
@@ -87,7 +76,6 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
               name={assetType.type}
               value="수리중"
               onChange={handleChange}
@@ -100,7 +88,6 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
           <AssetLabel>
             <input
               type="radio"
-              id={String(index)}
               name={assetType.type}
               value="수리완료"
               onChange={handleChange}
@@ -110,6 +97,18 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
             />
             🔵 수리완료
           </AssetLabel>
+          <AssetLabel>
+            <input
+              type="radio"
+              name={assetType.type}
+              value="수리필요"
+              onChange={handleChange}
+              onClick={() => {
+                setShowStatus(false);
+              }}
+            />
+            🟠 수리필요
+          </AssetLabel>
         </SlectList>
       )}
     </SelectContainer>
@@ -117,32 +116,47 @@ const SelectStatus = ({ assetType, index, handleChange }: inputParameterType) =>
 };
 
 export default SelectStatus;
-
+const SelectContainer = styled.div`
+  position: relative;
+`;
+const TitleWrap = styled.h3`
+  display: flex;
+  align-items: center;
+  gap: 3px;
+`;
+const EssentialCircle = styled.p`
+  width: 6px;
+  height: 6px;
+  background: #eb5757;
+  border-radius: 100%;
+`;
+const SelectBtn = styled.button<{ checked: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 13px;
+  border: 1px solid #cccccc;
+  background: #f4f4f4;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  color: ${(props) => (props.checked ? '#333' : '#999')};
+  width: 100%;
+`;
 const AssetLabel = styled.label`
+  width: 100%;
   display: block;
-  padding: 10px 15px;
+  padding: 15px 10px;
   cursor: pointer;
-  border-bottom: 1px solid var(--gray);
   border-radius: 5px;
   font-size: 12px;
-  text-align: center;
-  :hover {
-    background-color: var(--gray);
-  }
   input {
     display: none;
   }
 `;
 
-const SelectContainer = styled.div`
-  position: relative;
-  padding: 5px;
-`;
-const SelectBtn = styled.button`
-  width: 100%;
-`;
 const SlectList = styled.div`
-  width: 85%;
+  width: 100%;
   padding: 10px;
   position: absolute;
   left: 50%;

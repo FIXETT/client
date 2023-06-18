@@ -1,67 +1,71 @@
 import { atom } from 'recoil';
 
-import department from '../assets/icon/team.svg';
-import manufacturer from '../assets/icon/manufacturer.svg';
-import acquisitionDate from '../assets/icon/date.svg';
-import status from '../assets/icon/status.svg';
-import note from '../assets/icon/text.svg';
 import { modifyListType } from '../types/asset';
 
 export const postAssetTypeState = atom({
   key: 'postAssetType',
   default: [
-    { title: '실사용자', type: 'name', inputType: 'text' },
-    { title: '제품명', type: 'product', inputType: 'text' },
-    { title: '품목', type: 'category', inputType: 'select' },
-    { title: '수량', type: 'quantity', inputType: 'number' },
-  ],
-});
-export const selectAssetTypeState = atom({
-  key: 'selectAssetType',
-  default: [
-    { title: '팀', type: 'department', inputType: 'select', img: department },
-    { title: '제조사', type: 'manufacturer', inputType: 'text', img: manufacturer },
-    { title: '취득일자', type: 'acquisitionDate', inputType: 'date', img: acquisitionDate },
-    { title: '상태', type: 'status', inputType: 'select', img: status },
-    { title: '비고', type: 'note', inputType: 'text', img: note },
+    { title: '실사용자', type: 'name', inputType: 'text', essential: true, length: 20 },
+    { title: '제품명', type: 'product', inputType: 'text', essential: true, length: 50 },
+    { title: '품목', type: 'category', inputType: 'select', essential: true },
+    { title: '시리얼번호', type: 'serialNumber', inputType: 'text', essential: false },
+    { title: '팀', type: 'team', inputType: 'select', essential: false, length: 20 },
+    { title: '제조사', type: 'manufacturer', inputType: 'text', essential: false, length: 20 },
+    { title: '취득일자', type: 'acquisitionDate', inputType: 'text', essential: false },
+    { title: '자산위치', type: 'location', inputType: 'text', essential: false },
+    { title: '상태', type: 'status', inputType: 'select', essential: false },
+    { title: '비고', type: 'note', inputType: 'text', essential: false, length: 50 },
   ],
 });
 export const assetlistState = atom({
   key: 'assetlist',
   default: [
     {
-      status: '',
-      department: '',
-      category: '',
-      quantity: 0,
-      identifier: 0,
-      assetNumber: 0,
       name: '',
       product: '',
+      category: '',
+      serialNumber: '',
+      team: '',
       manufacturer: '',
       acquisitionDate: '',
+      location: '',
+      status: '',
       note: '',
+      identifier: 0,
+      assetNumber: 0,
     },
   ],
 });
+export const searchlistState = atom({
+  key: 'searchlist',
+  default: [{}],
+});
+export const categoryState = atom({
+  key: 'category',
+  default: '',
+});
 export const assetNumberListState = atom({
-  key: 'assetNumber',
-  default: [{ assetNumber: 0, identifier: 0 }],
+  key: 'assetNumberList',
+  default: [],
 });
 export const showContextMenuState = atom({
   key: 'showContextMenu',
   default: false,
 });
-export const showAddModalState = atom({
-  key: 'showAddModal',
+export const showAddComponentState = atom({
+  key: 'showAddComponent',
   default: false,
 });
-export const showModifyContextMenuState = atom({
-  key: 'showModifyContextMenu',
+export const showAddExcelComponentState = atom({
+  key: 'showAddExcelComponent',
   default: false,
 });
-export const showModifyModalState = atom({
-  key: 'showModifyModal',
+export const showModifyComponentState = atom({
+  key: 'showModifyComponent',
+  default: false,
+});
+export const isDisabledState = atom({
+  key: 'isDisabled',
   default: false,
 });
 export const showDeleteModalState = atom({
@@ -72,44 +76,16 @@ export const searchTextState = atom({
   key: 'searchText',
   default: '',
 });
-export const searchListState = atom({
-  key: 'searchList',
-  default: [],
-});
-export const modifyState = atom<modifyListType[]>({
+
+export const modifyState = atom<modifyListType[] | any[]>({
   key: 'modify',
   default: [],
 });
-export const modifyAssetTypeState = atom({
-  key: 'modifyAssetType',
-  default: [
-    { title: '실사용자', type: 'name', inputType: 'text' },
-    { title: '제품명', type: 'product', inputType: 'text' },
-    { title: '품목', type: 'category', inputType: 'select' },
-    { title: '수량', type: 'quantity', inputType: 'number' },
-  ],
+export const editListState = atom<modifyListType>({
+  key: 'editList',
+  default: {},
 });
-export const modifyselectAssetTypeState = atom({
-  key: 'modifyselectAssetType',
-  default: [
-    { title: '팀', type: 'department', inputType: 'select', img: department },
-    { title: '제조사', type: 'manufacturer', inputType: 'text', img: manufacturer },
-    { title: '취득일자', type: 'acquisitionDate', inputType: 'date', img: acquisitionDate },
-    { title: '상태', type: 'status', inputType: 'select', img: status },
-    { title: '비고', type: 'note', inputType: 'text', img: note },
-  ],
-});
-export const modifyAssetlistState = atom<modifyListType[]>({
-  key: 'modifyAssetlist',
-  default: [
-    {
-      assetId: 0,
-      category: '',
-      quantity: 0,
-      identifier: 0,
-      assetNumber: 0,
-      name: '',
-      product: '',
-    },
-  ],
+export const allCheckedState = atom({
+  key: 'allChecked',
+  default: false,
 });

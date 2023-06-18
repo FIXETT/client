@@ -1,93 +1,97 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
-import { modifyAssetlistState } from '../../recoil/assets';
-import { modifyState } from '../../recoil/assets';
-import ContextMenu from './ContextMenu';
+import { useRecoilValue } from 'recoil';
 
-const SelectCategory = ({ modifyAssetType, handleChange }: any) => {
-  const [showContextMenu, setShowContextMenu] = useState(false);
-  const [showModifyCategory, setShowModifyCategory] = useState(false);
-  const [modifyAssetlist, setModifyAssetlist] = useRecoilState(modifyAssetlistState);
-  const [modify, setModifyAsset] = useRecoilState(modifyState);
-  const inputRef = useRef<HTMLInputElement>(null);
+import { editListState, modifyState } from '../../recoil/assets';
+import { inputParameterType } from '../../types/asset';
 
-  const onclickDeleteText = () => {
-    const inputEl = inputRef.current;
-    if (inputEl) {
-      inputEl.value = '';
+import arrowBottom from '../../assets/icon/arrow-bottom.svg';
+
+const SelectCategory = ({ assetType, handleChange }: inputParameterType) => {
+  const [showCategory, setShowCategory] = useState(false);
+  const modifyList = useRecoilValue(modifyState);
+  const editList = useRecoilValue(editListState);
+  const initialCategory = (initialCategory: number) => {
+    if (initialCategory) {
+      switch (initialCategory) {
+        case 1:
+          return '노트북/데스크탑/서버';
+        case 2:
+          return '모니터';
+        case 3:
+          return '모바일기기';
+        case 4:
+          return '사무기기';
+        case 5:
+          return '기타장비';
+        case 6:
+          return '소프트웨어';
+      }
     }
-    const deleteTable = [...modifyAssetlist];
-    deleteTable[0] = {
-      ...deleteTable[0],
-      category: '', // reset status
-    };
-    setModifyAssetlist(deleteTable);
 
-    const deleteModify = [...modify];
-    deleteModify[0] = {
-      ...deleteModify[0],
-      category: '', // reset category
-    };
-    setModifyAsset(deleteModify);
-    setShowContextMenu(false);
+    return;
   };
 
   const icon = () => {
-    switch (modifyAssetlist[0].category) {
+    switch (initialCategory(editList.category as number) || modifyList[0]?.Category?.category) {
+      case '노트북/데스크탑/서버':
+        return <span>💻</span>;
       case '모니터':
         return <span>🖥️</span>;
-      case '노트북':
-        return <span>💻</span>;
-      case '데스크탑':
-        return <span>👨‍💻</span>;
+      case '모바일기기':
+        return <span>📱</span>;
+      case '사무기기':
+        return <span>🖨️</span>;
+      case '기타장비':
+        return <span>⌨️</span>;
+      case '소프트웨어':
+        return <span>🧑‍💻</span>;
       default:
-        return <span />;
+        return;
     }
   };
-
-  const defaultIcon = () => {
-    switch (modify[0].category) {
-      case '모니터':
-        return <span>🖥️</span>;
-      case '노트북':
-        return <span>💻</span>;
-      case '데스크탑':
-        return <span>👨‍💻</span>;
-      default:
-        return <span />;
-    }
-  };
+  const category = initialCategory(editList.category as number) || modifyList[0]?.Category?.category || '선택';
+  const showArrowIcon = !modifyList[0]?.Category?.category && !editList.category;
 
   return (
     <SelectContainer>
-      {showContextMenu && <ContextMenu modifyAssetType={modifyAssetType} onclickDeleteText={onclickDeleteText} />}
+      <TitleWrap>
+        {assetType.title}
+        {assetType.essential && <EssentialCircle />}
+      </TitleWrap>
       <SelectBtn
+        checked={!!modifyList[0]?.Category.category}
         onClick={(e) => {
           e.preventDefault();
-          setShowModifyCategory(!showModifyCategory);
-          setShowContextMenu(false);
-        }}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          setShowContextMenu(true);
+          setShowCategory(!showCategory);
         }}
       >
-        {icon() || defaultIcon()}
-        {modifyAssetlist[0].category || modify[0].category || '선택하기 🔽'}
+        {icon()}
+        {category}
+        {showArrowIcon && <img src={arrowBottom} alt="화살표아이콘" />}
       </SelectBtn>
-      {showModifyCategory && (
+      {showCategory && (
         <SlectList>
           <AssetLabel>
             <input
               type="radio"
-              id={String(0)}
-              name={modifyAssetType.type}
+              name={assetType.type}
+              value="노트북/데스크탑/서버"
+              onChange={handleChange}
+              onClick={() => {
+                setShowCategory(false);
+              }}
+            />
+            💻 노트북/데스크탑/서버
+          </AssetLabel>
+          <AssetLabel>
+            <input
+              type="radio"
+              name={assetType.type}
               value="모니터"
               onChange={handleChange}
-              checked={modify[0].category === '모니터'}
               onClick={() => {
-                setShowModifyCategory(false);
+                setShowCategory(false);
               }}
             />
             🖥️ 모니터
@@ -95,30 +99,50 @@ const SelectCategory = ({ modifyAssetType, handleChange }: any) => {
           <AssetLabel>
             <input
               type="radio"
-              id={String(0)}
-              name={modifyAssetType.type}
-              value="노트북"
+              name={assetType.type}
+              value="모바일기기"
               onChange={handleChange}
-              checked={modify[0].category === '노트북'}
               onClick={() => {
-                setShowModifyCategory(false);
+                setShowCategory(false);
               }}
             />
-            💻 노트북
+            📱 모바일기기
           </AssetLabel>
           <AssetLabel>
             <input
               type="radio"
-              id={String(0)}
-              name={modifyAssetType.type}
-              value="데스크탑"
+              name={assetType.type}
+              value="사무기기"
               onChange={handleChange}
-              checked={modify[0].category === '데스크탑'}
               onClick={() => {
-                setShowModifyCategory(false);
+                setShowCategory(false);
               }}
             />
-            👨‍💻 데스크탑
+            🖨️ 사무기기
+          </AssetLabel>
+          <AssetLabel>
+            <input
+              type="radio"
+              name={assetType.type}
+              value="기타장비"
+              onChange={handleChange}
+              onClick={() => {
+                setShowCategory(false);
+              }}
+            />
+            ⌨️ 기타장비
+          </AssetLabel>
+          <AssetLabel>
+            <input
+              type="radio"
+              name={assetType.type}
+              value="소프트웨어"
+              onChange={handleChange}
+              onClick={() => {
+                setShowCategory(false);
+              }}
+            />
+            🧑‍💻 소프트웨어
           </AssetLabel>
         </SlectList>
       )}
@@ -127,37 +151,50 @@ const SelectCategory = ({ modifyAssetType, handleChange }: any) => {
 };
 
 export default SelectCategory;
-
-const AssetLabel = styled.label`
-  display: block;
-  padding: 10px 15px;
-  cursor: pointer;
-  border-bottom: 1px solid var(--gray);
-  border-radius: 5px;
-  font-size: 12px;
-  text-align: center;
-  :hover {
-    background-color: var(--gray);
-  }
-  input {
-    display: none;
-    ::placeholder {
-      opacity: 0;
-    }
-  }
-`;
-
 const SelectContainer = styled.div`
   position: relative;
-  padding: 5px;
-`;
-
-const SelectBtn = styled.button`
+  height: 100%;
   width: 100%;
 `;
 
+const TitleWrap = styled.h3`
+  display: flex;
+  align-items: center;
+  gap: 3px;
+`;
+
+const EssentialCircle = styled.p`
+  width: 6px;
+  height: 6px;
+  background: #eb5757;
+  border-radius: 100%;
+`;
+const SelectBtn = styled.button<{ checked: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 13px;
+  border: 1px solid #cccccc;
+  background: #f4f4f4;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  color: ${(props) => (props.checked ? '#333' : '#999')};
+  width: 100%;
+`;
+const AssetLabel = styled.label`
+  width: 100%;
+  display: block;
+  padding: 15px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 12px;
+  input {
+    display: none;
+  }
+`;
 const SlectList = styled.div`
-  width: 85%;
+  width: 100%;
   padding: 10px;
   position: absolute;
   left: 50%;

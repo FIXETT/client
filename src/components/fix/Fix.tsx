@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import KaKao from '../map/KaKao';
 import { useRecoilState } from 'recoil';
 import { useFixState } from '../../recoil/fix';
+import Naver from '../map/Naver';
 
 export interface propsType {
   searchKeyword: string;
@@ -24,9 +25,11 @@ const Fix = () => {
     });
   };
   const ButtonList = [
-    { value: '1', name: 'PC', id: '컴퓨터 수리' },
+    { value: '1', name: '데스크탑', id: '컴퓨터 수리' },
     { value: '2', name: '모니터', id: '모니터 수리' },
     { value: '3', name: '노트북', id: '노트북 수리' },
+    { value: '4', name: '모바일기기', id: '핸드폰 수리' },
+    { value: '5', name: '사무기기', id: '사무기기 수리' },
   ];
   const totalCnt = val.toString();
 
@@ -34,27 +37,26 @@ const Fix = () => {
     <Wrap>
       <TitleBox>
         <Title>내 주변 센터찾기</Title>
-        <Sub>·현재 위치에서 가까운 수리 업체를 안내해드립니다.</Sub>
-        <Sub>·센터 검색을 위해 접속한 브라우저 설정에서 위치 기능 서비스를 사용으로 변경해주세요.</Sub>
       </TitleBox>
-      <FixBox>
-        <Select>수리 제품 선택</Select>
-        <KeywordBox>
-          {ButtonList.map((item, index) => (
-            <PC
-              id={item.id}
-              value={item.value}
-              className={item.value === isClick ? 'active' : ''}
-              key={index}
-              onClick={clickHandler}
-            >
-              {item.name}
-            </PC>
-          ))}
-        </KeywordBox>
-      </FixBox>
+
+      <KeywordBox>
+        {ButtonList.map((item, index) => (
+          <PC
+            id={item.id}
+            value={item.value}
+            className={item.value === isClick ? 'active' : ''}
+            key={index}
+            onClick={clickHandler}
+          >
+            {item.name}
+          </PC>
+        ))}
+      </KeywordBox>
+
       <TotalBox>
-        <TotalCt>총{totalCnt}개</TotalCt>
+        <TotalCt>
+          {totalCnt}개의 {keyword}센터
+        </TotalCt>
         {/* <FixapplyBtn>선택한 수리점에 견적 요청하기</FixapplyBtn> */}
       </TotalBox>
 
@@ -70,14 +72,16 @@ const Wrap = styled.div`
   /* width: 1210px; */
   display: flex;
   flex-direction: column;
+  padding-bottom: 140px;
 `;
 const Title = styled.span`
   font-size: 24px;
   line-height: 36px;
   text-align: left;
 
-  margin-top: 65px;
-  margin-left: 59px;
+  margin-top: 42px;
+  margin-left: 40px;
+  font-size: 32px;
   font-weight: 700;
 `;
 const Sub = styled.span`
@@ -96,32 +100,28 @@ const FixBox = styled.div`
   margin-top: 1rem;
   margin-left: 59px;
   width: 1032px;
-  border-top: 1px solid #e4ccff;
 `;
 const MapBox = styled.div`
-  margin-top: 12rem;
-  width: 1032px;
-  border-top: 1px solid #e4ccff;
-
-  margin-left: 55px;
+  margin-top: 12px;
+  margin-left: 40px;
 `;
 const TotalCt = styled.span`
-  width: 413px;
-  height: 37px;
   display: flex;
   align-items: center;
-  margin-top: 11rem;
+  font-weight: 700;
+  font-size: 16px;
+  color: #666666;
 `;
 const KeywordBox = styled.div`
-  /* width: 1032px; */
-  height: 69px;
-  background-color: rgba(228, 204, 255, 0.2);
+  width: 385px;
+  height: 40px;
+  margin-left: 40px;
+  gap: 8px;
   display: flex;
   flex-direction: row;
   align-content: space-around;
   align-items: center;
   margin-top: 1%;
-  gap: 63px;
 `;
 const Select = styled.div`
   margin-top: 14px;
@@ -130,30 +130,30 @@ const Select = styled.div`
   line-height: 22.5px;
 `;
 const PC = styled.button`
-  width: 79px;
-  height: 27px;
-  background-color: #ffffff;
-  color: #000000;
-  border: 1px solid #5a3092;
+  padding: 12px;
+  height: 40px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 87px;
+  font-weight: 500;
+  font-size: 14px;
+  background-color: #e7e7e7;
+  color: #999999;
+  border-radius: 12px;
+
+  border-radius: 12px;
   cursor: pointer;
   &.active {
-    background-color: #5a3092;
+    background-color: #066aff;
     color: #ffffff;
   }
 `;
 
 const TotalBox = styled.div`
-  margin-top: -10rem;
-  width: 1032px;
-  height: 37px;
+  margin-top: 32px;
+  margin-left: 40px;
+
+  height: 16px;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-left: auto;
 `;
 const FixapplyBtn = styled.button`
   background-color: #5a3092;
