@@ -155,7 +155,8 @@ export default Dashboard;
 const AssetContainer = styled.div`
   width: 668px;
   height: 100%;
-  padding: 32px;
+  padding: 42px 40px;
+
   thead {
     height: 30px;
   }
@@ -189,8 +190,7 @@ const AssetListContainer = styled.div`
     width: 100%;
   }
   td {
-    padding: 9px 0;
-    height: 48px;
+    padding: 17px 0;
   }
 `;
 
@@ -199,6 +199,7 @@ const TableItem = styled.td`
   white-space: nowrap;
   color: #999;
   font-size: 14px;
+  font-weight: 500;
   :nth-child(1) {
     width: 112px;
   }

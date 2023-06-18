@@ -12,6 +12,7 @@ import addAssetList from '../assets/landing/addAssetList.png';
 import search from '../assets/landing/search.png';
 import assetMap from '../assets/landing/assetMap.png';
 import fixet from '../assets/landing/fixet.png';
+import bubble from '../assets/landing/bubble.png';
 import logo_g from '../assets/icon/logo_g.png';
 import { ReactComponent as Logo } from '../assets/logo.svg';
 import { ReactComponent as Profile } from '../assets/profile.svg';
@@ -49,13 +50,7 @@ const Landing = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  const messages = [
-    '자산 위치 및 상태가 변경되었습니다.',
-    '상태가 변경되었습니다.',
-    '자산위치가 변경되었습니다.',
-    '자산이 삭제되었습니다.',
-    '자산이 등록되었습니다.',
-  ];
+
   return (
     <LandingContainer>
       <Header>
@@ -94,8 +89,8 @@ const Landing = () => {
               <br />
               <span>다 가능</span>해요!
             </SubText>
-            <img src={fixerLong} alt="지팡이긴캐릭터" />
-            <img src={fixerShort} alt="지팡이짧은캐릭터" />
+            <ChaImg1 src={fixerLong} alt="지팡이긴캐릭터" />
+            <ChaImg2 src={fixerShort} alt="지팡이짧은캐릭터" />
           </TextWrap>
           <LinkBtn
             onClick={() => {
@@ -106,8 +101,8 @@ const Landing = () => {
           </LinkBtn>
         </LandingFirstWrap>
         <ImgWrap>
-          <img src={chat02} alt="채팅화면02" />
-          <img src={chat01} alt="채팅화면01" />
+          <ChatImg1 src={chat02} alt="채팅화면02" />
+          <ChatImg2 src={chat01} alt="채팅화면01" />
         </ImgWrap>
       </LandingFirst>
       <LandingScroll reachedBottom={reachedBottom}>
@@ -127,23 +122,9 @@ const Landing = () => {
           <br />
           우리회사의 자산을 한눈에 파악하세요.
         </p>
-        <AssetListWrap>
-          <AssetListInfo>
-            누가 어떤 자산을 사용하는지 아시나요? <br />
-            <span>
-              자산이 어디에 있는지 파악 가능하신가요? <br />
-              실시간 현황 업데이트 대시보드를 통해 <br />
-              fixet이 알려드릴게요.
-            </span>
-          </AssetListInfo>
-          <BubbleWrapContainer>
-            {messages.map((message, index) => (
-              <BubbleWrap key={index} index={index}>
-                {message}
-              </BubbleWrap>
-            ))}
-          </BubbleWrapContainer>
-        </AssetListWrap>
+        <BubbleWrapContainer>
+          <img src={bubble} alt="자산대시보드이미지" />
+        </BubbleWrapContainer>
       </AssetListContainer>
       <AssetListAddContainer>
         <div>
@@ -252,10 +233,14 @@ const fadeOutAnimation = keyframes`
     opacity: 1;
   }
  
+  40% {
+    opacity: 1;
+  }
+  
   50% {
     opacity: 0;
   }
-  
+
   100% {
     opacity: 0;
     display: none;
@@ -272,6 +257,10 @@ const fadeInAnimation = keyframes`
     opacity: 0;
   }
   
+  60% {
+    opacity: 1;
+  }
+
   100% {
     opacity: 1;
   }
@@ -290,30 +279,58 @@ const SubText = styled.p<{ fadeOut: boolean }>`
     color: #066aff;
   }
   :nth-child(2) {
-    animation: ${fadeOutAnimation} 3s linear infinite alternate;
+    animation: ${fadeOutAnimation} 6s linear infinite alternate;
+    animation-delay: 3s; /* Add a delay to the animation */
   }
   :nth-child(3) {
-    animation: ${fadeInAnimation} 3s linear infinite alternate;
+    animation: ${fadeInAnimation} 6s linear infinite alternate;
+    animation-delay: 3s; /* Add a delay to the animation */
   }
+`;
+
+const ChaImg1 = styled.img`
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  animation: ${fadeOutAnimation} 6s linear infinite alternate;
+  animation-delay: 3s; /* Add a delay to the animation */
+`;
+
+const ChaImg2 = styled.img`
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  animation: ${fadeInAnimation} 6s linear infinite alternate;
+  animation-delay: 3s; /* Add a delay to the animation */
 `;
 
 const TextWrap = styled.div`
   width: 100%;
   height: 462px;
   position: relative;
-  img {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    :nth-child(4) {
-      animation: ${fadeOutAnimation} 3s linear infinite alternate;
-    }
-    :nth-child(5) {
-      animation: ${fadeInAnimation} 3s linear infinite alternate;
-    }
-  }
 `;
 
+const ImgWrap = styled.div`
+  width: 904px;
+  position: relative;
+`;
+
+const ChatImg1 = styled.img`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  animation: ${fadeOutAnimation} 6s linear 3s infinite alternate;
+`;
+const ChatImg2 = styled.img`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  animation: ${fadeInAnimation} 6s linear 3s infinite alternate;
+`;
 const LinkBtn = styled.button`
   padding: 24px;
   width: 255px;
@@ -324,23 +341,6 @@ const LinkBtn = styled.button`
   font-size: 24px;
   color: #ffffff;
   margin-top: 40px;
-`;
-const ImgWrap = styled.div`
-  width: 904px;
-  position: relative;
-  img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    :nth-child(1) {
-      animation: ${fadeOutAnimation} 3s linear 3s infinite alternate;
-    }
-    :nth-child(2) {
-      animation: ${fadeInAnimation} 3s linear 3s infinite alternate;
-    }
-  }
 `;
 const LandingScroll = styled.div<{ reachedBottom: boolean }>`
   width: 100vw;
@@ -433,20 +433,13 @@ const AssetListContainer = styled.div`
     }
   }
 `;
-const AssetListWrap = styled.div`
-  display: flex;
-  padding: 60px;
-  gap: 40px;
-  background: linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #066aff;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 56px;
-`;
+
 const BubbleWrapContainer = styled.div`
-  width: 722px;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 12px;
+  justify-content: center;
+  img {
+    max-width: 1440px;
+  }
 `;
 const AssetListMainText = styled.p`
   font-weight: 700;
@@ -454,78 +447,6 @@ const AssetListMainText = styled.p`
   color: #066aff;
   margin-top: 16px;
   margin-bottom: 24px;
-`;
-
-const fadeInOut = keyframes`
-  0% { opacity: 0.8; }
-  25% { opacity: 0.6; }
-  50% { opacity: 0.4; }
-  75% { opacity: 0.2; }
-  100% { opacity: 1; }
-`;
-
-const BubbleWrap = styled.div<{ index: number }>`
-  filter: drop-shadow(0px 0px 24px rgba(6, 106, 255, 0.15));
-  background-color: #fff;
-  padding: 18px 35px;
-  font-size: 26px;
-  font-weight: bold;
-  color: #999;
-
-  :nth-child(even) {
-    align-self: flex-start;
-  }
-
-  :nth-child(odd) {
-    align-self: flex-end;
-  }
-
-  :nth-child(1) {
-    padding-right: 53px;
-    border-radius: 16px;
-  }
-
-  :nth-child(2) {
-    padding-right: 172px;
-    font-size: 22px;
-    border-radius: 16px;
-  }
-
-  :nth-child(3) {
-    padding: 14px 35px;
-    padding-right: 109px;
-    font-size: 19px;
-    border-radius: 12px;
-  }
-
-  :nth-child(4) {
-    padding: 11px 35px;
-    padding-right: 122px;
-    margin-left: 59px;
-    font-size: 16px;
-    border-radius: 10px;
-  }
-
-  :nth-child(5) {
-    align-self: center;
-    padding: 9px 35px;
-    font-size: 13px;
-    padding-right: 98px;
-    border-radius: 8px;
-  }
-  opacity: 0;
-  animation: ${fadeInOut} 1s linear forwards;
-  animation-delay: ${(props) => props.index * 1}s;
-`;
-
-const AssetListInfo = styled.div`
-  font-weight: 700;
-  font-size: 32px;
-  line-height: 120%;
-  color: #ffffff;
-  span {
-    color: rgba(255, 255, 255, 0.4);
-  }
 `;
 
 const AssetListAddContainer = styled.div`
@@ -553,7 +474,7 @@ const AssetListAddMainText = styled.p`
 `;
 const AssetListAddSubText = styled.p`
   text-align: left;
-
+  line-height: 67px;
   font-weight: 700;
   font-size: 56px;
   color: #066aff;
@@ -567,6 +488,7 @@ const AssetListAddText = styled.p`
   font-weight: 500;
   font-size: 24px;
   color: #999999;
+  line-height: 140%;
 `;
 const AssetSearchContainer = styled.div`
   width: 100%;
@@ -574,6 +496,9 @@ const AssetSearchContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  img {
+    max-width: 1440px;
+  }
 `;
 const AssetMapContainer = styled.div`
   width: 100%;
@@ -583,6 +508,9 @@ const AssetMapContainer = styled.div`
   justify-content: center;
   align-items: center;
   background: linear-gradient(113.33deg, #3385ff 0.58%, #0066ff 98.36%);
+  img {
+    max-width: 1440px;
+  }
 `;
 
 const AssetMapAddMainText = styled.p`

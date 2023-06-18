@@ -11,4 +11,6 @@ const MyPage = () => {
 };
 
 export default MyPage;
-const Wrap = styled.div``;
+const Wrap = styled.div`
+  width: calc(100% - 196px);
+`;

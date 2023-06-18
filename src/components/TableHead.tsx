@@ -67,7 +67,7 @@ const InputWrap = styled.th`
   padding: 16px 8px;
 `;
 const Assetcategory = styled.th`
-  font-weight: 500;
+  font-weight: 700;
   font-size: 14px;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -78,34 +78,34 @@ const Assetcategory = styled.th`
     width: 64px;
   }
   :nth-child(3) {
-    width: 83px;
+    width: 112px;
   }
   :nth-child(4) {
-    width: 202px;
+    width: 188px;
   }
   :nth-child(5) {
-    width: 150px;
+    width: 196px;
   }
   :nth-child(6) {
-    width: 140px;
+    width: 132px;
   }
   :nth-child(7) {
-    width: 140px;
+    width: 132px;
   }
   :nth-child(8) {
     width: 104px;
   }
   :nth-child(9) {
-    width: 140px;
+    width: 132px;
   }
   :nth-child(10) {
     width: 104px;
   }
   :nth-child(11) {
-    width: 75px;
+    width: 204px;
   }
   :nth-child(12) {
-    width: 200px;
+    width: 204px;
   }
 `;
 

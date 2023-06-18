@@ -124,9 +124,9 @@ const AssetList = () => {
 export default AssetList;
 
 const AssetContainer = styled.div`
-  width: 100%;
+  width: calc(100% - 196px);
   height: 100%;
-  padding: 32px;
+  padding: 42px 40px;
 `;
 const AssetListContainer = styled.div`
   margin-top: 8px;

@@ -10,11 +10,11 @@ import logout from '../../assets/icon/logout.png';
 import NavList from './NavList';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useLogoutState } from '../../recoil/userList';
-import { companyState } from '../../recoil/profile';
+import { companyState, nameState } from '../../recoil/profile';
 
 const Aside = () => {
-  const name = window.localStorage.getItem('name') as string;
   const company = useRecoilValue(companyState);
+  const name = useRecoilValue(nameState);
 
   const navigate = useNavigate();
   const setIslogout = useSetRecoilState(useLogoutState);
@@ -35,8 +35,8 @@ const Aside = () => {
             <img src={profileImg} alt="프로필" />
           </ImgWrap>
           <TextWrap>
-            <Name>{name}</Name>
-            <Company>{company}</Company>
+            <Name>{name || localStorage.getItem('name')}</Name>
+            <Company>{company || localStorage.getItem('company')}</Company>
           </TextWrap>
           {isHovered && (
             <ContextMenu>
@@ -75,7 +75,7 @@ const Aside = () => {
 export default Aside;
 
 const AsideContainer = styled.div`
-  min-width: 180px;
+  width: 196px;
   height: 100%;
   background-color: #fff;
   border-right: 1px solid #eee;
@@ -83,7 +83,7 @@ const AsideContainer = styled.div`
 const LogoImg = styled.img`
   margin-top: 42px;
   margin-bottom: 16px;
-  padding: 0 16px;
+  padding: 0 24px;
 
   cursor: pointer;
 `;
@@ -92,7 +92,7 @@ const ProfileWrap = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 16px;
+  padding: 16px 24px;
   :hover {
     background-color: #f4f4f4;
     border-radius: 16px;
@@ -131,7 +131,7 @@ const ImgWrap = styled.div`
   background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #066aff;
   position: relative;
   img {
-    width: 32px;
+    width: 40px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -141,7 +141,7 @@ const ImgWrap = styled.div`
 const TextWrap = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 `;
 
 const Company = styled.p`

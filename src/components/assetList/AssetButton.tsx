@@ -61,10 +61,10 @@ const AssetButton = () => {
         </ExcelDownBtn>
       </AssetListHeaderWrap>
       <AssetListBtnWrap>
-        <ModifyBtn onClick={modifyAsset} disabled={assetNumberList.length !== 1}>
+        <ModifyBtn onClick={modifyAsset} disabled={assetNumberList?.length !== 1}>
           수정
         </ModifyBtn>
-        <DeleteBtn onClick={deleteAsset} disabled={assetNumberList.length < 0}>
+        <DeleteBtn onClick={deleteAsset} disabled={assetNumberList?.length < 0}>
           삭제
         </DeleteBtn>
       </AssetListBtnWrap>
@@ -127,7 +127,7 @@ const AddAssetBtn = styled.button`
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 8px;
+  padding: 12px;
   background: var(--primary);
   border-radius: 8px;
   font-weight: 700;
@@ -138,9 +138,8 @@ const AddExcelBtn = styled.button`
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px;
+  padding: 12px;
   background: var(--green);
-  border: 1px solid var(--green);
   border-radius: 8px;
   font-weight: 500;
   font-size: 14px;
@@ -149,7 +148,7 @@ const AddExcelBtn = styled.button`
 const ExcelDownBtn = styled.button`
   display: flex;
   align-items: center;
-  padding: 8px;
+  padding: 12px;
   gap: 8px;
   background: #ffffff;
   border: 1px solid var(--green);
