@@ -69,7 +69,7 @@ const Fix = () => {
 
 export default Fix;
 const Wrap = styled.div`
-  /* width: 1210px; */
+  width: calc(100% - 196px);
   display: flex;
   flex-direction: column;
   padding-bottom: 140px;
@@ -78,9 +78,8 @@ const Title = styled.span`
   font-size: 24px;
   line-height: 36px;
   text-align: left;
-
-  margin-top: 42px;
-  margin-left: 40px;
+  margin-top: 40px;
+  margin-left: 42px;
   font-size: 32px;
   font-weight: 700;
 `;
