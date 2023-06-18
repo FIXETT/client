@@ -194,13 +194,14 @@ const KaKao = (props: propsType) => {
       const itemStr = `
       
           <div style=
-          "padding:16px 20px;
+          "padding:20px 16px;
           border: 1px solid #DDDDDD;
+
           border-radius: 16px; 
          
           
           width: 100%;
-          padding:20px, 16px, 20px, 16px;
+          
           max-width: 624px;
           min-width:624px;
           height:106px;
