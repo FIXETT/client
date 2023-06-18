@@ -475,7 +475,7 @@ const Mapcontainer = styled.div`
   gap: 24px;
   width: 100%;
   height: 100%;
-  margin-top: 10px;
+ 
 
   img[draggable='false'] {
   }
