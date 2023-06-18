@@ -15,15 +15,11 @@ export default EditInfo;
 
 const Modalback = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   position: fixed;
-  z-index: 999;
-  overflow: hidden;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  top: 0;
+  left: 0;
 `;
 const Modal = styled.div`
   width: 490px;
@@ -34,4 +30,8 @@ const Modal = styled.div`
   box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
