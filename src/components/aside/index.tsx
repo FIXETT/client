@@ -141,7 +141,7 @@ const ImgWrap = styled.div`
 const TextWrap = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 `;
 
 const Company = styled.p`
