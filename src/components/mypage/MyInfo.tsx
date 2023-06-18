@@ -395,6 +395,7 @@ const MyInfo = () => {
               className={error ? 'error' : ''}
               name="password"
               onChange={onChange}
+              onKeyDown={handleKeyDown}
               autoComplete="off"
               type="password"
               placeholder="현재 비밀번호를 입력해주세요"
@@ -402,13 +403,7 @@ const MyInfo = () => {
             {error && <Errormessage>비밀번호를 올바르게 입력해주세요.</Errormessage>}
 
             <ButtonBox>
-              <OK
-                className={password && 'active'}
-                onClick={authHandler}
-                onKeyDown={handleKeyDown}
-                role="button"
-                tabIndex={0}
-              >
+              <OK className={password && 'active'} onClick={authHandler} role="button" tabIndex={0}>
                 본인인증 완료
               </OK>
 
