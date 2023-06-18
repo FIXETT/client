@@ -355,20 +355,43 @@ color:#066AFF;
       const pageStatusEl = document.createElement('a') as HTMLAnchorElement;
       pageStatusEl.style.display = 'flex';
       pageStatusEl.style.flexDirection = 'row';
-      pageStatusEl.innerHTML = `<div style="height: 38px;
-      display:flex;
-      justify-content:center;
-      width: 38px;
-      border-radius: 8px;
-      padding: 12px;
-      background:#F4F4F4;
-      color:#999999;
-      ">${pagination.current}</div>  <div style="height: 38px;
-      width: 38px;
-      border-radius: 8px;
-      padding: 12px;
-      color:#CCCCCC;
-      ">${pagination.last}</div>`;
+      if (pagination.current < pagination.last) {
+        pageStatusEl.innerHTML = `
+          <div style="height: 38px;
+            display:flex;
+            justify-content:center;
+            width: 38px;
+            border-radius: 8px;
+            padding: 12px;
+            background:#F4F4F4;
+            color:#999999;
+          ">${pagination.current}</div>
+          <div style="height: 38px;
+            width: 38px;
+            border-radius: 8px;
+            padding: 12px;
+            color:#CCCCCC;
+          ">${pagination.current + 1}</div>
+        `;
+      } else {
+        pageStatusEl.innerHTML = `
+          <div style="height: 38px;
+            display:flex;
+            justify-content:center;
+            width: 38px;
+            border-radius: 8px;
+            padding: 12px;
+            background:#F4F4F4;
+            color:#999999;
+          ">${pagination.current}</div>
+          <div style="height: 38px;
+            width: 38px;
+            border-radius: 8px;
+            padding: 12px;
+            color:#CCCCCC;
+          ">${pagination.last}</div>
+        `;
+      }
       paginationEl.appendChild(pageStatusEl);
       //다음페이지 가는 함수
       const nextEl = document.createElement('img') as HTMLImageElement;

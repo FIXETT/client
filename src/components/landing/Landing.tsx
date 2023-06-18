@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { UserApi } from '../../apis/axiosInstance';
@@ -20,6 +20,7 @@ export interface FormValue {
 }
 
 const Landing = () => {
+  const [error, setError] = useState(false);
   const navigate = useNavigate();
   const setCompany = useSetRecoilState(companyState);
 
@@ -77,11 +78,13 @@ const Landing = () => {
       localStorage.setItem('identifier', identifier);
       localStorage.setItem('company', company);
       setCompany(company);
+
       navigate('/assetList');
     } catch (error: any) {
-      if (error.response) {
-        window.confirm(error?.response?.data?.error);
+      if (error) {
+        setError(true);
       }
+      return setTimeout(() => setError(false), 5000);
     }
   };
 
@@ -95,23 +98,27 @@ const Landing = () => {
 
           <InputDiv>
             <Email
-              className={errors.email?.message && 'error'}
+              className={errors.email?.message || error ? 'error' : ''}
               {...register('email')}
               type="text"
               name="email"
               placeholder="회사 이메일을 입력해주세요"
             />
             <Password
-              className={errors.password?.message && 'error'}
+              className={errors.password?.message || error ? 'error' : ''}
               {...register('password')}
               type="password"
               name="password"
               placeholder="비밀번호를 입력해주세요"
             />
-            <Errormessage>
-              {errors.email?.message}
-              {errors.password?.message}
-            </Errormessage>
+            {error ? (
+              <Errormessage>이메일 또는 비밀번호가 일치하지 않습니다.</Errormessage>
+            ) : (
+              <Errormessage>
+                {errors.email?.message}
+                {errors.password?.message}
+              </Errormessage>
+            )}
           </InputDiv>
 
           <BtnDiv>
