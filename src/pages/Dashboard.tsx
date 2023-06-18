@@ -199,6 +199,7 @@ const TableItem = styled.td`
   white-space: nowrap;
   color: #999;
   font-size: 14px;
+  font-weight: 500;
   :nth-child(1) {
     width: 112px;
   }

@@ -72,6 +72,7 @@ const Wrap = styled.div`
   /* width: 1210px; */
   display: flex;
   flex-direction: column;
+  padding-bottom: 140px;
 `;
 const Title = styled.span`
   font-size: 24px;
@@ -105,7 +106,6 @@ const MapBox = styled.div`
   margin-left: 40px;
 `;
 const TotalCt = styled.span`
-  height: 16px;
   display: flex;
   align-items: center;
   font-weight: 700;
@@ -140,7 +140,7 @@ const PC = styled.button`
   color: #999999;
   border-radius: 12px;
 
-  border-radius: 87px;
+  border-radius: 12px;
   cursor: pointer;
   &.active {
     background-color: #066aff;

@@ -113,33 +113,33 @@ const TableItem = styled.td`
     width: 64px;
   }
   :nth-child(3) p {
-    width: 83px;
+    width: 112px;
   }
   :nth-child(4) p {
-    width: 202px;
+    width: 188px;
   }
   :nth-child(5) p {
-    width: 150px;
+    width: 196px;
   }
   :nth-child(6) p {
-    width: 140px;
+    width: 132px;
   }
   :nth-child(7) p {
-    width: 140px;
+    width: 132px;
   }
   :nth-child(8) p {
     width: 104px;
   }
   :nth-child(9) p {
-    width: 140px;
+    width: 132px;
   }
   :nth-child(10) p {
     width: 104px;
   }
   :nth-child(11) p {
-    width: 75px;
+    width: 204px;
   }
   :nth-child(12) p {
-    width: 200px;
+    width: 204px;
   }
 `;

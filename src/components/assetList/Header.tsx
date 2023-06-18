@@ -42,12 +42,9 @@ const Header = ({ assetList }: any) => {
       <AssetWrap>
         <div>
           <AssetNumber>
-            {company && assetList?.asset?.totalCount ? (
+            {company && assetList?.totalCount ? (
               <>
-                {company}의{' '}
-                <span>
-                  {assetList?.asset?.totalCount ? String(assetList?.asset?.totalCount).padStart(2, '0') : '00'}
-                </span>
+                {company}의 <span>{assetList?.totalCount ? String(assetList?.totalCount).padStart(2, '0') : '00'}</span>
                 개 자산
               </>
             ) : (
