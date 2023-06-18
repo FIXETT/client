@@ -10,11 +10,11 @@ import logout from '../../assets/icon/logout.png';
 import NavList from './NavList';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useLogoutState } from '../../recoil/userList';
-import { companyState } from '../../recoil/profile';
+import { companyState, nameState } from '../../recoil/profile';
 
 const Aside = () => {
-  const name = window.localStorage.getItem('name') as string;
   const company = useRecoilValue(companyState);
+  const name = useRecoilValue(nameState);
 
   const navigate = useNavigate();
   const setIslogout = useSetRecoilState(useLogoutState);
@@ -35,8 +35,8 @@ const Aside = () => {
             <img src={profileImg} alt="프로필" />
           </ImgWrap>
           <TextWrap>
-            <Name>{name}</Name>
-            <Company>{company}</Company>
+            <Name>{name || localStorage.getItem('name')}</Name>
+            <Company>{company || localStorage.getItem('company')}</Company>
           </TextWrap>
           {isHovered && (
             <ContextMenu>
