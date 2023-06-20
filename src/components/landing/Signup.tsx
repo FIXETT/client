@@ -12,7 +12,7 @@ import { Errormessage, Flex, Footer, Wrap } from './Landing';
 import Modal from '../modal/Modal';
 import fixetimg from '../../assets/login/fixet.svg';
 import loginimg from '../../assets/login/login.svg';
-import logo_g from '../../assets/icon/logo_g.png';
+import logo_g from '../../assets/icon/logo_g.svg';
 const Signup = () => {
   const [{ email }, onChange, reset, complete] = useInputs({
     email: '',

@@ -12,7 +12,7 @@ import { Errormessage, Flex, Footer, Wrap } from './Landing';
 import Modal from '../modal/Modal';
 import { Fixet } from './Signup';
 import fixetimg from '../../assets/login/fixet.svg';
-import logo_g from '../../assets/icon/logo_g.png';
+import logo_g from '../../assets/icon/logo_g.svg';
 const Comfirm = () => {
   const [{ email, code }, onChange, Reset] = useInputs({
     email: '',

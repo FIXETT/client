@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import Modal from '../modal/Modal';
 import { Fixet } from './Signup';
 import fixetimg from '../../assets/login/fixet.svg';
-import logo_g from '../../assets/icon/logo_g.png';
+import logo_g from '../../assets/icon/logo_g.svg';
 import complte from '../../assets/login/complete.svg';
 const EnterInfo = () => {
   const [{ name, password }, onChange, Reset] = useInputs({

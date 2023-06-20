@@ -364,7 +364,9 @@ const MyInfo = () => {
             <InfoBox>
               <ProfileDiv>
                 <ProfileBox>
-                  <Fixet src={profileImg} alt="fixet" />
+                  <ImgWrap>
+                    <Fixet src={profileImg} alt="fixet" />
+                  </ImgWrap>
                   <MypageProfile>
                     <Name>{profile?.user?.name}</Name>
                     <Company>{profile?.user?.company}</Company>
@@ -449,7 +451,18 @@ const MypageBtn = styled.button`
   color: #ffffff;
   border-radius: 8px;
 `;
-const Fixet = styled.img``;
+const ImgWrap = styled.div`
+  width: 88px;
+  height: 88px;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #066aff;
+`;
+const Fixet = styled.img`
+  width: 58px;
+`;
 const Span = styled.span`
   font-weight: 700;
   font-size: 32px;
@@ -589,7 +602,6 @@ const EditBtn = styled.button`
   height: 30px;
   background-color: #f4f4f4;
   border-radius: 8px;
-  margin: 24px 24px 0 0;
   color: #999999;
   font-size: 11px;
   font-weight: 500;
@@ -600,13 +612,12 @@ const InfoBox = styled.div`
   height: 220px;
   border: 1px solid #dddddd;
   border-radius: 24px;
+  padding: 24px;
   margin-top: 32px;
   display: flex;
   justify-content: space-between;
 `;
 const ProfileDiv = styled.div`
-  height: 172px;
-  margin: 24px 0 0 24px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -618,12 +629,12 @@ const Profile = styled.div`
 const MypageProfile = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
   gap: 8px;
 `;
 const ProfileBox = styled.div`
   display: flex;
   gap: 12px;
+  align-items: center;
 `;
 const Input = styled.input<{ width: string; margin: string }>`
   height: 40px;
@@ -666,8 +677,8 @@ const Part = styled.span`
 `;
 const EmailBox = styled.div`
   display: flex;
-
   flex-direction: column;
+  gap: 12px;
 `;
 const EmailImg = styled.img``;
 const Email = styled.span`
@@ -698,6 +709,7 @@ const PwBox = styled.div`
 const PhoneBox = styled.div`
   display: flex;
   gap: 8px;
+  align-items: center;
 `;
 const PhoneImg = styled.img`
   width: 24px;

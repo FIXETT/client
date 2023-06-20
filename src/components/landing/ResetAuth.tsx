@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { UserApi } from '../../apis/axiosInstance';
 import fixetimg from '../../assets/login/fixet.svg';
-import logo_g from '../../assets/icon/logo_g.png';
+import logo_g from '../../assets/icon/logo_g.svg';
 import confirm from '../../assets/login/auth.svg';
 import useInputs from '../../hooks/useInput';
 import { useUserState } from '../../recoil/userList';
