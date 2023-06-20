@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import Modal from '../modal/Modal';
 import loginimg from '../../assets/login/login.svg';
 import fixetimg from '../../assets/login/fixet.svg';
-import logo_g from '../../assets/icon/logo_g.png';
+import logo_g from '../../assets/icon/logo_g.svg';
 import { useSetRecoilState } from 'recoil';
 import { companyState } from '../../recoil/profile';
 export interface FormValue {

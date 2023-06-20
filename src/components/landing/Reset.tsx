@@ -9,7 +9,7 @@ import { UserApi } from '../../apis/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import fixetimg from '../../assets/login/fixet.svg';
 import { Fixet } from './Signup';
-import logo_g from '../../assets/icon/logo_g.png';
+import logo_g from '../../assets/icon/logo_g.svg';
 import { useRecoilState } from 'recoil';
 import { useUserState } from '../../recoil/userList';
 const Reset = () => {

@@ -5,7 +5,7 @@ import resetpwimg from '../../assets/reset/resetpw.svg';
 import styled from 'styled-components';
 import { Fixet } from './Signup';
 import fixetimg from '../../assets/login/fixet.svg';
-import logo_g from '../../assets/icon/logo_g.png';
+import logo_g from '../../assets/icon/logo_g.svg';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';

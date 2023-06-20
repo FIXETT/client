@@ -13,7 +13,7 @@ import search from '../assets/landing/search.png';
 import assetMap from '../assets/landing/assetMap.png';
 import fixet from '../assets/landing/fixet.png';
 import bubble from '../assets/landing/bubble.png';
-import logo_g from '../assets/icon/logo_g.png';
+import logo_g from '../assets/icon/logo_g.svg';
 import { ReactComponent as Logo } from '../assets/logo.svg';
 import { ReactComponent as Profile } from '../assets/profile.svg';
 

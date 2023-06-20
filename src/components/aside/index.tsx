@@ -4,8 +4,8 @@ import { Outlet, useNavigate } from 'react-router-dom';
 
 import profileImg from '../../assets/icon/profile.svg';
 import logo from '../../assets/logo.svg';
-import user from '../../assets/icon/user.png';
-import logout from '../../assets/icon/logout.png';
+import user from '../../assets/icon/user.svg';
+import logout from '../../assets/icon/logout.svg';
 
 import NavList from './NavList';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
@@ -84,14 +84,13 @@ const LogoImg = styled.img`
   margin-top: 42px;
   margin-bottom: 16px;
   padding: 0 24px;
-
   cursor: pointer;
 `;
 const ProfileWrap = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   padding: 16px 24px;
   :hover {
     background-color: #f4f4f4;
@@ -103,12 +102,15 @@ const ContextMenu = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
+  border: 1px solid #e7e7e7;
   background-color: #fff;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
   padding: 4px;
-  width: 100%;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 12px;
   color: #666;
+  width: 128px;
 
   button {
     display: flex;
@@ -120,6 +122,8 @@ const ContextMenu = styled.div`
     border-radius: 6px;
     :hover {
       background: #f4f4f4;
+      border-radius: 6px;
+      padding: 8px;
     }
   }
 `;
@@ -146,12 +150,12 @@ const TextWrap = styled.div`
 
 const Company = styled.p`
   font-weight: 500;
-  font-size: var(--heading6);
+  font-size: 14px;
   color: #999;
 `;
 const Name = styled.p`
   font-weight: 700;
-  font-size: var(--heading5);
+  font-size: 20px;
 `;
 
 const NavListContainer = styled.ul`
