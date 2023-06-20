@@ -7,7 +7,7 @@ import { useLogoutState } from '../recoil/userList';
 
 import { Logout } from './modal/Logout';
 
-import logo_g from '../assets/icon/logo_g.png';
+import logo_g from '../assets/icon/logo_g.svg';
 
 const Layout = () => {
   const islogout = useRecoilValue(useLogoutState);

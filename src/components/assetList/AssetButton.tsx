@@ -85,7 +85,7 @@ const AssetListHeaderWrap = styled.div`
   gap: 10px;
 `;
 const AssetListBtnWrap = styled.div`
-  margin-top: 20px;
+  margin-top: 10px;
   text-align: center;
   display: flex;
   align-items: center;
