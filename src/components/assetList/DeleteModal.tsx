@@ -32,8 +32,8 @@ const DeleteModal = () => {
       <AssetWrap>
         <Title>삭제하시겠습니까?</Title>
         <Row>
-          <CancelBtn onClick={hideModal}>돌아가기</CancelBtn>
-          <CheckBtn onClick={handleDeleteAsset}>네</CheckBtn>
+          <CheckBtn onClick={handleDeleteAsset}>확인</CheckBtn>
+          <CancelBtn onClick={hideModal}>취소</CancelBtn>
         </Row>
       </AssetWrap>
     </AssetContainer>
@@ -52,8 +52,9 @@ const AssetContainer = styled.div`
   z-index: 999;
 `;
 const Title = styled.h2`
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 28px;
+  margin-bottom: 30px;
 `;
 const AssetWrap = styled.div`
   width: 700px;
@@ -77,24 +78,22 @@ const Row = styled.div`
   gap: 10px;
 `;
 const CheckBtn = styled.button`
-  display: flex;
-  align-items: center;
+  width: 100px;
   gap: 4px;
-  padding: 12px;
   background: #066aff;
   border-radius: 8px;
-  font-weight: 700;
   color: #ffffff;
-  font-size: 16px;
+  font-weight: 700;
+  font-size: 14px;
+  background: #066aff;
 `;
 const CancelBtn = styled.button`
-  display: flex;
-  align-items: center;
+  width: 100px;
   gap: 4px;
   padding: 12px;
   background: #f4f4f4;
-  color: #999999;
-  font-weight: 700;
+  color: #999;
   border-radius: 8px;
-  font-size: 16px;
+  font-weight: 700;
+  font-size: 14px;
 `;
